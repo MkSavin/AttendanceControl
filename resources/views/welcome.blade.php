@@ -88,6 +88,7 @@
                     <a href="https://laravel-news.com">News</a>
                     <a href="https://forge.laravel.com">Forge</a>
                     <a href="https://github.com/MkSavin/AttendanceControl">GitHub</a>
+                    <a href="https://elerance.com">Elerance.com</a>
                 </div>
             </div>
         </div>
