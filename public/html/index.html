@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Attendance Control</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="fonts/Roboto/Roboto.css">
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+    <header>
+        <div class="float-left left">
+            <div class="title"><span>AControl</span></div>
+            <div class="menu">
+                <a href="#">Меню 1</a>
+                <a href="#">Меню 2</a>
+            </div>
+        </div>
+        <div class="float-right right">
+            <div class="menu">
+                <a href="#">Меню 3</a>
+                <a href="#" class="button white short">Создать сессию</a>
+            </div>
+            <div class="user no-selection dd-toggle" dd-target=".dd-user">
+                <div>Алексеев И.И</div>
+                <span class="additional">Преподаватель</span>
+            </div>
+        </div>
+        <div class="dd-hidden dd dd-user">
+            <a href="#">Профиль</a>
+            <a href="#">Пункт меню 2</a>
+            <a href="#">Выйти</a>
+        </div>
+        <div class="clearfix"></div>
+    </header>
+    <main>
+        <div>
+            <div class="block time">
+                <span class="clock">
+                    <span class="hours">10</span>
+                    <span class="minutes">20</span>
+                    <span class="seconds">21</span>
+                </span>
+                <span class="date">
+                    15 ноября 2019
+                </span>
+                <span class="week-type">
+                    Числитель
+                </span>
+            </div>
+        </div>
+        <div>
+            <div class="block sessions">
+                <div class="block-title">
+                    Активные сессии
+                </div>
+                <div class="block-body">
+                    <a href="#" class="session red short">
+                        <span class="session-hide"><img src="img/icons/close_white.svg" width="10" alt=""></span>
+                        <div class="header">
+                            <div class="float-left">
+                                <div class="date">Сегодня, 10:20</div>
+                                <div class="creator">Расп.</div>
+                            </div>
+                            <div class="float-right time-timer"><img src="img/icons/timer_little.svg" width="12" alt="" class="timer"> 12 c</div>
+                        </div>
+                        <div class="body">
+                            <div class="users-count"><span class="count">12</span> ч.</div>
+                            <div class="users-count-description">отметились</div>
+                            <div class="groups">ПРИ-117, ИСТ-117</div>
+                        </div>
+                    </a>
+                    <a href="#" class="session long">
+                        <span class="session-hide"><img src="img/icons/close_white.svg" width="10" alt=""></span>
+                        <div class="float-left">
+                            <div class="body">
+                                <div class="users-count"><span class="count">12</span> ч.</div>
+                                <div class="users-count-description">отметились</div>
+                            </div>
+                            <div class="footer">
+                                <span class="creator">Расписание</span>
+                            </div>
+                        </div>
+                        <div class="float-right information">
+                            <div class="info-block">
+                                <div class="info">Сегодня, 10:20</div>
+                                <div class="info-name">Дата создания</div>
+                            </div>
+                            <div class="info-block">
+                                <div class="info"><img src="img/icons/timer_little.svg" width="12" alt="" class="timer"> 12 c</div>
+                                <div class="info-name">Осталось</div>
+                            </div>
+                            <div class="info-block">
+                                <div class="info">ПРИ-117, ИСТ-117</div>
+                                <div class="info-name">Цель / Группы</div>
+                            </div>
+                        </div>
+                    </a>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="js/index.js"></script>
+</body>
+</html>
