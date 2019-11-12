@@ -1,0 +1,435 @@
+* {
+    padding: 0;
+    margin: 0;
+    font-family: 'Roboto-F';
+    color: #515a66;
+}
+
+.fl_l {
+    float: left;
+}
+
+.fl_r {
+    float: right;
+}
+
+.no-selection {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+     -khtml-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+}
+
+.button {
+    background: #2188cc;
+    padding: 7px 10px;
+    color: #fff;
+    border-radius: 3px;
+    display: inline-block;
+    text-decoration: none !important;
+    transition: .2s all ease-in-out;
+    font-weight: 500;
+}
+.button:hover {
+    background: #1570ad;
+    color: #fff;
+}
+.button:focus {
+    box-shadow: 0 0 0 0.175rem rgba(116, 199, 255, 0.5);
+}
+
+.button.short {
+    padding: 5px 8px;
+    font-size: 14px;
+}
+
+.button.white {
+    background: #fff;
+    color: #515a66;
+}
+.button.white:hover {
+    background: rgb(224, 226, 230);
+    color: #515a66;
+}
+.button.white:focus {
+    box-shadow: 0 0 0 0.175rem rgba(206, 208, 209, 0.5);
+}
+
+body > header, body > main {
+    padding-left: 60px;
+    padding-right: 60px;
+}
+
+header {
+    padding: 20px 0;
+    background: url('../img/bg_line.png') no-repeat center/cover;
+    color: #fff;
+}
+
+main {
+    padding: 30px 0;
+    background: #f4f7fc;
+    min-height: calc(100vh - 78px);
+}
+
+header > .left, header > .right {
+    height: 38px;
+    display: flex;
+    align-items: center;
+}
+
+header > .left > .title, header > .left > .menu,
+header > .right > .user, header > .right > .menu {
+    display: inline-block;
+}
+
+header > .left > .title > *, header > .left > .menu > *,
+header > .right > .user > *, header > .right > .menu > * {
+    vertical-align: middle;
+}
+
+header > .left > .title, header > .right > .menu {
+    padding-right: 30px;
+}
+
+header > .left > .title > span {
+    font-size: 22px;
+    font-weight: 600;
+    color: #fff;
+}
+
+header > .left > .title, header > .right > .menu {
+    position: relative;
+}
+
+header > .left > .title::after, header > .right > .menu::after {
+    content: '';
+    background: #FFF;
+    opacity: .15;
+    width: 2px;
+    height: 28px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+    top: 1px;
+}
+
+header .menu > a:not(.button) {
+    font-size: 17px;
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: 400;
+    text-decoration: none;
+}
+
+header .menu > a:not(.button):hover {
+    background: rgba(255, 255, 255, .15);
+    border-radius: 3px;
+}
+
+header .menu > a:not(.button):active {
+    opacity: .7;
+}
+
+header > .left > .menu > a:not(.button),
+header > .right > .menu > a:not(.button) {
+    padding: 6px 10px;
+}
+
+header > .left > .menu > a:not(.button) {
+    margin-left: 16px;
+}
+
+header > .right > .menu > a:not(.button) {
+    margin-right: 16px;
+}
+
+header > .right > .user {
+    margin-left: 25px;
+    padding-left: 5px;
+    margin-right: 25px;
+    padding-right: 5px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    vertical-align: middle;
+    height: 38px;
+    position: relative;
+    cursor: pointer;
+}
+
+header > .right > .user.active,
+header > .right > .user:hover {
+    background: rgba(255, 255, 255, .15);
+    border-radius: 3px;
+}
+
+header > .right > .user::after {
+    content: '';
+    background: url('../img/icons/dropdown_white.svg') no-repeat center/contain;
+    width: 14px;
+    height: 9px;
+    position: absolute;
+    right: -30px;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: .3;
+    transition: .2s all ease-in-out
+}
+
+/* header > .right > .user:hover::after,  */header > .right > .user.active::after {
+    transform: rotate(-180deg) translateY(50%);
+}
+
+header > .right > .user > span, header > .right > .user > div {
+    color: #fff;
+}
+
+header > .right > .user > div {
+    font-size: 17px;
+    line-height: 14px;
+    font-weight: 500;
+}
+
+header > .right > .user > span.additional {
+    opacity: .3;
+    text-transform: uppercase;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.dd, .block {
+    box-shadow: 0 0 50px rgba(26, 27, 27, 0.13);
+}
+
+.dd {
+    position: absolute;
+    background: #fff;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    padding: 10px 0;
+}
+
+.dd-hidden {
+    display: none;
+}
+
+.dd.dd-user {
+    top: 78px;
+    right: 56px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.dd > a {
+    display: inline-block;
+    color: #515a66;
+    text-decoration: none;
+    padding: 10px 12px;
+}
+.dd > a:hover {
+    background: #2188cc;
+    color: #fff;
+}
+
+.block {
+    background: #fff;
+    border-radius: 5px;
+    display: inline-block;
+    font-size: 17px;
+    margin-bottom: 30px;
+}
+
+div:last-of-type .block {
+    margin-bottom: 0;
+}
+
+.block:not(.no-padding) {
+    padding: 16px;
+}
+
+.block .block-title {
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+.time > .clock, .time > .week-type {
+    font-size: 18px;
+    background: #2188cc;
+    padding: 6px 10px;
+    display: inline-block;
+    border-radius: 5px;
+}
+
+.time > .clock > *, .time > .week-type {
+    color: #fff;
+}
+
+.time > .clock > .seconds {
+    font-size: 15px;
+    opacity: .7;
+}
+
+.time > .clock > .minutes::before, .time > .clock > .seconds::before {
+    content: ':';
+    padding-right: 5px;
+}
+
+.time > .date {
+    margin: 0 18px;
+    font-weight: 500;
+    font-size: 17px;
+}
+
+.sessions .session {
+    padding: 10px;
+    border-radius: 5px;
+    background: #2188cc;
+    display: inline-block;
+    height: 150px;
+    float: left;
+    margin-right: 10px;
+    position: relative;
+    cursor: pointer;
+}
+
+.sessions .session.red {
+    background: #96596a;
+}
+
+.sessions .session * {
+    color: #fff;
+}
+
+.sessions .session.short {
+    width: 200px;
+}
+
+.sessions .session.long {
+    width: 300px;
+}
+
+.sessions .session.short .header * {
+    font-size: 14px;
+}
+
+.sessions .session.short .header .creator {
+    font-size: 11px;
+    opacity: .3;
+    text-transform: uppercase;
+}
+
+.sessions .session.short .body {
+    position: absolute;
+    top: calc(50% + 10px);
+    transform: translateY(-50%);
+    text-align: center;
+    width: calc(100% - 20px);
+}
+
+.sessions .session.short .body > .users-count {
+    font-size: 30px;
+    line-height: 27px;
+}
+
+.sessions .session.short .body > .users-count-description {
+    font-size: 15px;
+    opacity: .3;
+    margin-bottom: 10px;
+}
+
+.sessions .session .time-timer .timer {
+    margin-top: -3px;
+    margin-right: 3px;
+}
+
+.sessions .session .session-hide {
+    display: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: rgba(0, 0, 0, .3);
+    width: 24px;
+    text-align: center;
+    border-top-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    cursor: pointer;
+}
+
+.sessions .session:hover .session-hide {
+    display: inline-block;
+}
+
+.sessions .session .session-hide:hover {
+    opacity: .7;
+}
+.sessions .session .session-hide:active {
+    opacity: .4;
+}
+
+.sessions .session.long > div:not(.information) {
+    position: relative;
+    height: 100%;
+    width: 120px;
+    padding: 10px 0;
+}
+
+.sessions .session.long > div:not(.information)::after {
+    position: absolute;
+    content: '';
+    width: 2px;
+    height: calc(100% - 20px);
+    right: 0;
+    display: inline-block;
+    background: rgba(255, 255, 255, .15);
+}
+
+.sessions .session.long > div:not(.information) > .body {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
+    text-align: center;
+}
+
+.sessions .session.long > div:not(.information) > .footer {
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+    text-align: center;
+    text-transform: uppercase;
+    opacity: .3;
+    font-size: 12px;
+}
+
+.sessions .session.long > div:not(.information) > .body > .users-count {
+    font-size: 30px;
+    line-height: 27px;
+}
+
+.sessions .session.long > div:not(.information) > .body > .users-count-description {
+    font-size: 15px;
+    opacity: .3;
+    margin-bottom: 10px;
+}
+
+.sessions .session.long > .information {
+    width: 150px;
+    padding: 8px;
+}
+
+.sessions .session.long > .information > .info-block > .info {
+    font-size: 12px;
+}
+
+.sessions .session.long > .information > .info-block > .info-name {
+    font-size: 10px;
+    text-transform: uppercase;
+    opacity: .3;
+}
+
+.sessions .session.long > .information > .info-block:not(:last-of-type) {
+    margin-bottom: 8px;
+}
