@@ -6,7 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Attendance Control</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.12/dist/css/bootstrap-select.min.css">
     <link rel="stylesheet" href="fonts/Roboto/Roboto.css">
+    <link rel="stylesheet" href="css/datepicker.min.css">
     <link rel="stylesheet" href="css/index.css">
 </head>
 <body>
@@ -66,49 +68,89 @@
                 <div class="clearfix"></div>
             </div>
             <div class="body">
-                <div class="input-line row">
-                    <div class="col-sm">
-                        <label for="popup-session-create-user-type">1. Выберите тип пользователя</label>
-                        <select name="" class="form-control" id="popup-session-create-user-type">
-                            <option value="1">Спец. по кадрам</option>
-                            <option value="2">Преподаватель</option>
-                            <option value="3">Студент</option>
-                        </select>
+                <form method="POST">
+                    <div class="input-line row">
+                        <div class="col-sm">
+                            <label for="popup-session-create-user-type">1. Выберите тип пользователя</label>
+                            <select data-live-search="true" name="k" class="form-control" id="popup-session-create-user-type">
+                                <option value="1" selected>Спец. по кадрам</option>
+                                <option value="2">Преподаватель</option>
+                                <option value="3">Студент</option>
+                            </select>
+                        </div>
+                        <div class="col-sm">
+                            <label for="popup-session-create-user-group">2. Выберите группы пользователей</label>
+                            <select data-live-search="true" name="n" multiple class="form-control" id="popup-session-create-user-group">
+                                <option value="1">ПРИ-117</option>
+                                <option value="2">ИСТ-117</option>
+                                <option value="3">ИСБ-117</option>
+                            </select>
+                        </div>
                     </div>
-                    <div class="col-sm">
-                        <label for="popup-session-create-user-group">2. Выберите группу пользователя</label>
-                        <select name="" class="form-control" id="popup-session-create-user-group">
-                            <option value="1">ПРИ-117</option>
-                            <option value="2">ИСТ-117</option>
-                            <option value="3">ИСБ-117</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="input-line row">
-                    <div class="col-sm">
-                        <label for="popup-session-create-active-time">3. Введите время активности</label>
-                        <div class="row">
-                            <div class="col-sm">
-                                <input type="text" class="form-control" id="popup-session-create-active-time">
+                    <div class="input-line row">
+                        <div class="col-sm">
+                            <label for="popup-session-create-active-time">3. Введите время активности</label>
+                            <div class="row">
+                                <div class="col-sm">
+                                    <input type="text" class="form-control" id="popup-session-create-active-time" placeholder="20">
+                                </div>
+                                <div class="col-sm">
+                                    <select name="d" class="form-control" id="popup-session-create-active-time-pow">
+                                        <option value="1" selected>СЕК</option>
+                                        <option value="2">МИН</option>
+                                        <option value="3">ЧАС</option>
+                                    </select>
+                                </div>
                             </div>
-                            <div class="col-sm">
-                                <select name="" class="form-control" id="popup-session-create-active-time-pow">
-                                    <option value="1">СЕК</option>
-                                    <option value="2">МИН</option>
-                                    <option value="3">ЧАС</option>
-                                </select>
+                        </div>
+                        <div class="col-sm">
+                            <div class="warning">
+                                <div class="title">Внимание!</div>
+                                <div class="body">
+                                    Время активности напрямую влияет на результативную точность сеанса
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm">
-                        <div class="warning">
-                            <div class="title">Внимание!</div>
-                            <div class="body">
-                                Время активности напрямую влияет на результативную точность сеанса
+                    <div class="input-line row">
+                        <div class="col-sm">
+                            <label for="popup-session-create-start-time">4. Введите дату начала активности</label>
+                            <input type="text" class="form-control jq-datepicker" data-timepicker="true" id="popup-session-create-start-time">
+                        </div>
+                        <div class="col-sm">
+                            <div class="annotation">
+                                <div class="title">Примечание!</div>
+                                <div class="body">
+                                    В момент наступления активности, сеанс можно будет открыть из списка активных сеансов
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                    <div class="session-info">
+                        <div class="title">Информация о сессии</div>
+                        <div class="row info-row">
+                            <div class="col-sm row">
+                                <div class="col-md-3 info-row-name">Запуск:</div>
+                                <div class="col-md info-row-data">15 ноября 2019, <span>10:21</span></div>
+                            </div>
+                            <div class="col-sm row">
+                                <div class="col-md-3 info-row-name">Конец:</div>
+                                <div class="col-md info-row-data">15 ноября 2019, <span>10:22</span></div>
+                            </div>
+                        </div>
+                        <div class="row info-row">
+                            <div class="col-sm row">
+                                <div class="col-md-3 info-row-name">Предп. нагрузка:</div>
+                                <div class="col-md info-row-data"><span>20</span> человек</div>
+                            </div>
+                        </div>
+                        <div>
+                            <a href="#" class="button float-right popup-toggle" popup-target=".session-type">Создать сессию</a>
+                            <input type="reset" value="Очистить" class="button mr-3 white float-right">
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -209,6 +251,8 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.12/dist/js/bootstrap-select.min.js"></script>
+    <script src="js/datepicker.min.js"></script>
     <script src="js/index.js"></script>
 </body>
 </html>
