@@ -2,7 +2,14 @@
     padding: 0;
     margin: 0;
     font-family: 'Roboto-F';
+}
+
+body {
     color: #515a66;
+}
+
+body.nooverflow {
+    overflow: hidden;
 }
 
 .fl_l {
@@ -31,6 +38,8 @@
     text-decoration: none !important;
     transition: .2s all ease-in-out;
     font-weight: 500;
+    border: 0;
+    outline: 0;
 }
 .button:hover {
     background: #1570ad;
@@ -57,6 +66,11 @@
     box-shadow: 0 0 0 0.175rem rgba(206, 208, 209, 0.5);
 }
 
+.form-control {
+    border-width: 2px;
+    font-weight: 500;
+}
+
 .input-line:not(:last-of-type) {
     margin-bottom: 20px;    
 }
@@ -71,12 +85,12 @@ select {
     color: #515a66 !important;
 }
 
-.warning {
+.warning, .annotation {
     padding-left: 40px;
     position: relative;
 }
 
-.warning:before {
+.warning:before, .annotation:before {
     content: '!';
     color: #fff;
     text-align: center;
@@ -87,15 +101,22 @@ select {
     top: 0;
     width: 25px;
     height: 25px;
-    background: #a9586a;
     border-radius: 50%;
 }
 
-.warning > .title {
+.warning:before {
+    background: #a9586a;
+}
+
+.annotation:before {
+    background: #1570ad;
+}
+
+.warning > .title, .annotation > .title {
     font-weight: 500;
     font-size: 16px;
 }
-.warning > .body {
+.warning > .body, .annotation > .body {
     font-size: 14px;
 }
 
@@ -276,9 +297,12 @@ header > .right > .user > span.additional {
     display: inline-block;
     color: #515a66;
     text-decoration: none;
-    padding: 10px 12px;
+    padding: 10px 14px;
 }
 .dd > a:hover {
+    background: #f8f9fa;
+}
+.dd > a:active {
     background: #2188cc;
     color: #fff;
 }
@@ -336,7 +360,6 @@ div:last-of-type .block {
     padding: 10px;
     border-radius: 5px;
     background: #2188cc;
-    display: inline-block;
     height: 150px;
     float: left;
     margin-right: 10px;
@@ -569,10 +592,11 @@ div:last-of-type .block {
     width: calc(50% - 12px);
     display: inline-block;
     padding: 10px;
+    color: #515a66;
 }
 
 #popup .popup-session-type > a:hover {
-    background: #00889f;
+    background: #2188cc;
     border-radius: 5px;
     text-decoration: none;
 }
@@ -595,23 +619,127 @@ div:last-of-type .block {
 }
 
 #popup .popup-session-type > a:hover > .title,
-#popup .popup-session-type > a:hover > .description,
-#popup .popup-session-type > a:hover > .title > *,
-#popup .popup-session-type > a:hover > .description > * {
+#popup .popup-session-type > a:hover > .description {
     color: #fff !important;
 }
 
 #popup .popup-session-type > a.deffered > .image {
-    background: #96596a; 
+    background: #96596a url('../img/icons/timer_large_white.svg') no-repeat center;
+    background-size: 30% auto;
 }
-#popup .popup-session-type > a.deffered:hover > .image {
-    background: #00889f; 
+#popup .popup-session-type > a.deffered:hover {
+    background-color: #96596a; 
 }
 
 #popup .popup-session-type > a.momental > .image {
-    background: #00889f; 
+    background: #2188cc url('../img/icons/lightning_white.svg') no-repeat center; /* #00889f */
+    background-size: 25% auto;
 }
 
 .popup_stack {
     display: none;
+}
+
+#popup .session-create .session-info .title {
+    margin: 20px 0;
+    font-weight: 500;
+    font-size: 18px;
+    color: #abb2b6;
+}
+
+#popup .session-create .session-info .info-row:not(:last-of-type) {
+    margin-bottom: 10px;
+}
+
+#popup .session-create .session-info .info-row .info-row-name {
+    font-weight: 500;
+    color: #abb2b6;
+    font-size: 15px;
+    padding-top: 6px;
+}
+
+#popup .session-create .session-info .info-row .info-row-data {
+    font-weight: 500;
+    padding-left: 0;
+}
+
+#popup .session-create .session-info .info-row .info-row-data span {
+    background: #2188cc;
+    padding: 6px 8px;
+    border-radius: 3px;
+    color: #fff;
+    margin: 0 5px;
+    display: inline-block;
+}
+
+/* library sets */
+.bootstrap-select .dropdown-item.active, .bootstrap-select .dropdown-item:active {
+    background-color: #2188cc;
+}
+
+.bootstrap-select .dropdown-menu {
+    border: 0;
+    box-shadow: 0 0 50px rgba(26, 27, 27, 0.13);
+}
+
+.bootstrap-select .dropdown-item {
+    padding: 10px 14px;
+    font-weight: 500;
+}
+.bootstrap-select .dropdown-item:not(:active):not(.active) {
+    color: #515a66;
+}
+
+.bootstrap-select .bs-searchbox {
+    margin-bottom: 10px;;
+}
+
+.bootstrap-select>.btn.dropdown-toggle:focus, .bootstrap-select .dropdown-item:focus {
+    outline: none !important;
+}
+
+.bootstrap-select>.dropdown-toggle {
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 2px solid #ced4da;
+    font-weight: 500;
+    color: #515a66;
+    padding: 5px 10px;
+}
+
+.datepickers-container {
+    z-index: 10000;
+}
+
+.datepicker, .datepicker--time-current-hours, .datepicker--time-current-minutes {
+    color: #515a66;
+    font-family: 'Roboto-F'!important;
+}
+
+.datepicker--cell.-selected-.-focus- {
+    background: #1579bb;
+}
+.datepicker--cell.-selected-, .datepicker--cell.-selected-.-current- {
+    background: #2188cc;
+}
+.datepicker--cell.-current- {
+    color: #2188cc;
+}
+
+.bootstrap-select.show-tick .dropdown-menu .selected span.check-mark {
+    right: 18px;
+    top: 12px;
+}
+
+.bootstrap-select .bs-ok-default:after {
+    border-width: 0 .16em .16em 0;
+}
+
+.bootstrap-select .no-results {
+    background: transparent;
+    margin: 0 10px;
+}
+
+.dropdown-toggle::after {
+    border-top-color: #ced4d8;
 }
