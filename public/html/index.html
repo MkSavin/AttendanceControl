@@ -10,6 +10,108 @@
     <link rel="stylesheet" href="css/index.css">
 </head>
 <body>
+    <div id="popup" class="hidden"></div>
+    <div class="popup_stack">
+        <div class="window session-type">
+            <div class="header">
+                <span class="float-left title">Выберите тип сеанса</span>
+                <div class="float-right menu">
+                    <a href="#" class="overlay-more dd-toggle" dd-target=".dd-more"></a>
+                    <div class="dd-hidden dd dd-more">
+                        <a href="#">Удалить сеанс</a>
+                        <a href="#">Остановить сеанс</a>
+                        <a href="#">Изменить сеанс</a>
+                    </div>
+                    <a href="#" class="overlay-close"></a>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="body">
+                <div class="popup-session-type">
+                    <a href="#" class="deffered popup-toggle" popup-target=".session-create">
+                        <div class="image"></div>
+                        <div class="title">
+                            Отложенный сеанс
+                        </div>
+                        <div class="description">
+                            Сеанс создается только после наступления момента активации
+                        </div>
+                    </a>
+                    <a href="#" class="momental popup-toggle" popup-target=".session-create">
+                        <div class="image"></div>
+                        <div class="title">
+                            Моментальный сеанс
+                        </div>
+                        <div class="description">
+                            Сеанс создается сразу после нажатия на кнопку <i>Создать сеанс</i>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        
+        <div class="window session-create">
+            <div class="header">
+                <span class="float-left title">Создание сеанса</span>
+                <div class="float-right menu">
+                    <a href="#" class="overlay-more dd-toggle" dd-target=".dd-more"></a>
+                    <div class="dd-hidden dd dd-more">
+                        <a href="#">Удалить сеанс</a>
+                        <a href="#">Остановить сеанс</a>
+                        <a href="#">Изменить сеанс</a>
+                    </div>
+                    <a href="#" class="overlay-close"></a>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="body">
+                <div class="input-line row">
+                    <div class="col-sm">
+                        <label for="popup-session-create-user-type">1. Выберите тип пользователя</label>
+                        <select name="" class="form-control" id="popup-session-create-user-type">
+                            <option value="1">Спец. по кадрам</option>
+                            <option value="2">Преподаватель</option>
+                            <option value="3">Студент</option>
+                        </select>
+                    </div>
+                    <div class="col-sm">
+                        <label for="popup-session-create-user-group">2. Выберите группу пользователя</label>
+                        <select name="" class="form-control" id="popup-session-create-user-group">
+                            <option value="1">ПРИ-117</option>
+                            <option value="2">ИСТ-117</option>
+                            <option value="3">ИСБ-117</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="input-line row">
+                    <div class="col-sm">
+                        <label for="popup-session-create-active-time">3. Введите время активности</label>
+                        <div class="row">
+                            <div class="col-sm">
+                                <input type="text" class="form-control" id="popup-session-create-active-time">
+                            </div>
+                            <div class="col-sm">
+                                <select name="" class="form-control" id="popup-session-create-active-time-pow">
+                                    <option value="1">СЕК</option>
+                                    <option value="2">МИН</option>
+                                    <option value="3">ЧАС</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm">
+                        <div class="warning">
+                            <div class="title">Внимание!</div>
+                            <div class="body">
+                                Время активности напрямую влияет на результативную точность сеанса
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <header>
         <div class="float-left left">
             <div class="title"><span>AControl</span></div>
@@ -21,7 +123,7 @@
         <div class="float-right right">
             <div class="menu">
                 <a href="#">Меню 3</a>
-                <a href="#" class="button white short">Создать сессию</a>
+                <a href="#" class="button white short popup-toggle" popup-target=".session-type">Создать сессию</a>
             </div>
             <div class="user no-selection dd-toggle" dd-target=".dd-user">
                 <div>Алексеев И.И</div>

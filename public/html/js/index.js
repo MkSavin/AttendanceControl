@@ -13,4 +13,15 @@ $(function(){
         $($(this).attr('dd-target')).toggleClass('dd-hidden');
         $(this).toggleClass('active');
     });
+
+    $(document).on('click',  '.overlay-close', function(){
+        $('#popup').addClass('hidden');
+    });
+
+    $(document).on('click',  '.popup-toggle', function(){
+        $("#popup").html("");
+        $('.popup_stack ' + $(this).attr('popup-target')).clone().appendTo("#popup");
+        $("#popup").removeClass("hidden");
+        $(this).toggleClass('active');
+    });
 });
