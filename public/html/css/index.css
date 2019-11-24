@@ -40,6 +40,7 @@ body.nooverflow {
     font-weight: 500;
     border: 0;
     outline: 0;
+    position: relative;
 }
 .button:hover {
     background: #1570ad;
@@ -64,6 +65,35 @@ body.nooverflow {
 }
 .button.white:focus {
     box-shadow: 0 0 0 0.175rem rgba(206, 208, 209, 0.5);
+}
+
+.button.icon {
+    padding-left: 34px;
+}
+.button.short.icon {
+    padding-left: 32px;
+}
+
+.button.icon:before {
+    content: '';
+    position: absolute;
+    left: 10px;
+    top: 12px;
+    width: 12px;
+    height: 12px;
+    display: inline-block;
+    background: url(../img/icons/plus_dark.svg) no-repeat center/contain;
+}
+
+.button.short.icon:before {
+    left: 11px;
+    top: 10px;
+    width: 10px;
+    height: 10px;
+}
+
+.button.icon.icon-plus {
+    background-image: url(../img/icons/plus_dark.svg);
 }
 
 .form-control {
@@ -109,7 +139,7 @@ select {
 }
 
 .annotation:before {
-    background: #1570ad;
+    background: #2188cc;
 }
 
 .warning > .title, .annotation > .title {
@@ -262,7 +292,7 @@ header > .right > .user > span.additional {
     font-weight: 500;
 }
 
-.dd, .block {
+.dd, .block, .datepicker {
     box-shadow: 0 0 50px rgba(26, 27, 27, 0.13);
 }
 
@@ -299,8 +329,8 @@ header > .right > .user > span.additional {
     text-decoration: none;
     padding: 10px 14px;
 }
-.dd > a:hover {
-    background: #f8f9fa;
+.dropdown-item:focus, .dropdown-item:hover, .dd > a:hover, .datepicker--cell.-focus- {
+    background-color: #e4e9ee;
 }
 .dd > a:active {
     background: #2188cc;
@@ -326,6 +356,49 @@ div:last-of-type .block {
 .block .block-title {
     font-weight: 500;
     margin-bottom: 10px;
+}
+
+.block .block-title .blue {
+    display: inline!important;
+    padding: 6px 8px!important;
+    font-size: 15px;
+}
+
+.block.search {
+    padding: 0;
+    position: relative;
+    min-width: 50%;
+}
+
+.block.search .search-icon {
+    border: 0;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    border-radius: 0 5px 5px 0;
+    width: 58px;
+    height: 58px;
+    display: inline-block;
+    background: url('../img/icons/loupe_gray.svg') no-repeat center/36%;
+    outline: none!important;
+}
+
+.block.search .search-icon:hover {
+    background-color: #f6f8fa;
+}
+
+.block.search .search-icon:active {
+    background: url('../img/icons/loupe_white.svg') no-repeat center/36%;
+    background-color: #2188cc;
+}
+
+.block.search .form-control {
+    border-color: transparent;
+    font-weight: 400;
+    font-size: 18px;
+    padding: .8rem 1.3rem;
+    height: calc(2.2em + 1rem + 2px);
 }
 
 .time > .clock, .time > .week-type {
@@ -354,6 +427,10 @@ div:last-of-type .block {
     margin: 0 18px;
     font-weight: 500;
     font-size: 17px;
+}
+
+.sessions-list > div:not(:last-of-type) {
+    margin-bottom: 30px;
 }
 
 .sessions .session {
@@ -663,7 +740,7 @@ div:last-of-type .block {
     padding-left: 0;
 }
 
-#popup .session-create .session-info .info-row .info-row-data span {
+#popup .session-create .session-info .info-row .info-row-data span.blue, .block .block-title .blue, #popup .session-data .info-row .info-row-data span.blue {
     background: #2188cc;
     padding: 6px 8px;
     border-radius: 3px;
@@ -672,7 +749,124 @@ div:last-of-type .block {
     display: inline-block;
 }
 
-/* library sets */
+#popup .session-data > .body {
+    min-width: 750px;
+}
+
+#popup .session-data .qr-code {
+    border-radius: 5px;
+    position: relative;
+    height: 50vh;
+    cursor: pointer;
+}
+
+#popup .session-data .qr-code img {
+    height: 50vh;
+    width: 50vh;
+}
+
+#popup .session-data .qr-code:not(.hidden) .data, #popup .session-data .qr-code:not(.hidden) .data .unhide {
+    display: none;
+}
+
+#popup .session-data .qr-code:not(.hidden):hover .data {
+    display: block;
+    position: absolute;
+    left: 15px;
+    right: 15px;
+    top: 0;
+    bottom: 0;
+    background: rgba(0,0,0,.15);
+    border-radius: 5px;
+}
+
+#popup .session-data .qr-code.hidden .data {
+    position: absolute;
+    left: 15px;
+    right: 15px;
+    top: 0;
+    bottom: 0;
+    background: repeating-linear-gradient(-45deg, rgba(0,0,0,.7), rgba(0,0,0,.7) 10px, rgba(0,0,0,.663) 10px, rgba(0,0,0,.663) 20px);
+    border-radius: 5px;
+}
+
+#popup .session-data .qr-code.hidden .data .unhide {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    border-radius: 5px;
+    padding: 10px 14px;
+    background: #fff;
+    display: inline-block;
+    font-size: 15px;
+    width: 280px;
+    font-weight: 500;
+}
+
+#popup .session-data .qr-code.hidden .data:hover .unhide {
+    background: rgba(255, 255, 255, .75);
+}
+
+#popup .session-data .qr-code.hidden .data:active .unhide {
+    background: rgba(255, 255, 255, .55);
+}
+
+#popup .session-data .qr-code.hidden .data:focus .unhide {
+    border: 4px solid #fff;
+}
+
+#popup .session-data .qr-code.hidden .data .unhide:before {
+    content: '';
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    margin-right: 10px;
+    margin-top: 1px;
+    vertical-align: text-top;
+    background: url(../img/icons/loupe_dark.svg) no-repeat center/contain;
+}
+
+#popup .session-data .qr-data {
+    min-width: 300px;
+    font-weight: 500;
+}
+
+#popup .session-data .qr-data .info-row:not(:last-of-type) {
+    margin-bottom: 10px;
+}
+
+#popup .session-data .qr-data .info-row-name {
+    line-height: 35px;
+    font-size: 18px;
+}
+
+#popup .session-data .qr-data .noted-table {
+    width: calc(100% + 15px);
+    height: calc(50vh - 146px);
+    margin-left: -15px;
+    margin-top: 16px;
+    overflow-y: auto;
+    position: relative;
+}
+
+#popup .session-data .qr-data .noted-table table {
+    width: 100%;
+}
+
+#popup .session-data .qr-data .noted-table tr > td, 
+#popup .session-data .qr-data .noted-table tr > th {
+    padding: 5px 7px;
+    border-bottom: 2px solid #f3f6f8;
+    font-size: 13px;
+}
+
+#popup .session-data .qr-data .session-buttons {
+    margin-top: 10px;
+}
+
+/* Library sets */
 .bootstrap-select .dropdown-item.active, .bootstrap-select .dropdown-item:active {
     background-color: #2188cc;
 }
@@ -707,6 +901,11 @@ div:last-of-type .block {
     padding: 5px 10px;
 }
 
+.datepicker {
+    border: 1px solid transparent;
+    border-radius: 5px;
+}
+
 .datepickers-container {
     z-index: 10000;
 }
@@ -714,6 +913,15 @@ div:last-of-type .block {
 .datepicker, .datepicker--time-current-hours, .datepicker--time-current-minutes {
     color: #515a66;
     font-family: 'Roboto-F'!important;
+}
+
+.datepicker--pointer {
+    border-top: 1px solid transparent;
+    border-right: 1px solid transparent;
+}
+
+.datepicker--cell {
+    font-weight: 500;
 }
 
 .datepicker--cell.-selected-.-focus- {
