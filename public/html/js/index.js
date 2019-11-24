@@ -1,3 +1,5 @@
+var is_mobile = ((/Mobile|iPhone|iPod|BlackBerry|Windows Phone/i).test(navigator.userAgent || navigator.vendor || window.opera) ? true : false);
+
 var updateSelects;
 (updateSelects = function(){
     var selects = $('main select, #popup select');
@@ -22,8 +24,27 @@ var updateDatepicks;
     $('.jq-datepicker').datepicker({position: "top center"});
 })();
 
+var ps1 = null;
+
+var updateScrollbars;
+(updateScrollbars = function(){
+    if (!is_mobile) 
+        ps1 = new PerfectScrollbar('.ps', {
+            wheelSpeed: 0.4,
+            wheelPropagation: true,
+            minScrollbarLength: 20
+        });
+})();
+
+var refreshScrollbars;
+(refreshScrollbars = function(){
+    if (ps1 != null) 
+        ps1.update();
+})();
+
 $(function(){
     refreshSelects();
+    updateScrollbars();
 
     /* Drop Down close */
     $(document).on('click', function(e){
@@ -55,12 +76,18 @@ $(function(){
         
         refreshSelects();
         updateDatepicks();
+        updateScrollbars();
+        // refreshScrollbars();
     });
 
     $(document).on('click', 'input[type=reset]', function(){
         setTimeout(() => {
             $('form select').selectpicker('refresh');
         }, 10);
+    });
+
+    $(document).on('click', '.qr-code', function(){
+        $(this).toggleClass('hidden');
     });
 
 });
