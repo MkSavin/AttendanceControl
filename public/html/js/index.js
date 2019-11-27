@@ -47,6 +47,7 @@ $(function(){
 
     /* Drop Down close */
     $(document).on('click', function(e){
+        e.preventDefault();
         var v = $(e.target);
         var isDD = v.hasClass('dd') || v.hasClass('dd-toggle') || v.parents('.dd').length || v.parents('.dd-toggle').length;
         if(!isDD) {
@@ -55,18 +56,21 @@ $(function(){
         }
     });
 
-    $(document).on('click', '.dd-toggle', function(){
+    $(document).on('click', '.dd-toggle', function(e){
+        e.preventDefault();
         $($(this).attr('dd-target')).toggleClass('dd-hidden');
         $(this).toggleClass('active');
     });
 
-    $(document).on('click',  '.overlay-close', function(){
+    $(document).on('click',  '.overlay-close', function(e){
+        e.preventDefault();
         $('#popup').addClass('hidden');
         $('.popup-toggle').removeClass('active');
         $('body').removeClass('nooverflow');
     });
 
-    $(document).on('click',  '.popup-toggle', function(){
+    $(document).on('click',  '.popup-toggle', function(e){
+        e.preventDefault();
         if ($(this).attr('popup-handler-before'))
             $("#popup").trigger($(this).attr('popup-handler-before'), this, true);
 

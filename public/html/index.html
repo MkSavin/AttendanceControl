@@ -66,17 +66,17 @@
                         <div class="col-sm">
                             <label for="popup-session-create-user-type">1. Выберите тип пользователя</label>
                             <select data-live-search="true" name="k" class="form-control js-usertype" id="popup-session-create-user-type">
-                                <option value="1" data-checkgroup="false" selected>Спец. по кадрам</option>
-                                <option value="2" data-checkgroup="false">Преподаватель</option>
-                                <option value="3" data-checkgroup="true">Студент</option>
+                                <option value="1" data-checkgroup="false" data-subtext="20 чел." selected>Спец. по кадрам</option>
+                                <option value="2" data-checkgroup="false" data-subtext="120 чел.">Преподаватель</option>
+                                <option value="3" data-checkgroup="true" data-subtext="1420 чел.">Студент</option>
                             </select>
                         </div>
                         <div class="col-sm">
                             <label for="popup-session-create-user-group">2. Выберите группы пользователей</label>
                             <select data-live-search="true" name="n" multiple class="form-control js-usergroup" id="popup-session-create-user-group">
-                                <option value="1">ПРИ-117</option>
-                                <option value="2">ИСТ-117</option>
-                                <option value="3">ИСБ-117</option>
+                                <option value="1" data-subtext="20 чел.">ПРИ-117</option>
+                                <option value="2" data-subtext="20 чел.">ИСТ-117</option>
+                                <option value="3" data-subtext="20 чел.">ИСБ-117</option>
                             </select>
                         </div>
                     </div>
@@ -268,12 +268,12 @@
                         <div class="col-sm">
                             <label for="popup-session-users-user-group">Группы пользователей</label>
                             <select data-live-search="true" name="n" multiple class="form-control" id="popup-session-users-user-group">
-                                <option value="1" data-subtext="20 ч.">ПРИ-117</option>
-                                <option value="2" data-subtext="18 ч.">ИСТ-117</option>
-                                <option value="3" data-subtext="20 ч.">ИСБ-117</option>
-                                <option value="3" data-subtext="20 ч.">ИСБ-117</option>
-                                <option value="3" data-subtext="20 ч.">ИСБ-117</option>
-                                <option value="3" data-subtext="20 ч.">ИСБ-117</option>
+                                <option value="1" data-subtext="20 чел.">ПРИ-117</option>
+                                <option value="2" data-subtext="18 чел.">ИСТ-117</option>
+                                <option value="3" data-subtext="20 чел.">ИСБ-117</option>
+                                <option value="3" data-subtext="20 чел.">ИСБ-117</option>
+                                <option value="3" data-subtext="20 чел.">ИСБ-117</option>
+                                <option value="3" data-subtext="20 чел.">ИСБ-117</option>
                             </select>
                         </div>
                         <div class="col-sm">
@@ -288,7 +288,7 @@
                                     <th>ДАТА И ВРЕМЯ</th>
                                     <th>ФИО</th>
                                     <th>ГРУППА</th>
-                                    <th></th>
+                                    <th width="120"></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -366,7 +366,7 @@
                 <div class="clearfix"></div>
             </div>
             <div class="body">
-                <div class="center no-selection"><img src="img/animation/loading_transparent.gif" width="60" alt=""></div>
+                <div class="center no-selection"><img src="img/animation/loading_transparent.gif" class="pevs-none" width="60" alt=""></div>
             </div>
         </div>
         <div class="window text">
@@ -534,6 +534,8 @@
                     </div>
                 </div>
             </div>
+            <div class="end-of-page">Вы достигли конца страницы</div>
+            <div class="block loadmore no-selection"><img src="img/animation/loading_transparent.gif" class="js-loader d-none" alt=""> Загрузить еще...</div>
         </div>
     </main>
     
