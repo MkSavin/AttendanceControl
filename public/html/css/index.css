@@ -20,6 +20,10 @@ body.nooverflow {
     float: right;
 }
 
+.pevs-none {
+    pointer-events: none;
+}
+
 .no-selection {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -319,7 +323,7 @@ header > .right > .user > span.additional {
 }
 
 .dd, .block, .datepicker {
-    box-shadow: 0 0 50px rgba(26, 27, 27, 0.13);
+    box-shadow: 0 0 50px rgba(26, 27, 27, .13);
 }
 
 .dd {
@@ -427,6 +431,37 @@ div:last-of-type .block {
     height: calc(2.2em + 1rem + 2px);
 }
 
+main .loadmore {
+    padding: 20px;
+    width: 50%;
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 15px;
+    line-height: 28px;
+    cursor: pointer;
+}
+
+main .loadmore:hover {
+    background: #f3f4f5;
+}
+
+main .loadmore:active {
+    box-shadow: 0 0 0 0.175rem rgba(206, 208, 209, .5), 0 0 50px rgba(26, 27, 27, 0.13);
+}
+
+main .loadmore img {
+    width: 25px;
+    margin-right: 10px;
+    display: inline-block;
+    vertical-align: top;
+    margin-top: 1px;
+}
+
+main .end-of-page {
+    font-weight: 500;
+}
+
 .time > .clock, .time > .week-type {
     font-size: 18px;
     background: #2188cc;
@@ -465,9 +500,12 @@ div:last-of-type .block {
     background: #2188cc;
     height: 150px;
     float: left;
-    margin-right: 10px;
     position: relative;
     cursor: pointer;
+}
+
+.sessions .session:not(:last-of-type) {
+    margin-right: 10px;
 }
 
 .sessions .session.red {
@@ -728,7 +766,7 @@ div:last-of-type .block {
 
 #popup .popup-session-type > a.deffered > .image {
     background: #96596a url('../img/icons/timer_large_white.svg') no-repeat center;
-    background-size: 30% auto;
+    background-size: 25% auto;
 }
 #popup .popup-session-type > a.deffered:hover {
     background-color: #96596a; 
@@ -736,7 +774,7 @@ div:last-of-type .block {
 
 #popup .popup-session-type > a.momental > .image {
     background: #2188cc url('../img/icons/lightning_white.svg') no-repeat center; /* #00889f */
-    background-size: 25% auto;
+    background-size: 20% auto;
 }
 
 .popup_stack {
@@ -879,7 +917,7 @@ div:last-of-type .block {
 
 #popup .session-data .qr-data .noted-table {
     width: calc(100% + 15px);
-    height: calc(50vh - 146px);
+    height: calc(50vh - 151px);
     margin-left: -15px;
     margin-top: 16px;
     overflow-y: auto;
@@ -913,7 +951,7 @@ div:last-of-type .block {
 }
 
 #popup .session-data .qr-data .session-buttons {
-    margin-top: 10px;
+    margin-top: 15px;
 }
 
 #popup .session-users .body .header,
