@@ -47,7 +47,7 @@ body.nooverflow {
     color: #fff;
 }
 .button:focus {
-    box-shadow: 0 0 0 0.175rem rgba(116, 199, 255, 0.5);
+    box-shadow: 0 0 0 0.175rem rgba(116, 199, 255, .5);
 }
 
 .button.short {
@@ -55,16 +55,32 @@ body.nooverflow {
     font-size: 14px;
 }
 
+.button.disabled {
+    opacity: .3;
+    cursor: default;
+    pointer-events: none;
+}
+
 .button.white {
     background: #fff;
     color: #515a66;
 }
 .button.white:hover {
-    background: rgb(224, 226, 230);
+    background: #e0e2e6;
     color: #515a66;
 }
 .button.white:focus {
-    box-shadow: 0 0 0 0.175rem rgba(206, 208, 209, 0.5);
+    box-shadow: 0 0 0 0.175rem rgba(206, 208, 209, .5);
+}
+
+.button.red {
+    background: #96596a;
+}
+.button.red:hover {
+    background: #7d4655;
+}
+.button.red:focus {
+    box-shadow: 0 0 0 0.175rem rgba(184, 122, 139, .5);
 }
 
 .button.icon {
@@ -82,7 +98,7 @@ body.nooverflow {
     width: 12px;
     height: 12px;
     display: inline-block;
-    background: url(../img/icons/plus_dark.svg) no-repeat center/contain;
+    background: url(../img/icons/plus_white.svg) no-repeat center/contain;
 }
 
 .button.short.icon:before {
@@ -92,8 +108,18 @@ body.nooverflow {
     height: 10px;
 }
 
-.button.icon.icon-plus {
+.button.white.icon.icon-plus:before {
     background-image: url(../img/icons/plus_dark.svg);
+}
+.button.white.icon.icon-back:before {
+    background-image: url(../img/icons/back_dark.svg);
+}
+
+.button.icon.icon-plus:before {
+    background-image: url(../img/icons/plus_white.svg);
+}
+.button.icon.icon-back:before {
+    background-image: url(../img/icons/back_white.svg);
 }
 
 .form-control {
@@ -134,11 +160,11 @@ select {
     border-radius: 50%;
 }
 
-.warning:before {
+.warning:before, .bigicon.bigicon-warning {
     background: #a9586a;
 }
 
-.annotation:before {
+.annotation:before, .bigicon.bigicon-annotation {
     background: #2188cc;
 }
 
@@ -718,9 +744,9 @@ div:last-of-type .block {
 }
 
 #popup .session-create .session-info .title {
-    margin: 20px 0;
+    margin: 24px 0 10px 0;
     font-weight: 500;
-    font-size: 18px;
+    font-size: 16px;
     color: #abb2b6;
 }
 
@@ -740,13 +766,22 @@ div:last-of-type .block {
     padding-left: 0;
 }
 
-#popup .session-create .session-info .info-row .info-row-data span.blue, .block .block-title .blue, #popup .session-data .info-row .info-row-data span.blue {
+#popup .session-create .session-info .info-row .info-row-data span.blue, .block .block-title .blue,
+#popup .session-data .info-row .info-row-data span.blue,
+#popup .session-users .body span.blue,
+#popup .session-users-add .body span.blue {
     background: #2188cc;
     padding: 6px 8px;
     border-radius: 3px;
     color: #fff;
     margin: 0 5px;
     display: inline-block;
+}
+
+#popup .session-users .body span.blue,
+#popup .session-users-add .body span.blue {
+    font-size: 14px;
+    padding: 4px 6px;
 }
 
 #popup .session-data > .body {
@@ -851,19 +886,113 @@ div:last-of-type .block {
     position: relative;
 }
 
-#popup .session-data .qr-data .noted-table table {
+#popup .session-users .body>.body .noted-table {
     width: 100%;
+    max-height: calc(100vh - 230px);
+    overflow-y: auto;
+    position: relative;
+    font-size: 15px;
+}
+
+#popup .session-data .qr-data .noted-table table, 
+#popup .session-users .body .body .noted-table table {
+    width: 100%;
+}
+
+#popup .session-data .qr-data .noted-table tr > td, 
+#popup .session-data .qr-data .noted-table tr > th,
+#popup .session-users .body .body .noted-table tr > td, 
+#popup .session-users .body .body .noted-table tr > th {
+    padding: 12px 16px;
 }
 
 #popup .session-data .qr-data .noted-table tr > td, 
 #popup .session-data .qr-data .noted-table tr > th {
     padding: 5px 7px;
-    border-bottom: 2px solid #f3f6f8;
     font-size: 13px;
 }
 
 #popup .session-data .qr-data .session-buttons {
     margin-top: 10px;
+}
+
+#popup .session-users .body .header,
+#popup .session-users .body .body .filters,
+#popup .session-users .body .footer,
+#popup .session-users-add .body .header,
+#popup .session-users-add .body .body,
+#popup .session-users-add .body .footer {
+    padding: 14px;
+}
+
+#popup .session-data .qr-data .noted-table tr > td, 
+#popup .session-data .qr-data .noted-table tr > th,
+#popup .session-users .body .body .noted-table tr > td, 
+#popup .session-users .body .body .noted-table tr > th,
+#popup .session-users .body .header,
+#popup .session-users-add .body .header {
+    border-bottom: 2px solid #f3f6f8;
+}
+
+#popup .session-users-add .body .footer {
+    border-top: 2px solid #f3f6f8;
+}
+
+#popup .session-users .body .body {
+    width: 50vw;
+    min-width: 610px;
+}
+
+#popup .session-users .body .body .blue > span {
+    font-size: 10px;
+    opacity: .6;
+}
+
+#popup .loading .body,
+#popup .text .body {
+    height: 350px;
+    position: relative;
+}
+
+#popup .loading .body .center,
+#popup .text .body .center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+#popup .bigicon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    color: #fff;
+    text-align: center;
+    display: inline-block;
+    position: relative;
+    margin-bottom: 14px;
+}
+
+#popup .bigicon:after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 24px;
+    font-weight: 500;
+}
+
+#popup .bigicon.bigicon-warning:after,
+#popup .bigicon.bigicon-annotation:after {
+    content: '!';
+}
+
+#popup .text .body .title {
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 10px;
 }
 
 /* Library sets */
@@ -885,7 +1014,7 @@ div:last-of-type .block {
 }
 
 .bootstrap-select .bs-searchbox {
-    margin-bottom: 10px;;
+    margin-bottom: 10px;
 }
 
 .bootstrap-select>.btn.dropdown-toggle:focus, .bootstrap-select .dropdown-item:focus {
@@ -899,6 +1028,11 @@ div:last-of-type .block {
     font-weight: 500;
     color: #515a66;
     padding: 5px 10px;
+}
+
+.bootstrap-select.disabled {
+    opacity: .3;
+    pointer-events: none;
 }
 
 .datepicker {
