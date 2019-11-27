@@ -22,17 +22,16 @@
                 <div class="float-right menu">
                     <a href="#" class="overlay-more dd-toggle" dd-target=".dd-more"></a>
                     <div class="dd-hidden dd dd-more">
-                        <a href="#">Удалить сеанс</a>
-                        <a href="#">Остановить сеанс</a>
-                        <a href="#">Изменить сеанс</a>
+                        <a href="#" class="popup-toggle" popup-target=".loading">Popup: Загрузка</a>
+                        <a href="#" class="popup-toggle" popup-target=".text">Popup: Текст</a>
                     </div>
                     <a href="#" class="overlay-close"></a>
                 </div>
                 <div class="clearfix"></div>
             </div>
             <div class="body">
-                <div class="popup-session-type">
-                    <a href="#" class="deffered popup-toggle" popup-target=".session-create">
+                <div class="popup-session-type no-selection">
+                    <a href="#" class="deffered popup-toggle" popup-target=".session-create" popup-handler-after="popup-session-create-timed">
                         <div class="image"></div>
                         <div class="title">
                             Отложенный сеанс
@@ -41,7 +40,7 @@
                             Сеанс создается только после наступления момента активации
                         </div>
                     </a>
-                    <a href="#" class="momental popup-toggle" popup-target=".session-create">
+                    <a href="#" class="momental popup-toggle" popup-target=".session-create" popup-handler-after="popup-session-create-momental">
                         <div class="image"></div>
                         <div class="title">
                             Моментальный сеанс
@@ -55,14 +54,8 @@
         </div>
         <div class="window session-create">
             <div class="header">
-                <span class="float-left title">Создание сеанса</span>
+                <span class="float-left title">Создание <span class="d-none js-momental">моментального</span><span class="d-none js-timed">отложенного</span> сеанса</span>
                 <div class="float-right menu">
-                    <a href="#" class="overlay-more dd-toggle" dd-target=".dd-more"></a>
-                    <div class="dd-hidden dd dd-more">
-                        <a href="#">Удалить сеанс</a>
-                        <a href="#">Остановить сеанс</a>
-                        <a href="#">Изменить сеанс</a>
-                    </div>
                     <a href="#" class="overlay-close"></a>
                 </div>
                 <div class="clearfix"></div>
@@ -72,15 +65,15 @@
                     <div class="input-line row">
                         <div class="col-sm">
                             <label for="popup-session-create-user-type">1. Выберите тип пользователя</label>
-                            <select data-live-search="true" name="k" class="form-control" id="popup-session-create-user-type">
-                                <option value="1" selected>Спец. по кадрам</option>
-                                <option value="2">Преподаватель</option>
-                                <option value="3">Студент</option>
+                            <select data-live-search="true" name="k" class="form-control js-usertype" id="popup-session-create-user-type">
+                                <option value="1" data-checkgroup="false" selected>Спец. по кадрам</option>
+                                <option value="2" data-checkgroup="false">Преподаватель</option>
+                                <option value="3" data-checkgroup="true">Студент</option>
                             </select>
                         </div>
                         <div class="col-sm">
                             <label for="popup-session-create-user-group">2. Выберите группы пользователей</label>
-                            <select data-live-search="true" name="n" multiple class="form-control" id="popup-session-create-user-group">
+                            <select data-live-search="true" name="n" multiple class="form-control js-usergroup" id="popup-session-create-user-group">
                                 <option value="1">ПРИ-117</option>
                                 <option value="2">ИСТ-117</option>
                                 <option value="3">ИСБ-117</option>
@@ -112,10 +105,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="input-line row">
+                    <div class="input-line row js-nonmomental">
                         <div class="col-sm">
                             <label for="popup-session-create-start-time">4. Введите дату начала активности</label>
-                            <input type="text" class="form-control jq-datepicker" data-timepicker="true" id="popup-session-create-start-time">
+                            <input type="text" class="form-control jq-datepicker js-active_at" data-timepicker="true" id="popup-session-create-start-time">
                         </div>
                         <div class="col-sm">
                             <div class="annotation">
@@ -145,7 +138,7 @@
                             </div>
                         </div>
                         <div>
-                            <a href="#" class="button float-right popup-toggle" popup-target=".session-data">Создать сеанс</a>
+                            <a href="#" class="button float-right disabled popup-toggle js-session-create" popup-target=".session-data">Создать сеанс</a>
                             <input type="reset" value="Очистить" class="button mr-3 white float-right">
                             <div class="clearfix"></div>
                         </div>
@@ -248,11 +241,147 @@
                             </table>
                         </div>
                         <div class="session-buttons">
-                            <a href="#" class="button float-right popup-toggle" popup-target=".session-data">Просмотреть всех</a>
-                            <a href="#" class="button mr-3 white float-right popup-toggle icon icon-plus" popup-target=".session-data">Добавить</a>
+                            <a href="#" class="button float-right popup-toggle" popup-target=".session-users">Просмотреть всех</a>
+                            <a href="#" class="button mr-3 white float-right popup-toggle icon icon-plus" popup-target=".session-users-add">Добавить</a>
                             <div class="clearfix"></div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+        <div class="window session-users">
+            <div class="header">
+                <span class="float-left title">Пользователи сеанса</span>
+                <div class="float-right menu">
+                    <a href="#" class="overlay-close"></a>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="body nopadding">
+                <div class="header">
+                    <a href="#" class="button short white popup-toggle icon icon-back" popup-target=".session-data">Назад к сеансу</a>
+                    <a href="#" class="button short white float-right popup-toggle icon icon-plus" popup-target=".session-users-add">Добавить</a>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="body">
+                    <div class="filters row">
+                        <div class="col-sm">
+                            <label for="popup-session-users-user-group">Группы пользователей</label>
+                            <select data-live-search="true" name="n" multiple class="form-control" id="popup-session-users-user-group">
+                                <option value="1" data-subtext="20 ч.">ПРИ-117</option>
+                                <option value="2" data-subtext="18 ч.">ИСТ-117</option>
+                                <option value="3" data-subtext="20 ч.">ИСБ-117</option>
+                                <option value="3" data-subtext="20 ч.">ИСБ-117</option>
+                                <option value="3" data-subtext="20 ч.">ИСБ-117</option>
+                                <option value="3" data-subtext="20 ч.">ИСБ-117</option>
+                            </select>
+                        </div>
+                        <div class="col-sm">
+                            <label for="popup-session-users-user-group">Поиск</label>
+                            <input type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="noted-table ps">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ДАТА И ВРЕМЯ</th>
+                                    <th>ФИО</th>
+                                    <th>ГРУППА</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Сегодня, в <span class="blue">20:17<span class="sub">:20</span></span><span class="blue">-19 с.</span></td>
+                                    <td>Савин М.К</td>
+                                    <td><b>ПРИ-117</b></td>
+                                    <td><a href="#" class="button short red">Удалить</a></td>
+                                </tr>
+                                <tr>
+                                    <td>Сегодня, в <span class="blue">20:17<span class="sub">:21</span></span><span class="blue">-20 с.</span></td>
+                                    <td>Куппе Р.О</td>
+                                    <td><b>ПРИ-117</b></td>
+                                    <td><a href="#" class="button short red">Удалить</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="footer">
+                    <label class="mb-0">Пользователей в таблице: <span class="blue">20</span></label>
+                </div>
+            </div>
+        </div>
+        <div class="window session-users-add">
+            <div class="header">
+                <span class="float-left title">Добавить пользователей</span>
+                <div class="float-right menu">
+                    <a href="#" class="overlay-close"></a>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="body nopadding">
+                <div class="header">
+                    <a href="#" class="button short white popup-toggle icon icon-back" popup-target=".session-data">Назад к сеансу</a>
+                    <div class="clearfix"></div>
+                </div>
+                <form method="POST">
+                    <div class="body">
+                        <div class="input-line row">
+                            <div class="col-sm w-50">
+                                <label for="popup-session-create-user-group">1. Выберите группы пользователей</label>
+                                <select data-live-search="true" name="n" multiple class="form-control" id="popup-session-create-user-group">
+                                    <option value="1">ПРИ-117</option>
+                                    <option value="2">ИСТ-117</option>
+                                    <option value="3">ИСБ-117</option>
+                                    <option value="4">ЖБ-117</option>
+                                </select>
+                            </div>
+                            <div class="col-sm w-50">
+                                <label for="popup-session-create-user-group">2. Выберите пользователей</label>
+                                <select data-live-search="true" name="n" multiple class="form-control" id="popup-session-create-user-group">
+                                    <option value="1" data-subtext="ПРИ-117">Савин М.К</option>
+                                    <option value="2" data-subtext="ПРИ-117">Куппе Р.О</option>
+                                    <option value="3" data-subtext="ИДБ-117">Козловский А.Г</option>
+                                    <option value="4" data-subtext="ЖБ-117">Информационовский Е.К</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="footer">
+                        <label class="mb-0">Пользователей будет добавлено: <span class="blue">20</span></label>
+                        <a href="#" class="button short float-right popup-toggle icon icon-plus" popup-target=".session-data">Добавить</a>
+                        <input type="reset" class="button short white mr-3 float-right popup-toggle" value="Очистить">
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="window loading">
+            <div class="header">
+                <span class="float-left title">Загрузка...</span>
+                <div class="float-right menu">
+                    <a href="#" class="overlay-close"></a>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="body">
+                <div class="center no-selection"><img src="img/animation/loading_transparent.gif" width="60" alt=""></div>
+            </div>
+        </div>
+        <div class="window text">
+            <div class="header">
+                <span class="float-left title">Текст</span>
+                <div class="float-right menu">
+                    <a href="#" class="overlay-close"></a>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="body">
+                <div class="center">
+                    <div class="bigicon bigicon-warning"></div>
+                    <div class="title">Какое-то нативное сообщение. Ошибка</div>
+                    <div>Произошла какая-то ошибка дадададададада тада дадафвыафы авыафыв афвы</div>
                 </div>
             </div>
         </div>
