@@ -185,6 +185,10 @@ body > header, body > main {
     padding-right: 60px;
 }
 
+body.nooverflow > header, body.nooverflow > main {
+    padding-right: 77px;
+}
+
 header {
     padding: 20px 0;
     background: url('../img/bg_line.png') no-repeat center/cover;
@@ -494,6 +498,10 @@ main .end-of-page {
     margin-bottom: 30px;
 }
 
+.block.sessions {
+    padding-bottom: 0;
+}
+
 .sessions .session {
     padding: 10px;
     border-radius: 5px;
@@ -502,6 +510,7 @@ main .end-of-page {
     float: left;
     position: relative;
     cursor: pointer;
+    margin-bottom: 16px;
 }
 
 .sessions .session:not(:last-of-type) {
@@ -1031,6 +1040,11 @@ main .end-of-page {
     font-size: 18px;
     font-weight: 500;
     margin-bottom: 10px;
+}
+
+#popup .session-redeem .redeem-label {
+    margin-top: 8px;
+    margin-bottom: 6px;
 }
 
 /* Library sets */

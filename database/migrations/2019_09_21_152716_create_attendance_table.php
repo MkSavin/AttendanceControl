@@ -19,6 +19,8 @@ class CreateAttendanceTable extends Migration
             $table->integer('user_id')->unsigned();
             $table->integer('session_id')->unsigned();
             
+            $table->boolean('created_by')->unsigned()->nullable();
+
             $table->boolean('deleted');
             $table->timestamp('deleted_at')->default(DB::raw('CURRENT_TIMESTAMP'))
 

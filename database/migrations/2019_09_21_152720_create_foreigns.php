@@ -15,6 +15,7 @@ class CreateForeigns extends Migration
     {
         Schema::table('attendance', function (Blueprint $table) {
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('created_by')->references('id')->on('users')->onDelete('no action');
             $table->foreign('session_id')->references('id')->on('sessions')->onDelete('no action');
         });
 
@@ -43,6 +44,7 @@ class CreateForeigns extends Migration
     {
         Schema::table('attendance', function (Blueprint $table) {
             $table->dropForeign('user_id');
+            $table->dropForeign('created_by');
             $table->dropForeign('session_id');
         });
 

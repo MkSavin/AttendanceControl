@@ -352,7 +352,7 @@
                     <div class="footer">
                         <label class="mb-0">Пользователей будет добавлено: <span class="blue">20</span></label>
                         <a href="#" class="button short float-right popup-toggle icon icon-plus" popup-target=".session-data">Добавить</a>
-                        <input type="reset" class="button short white mr-3 float-right popup-toggle" value="Очистить">
+                        <input type="reset" class="button short white mr-3 float-right" value="Очистить">
                     </div>
                 </form>
             </div>
@@ -385,6 +385,28 @@
                 </div>
             </div>
         </div>
+        <div class="window session-redeem">
+            <div class="header">
+                <span class="float-left title">Использование сеанса</span>
+                <div class="float-right menu">
+                    <a href="#" class="overlay-close"></a>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="body">
+                <form method="POST">
+                    <div>
+                        <label for="popup-session-redeem-code">1. Введите URL или код сеанса</label>
+                        <input type="text" class="form-control" id="popup-session-redeem-code" placeholder="https://ac.elerance.com/redeem?code=RSEU-EGHJ-3VCW">
+                    </div>
+                    <div class="mt-3">
+                        <label for="popup-session-redeem-redeem" class="redeem-label">2. Нажмите кнопку <i>Использовать</i></label>
+                        <a href="#" class="button float-right popup-toggle" popup-target=".text" id="popup-session-redeem-redeem">Использовать</a>
+                        <div class="clearfix"></div>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
     <header>
         <div class="float-left left">
@@ -397,6 +419,7 @@
         <div class="float-right right">
             <div class="menu">
                 <a href="#">Меню 3</a>
+                <a href="#" class="button white short mr-3 popup-toggle" popup-target=".session-redeem">Использовать сеанс</a> 
                 <a href="#" class="button white short popup-toggle" popup-target=".session-type">Создать сеанс</a>
             </div>
             <div class="user no-selection dd-toggle" dd-target=".dd-user">
@@ -530,12 +553,90 @@
                                 </div>
                             </div>
                         </a>
+                        <a href="#" class="session long popup-toggle" popup-target=".session-data">
+                            <span class="session-hide"><img src="img/icons/close_white.svg" width="10" alt=""></span>
+                            <div class="float-left">
+                                <div class="body">
+                                    <div class="users-count"><span class="count">12</span> ч.</div>
+                                    <div class="users-count-description">отметились</div>
+                                </div>
+                                <div class="footer">
+                                    <span class="creator">Расписание</span>
+                                </div>
+                            </div>
+                            <div class="float-right information">
+                                <div class="info-block">
+                                    <div class="info">Сегодня, 10:20</div>
+                                    <div class="info-name">Дата создания</div>
+                                </div>
+                                <div class="info-block">
+                                    <div class="info"><img src="img/icons/timer_little.svg" width="12" alt="" class="timer"> 12 c</div>
+                                    <div class="info-name">Осталось</div>
+                                </div>
+                                <div class="info-block">
+                                    <div class="info">ПРИ-117, ИСТ-117</div>
+                                    <div class="info-name">Цель / Группы</div>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="#" class="session long popup-toggle" popup-target=".session-data">
+                            <span class="session-hide"><img src="img/icons/close_white.svg" width="10" alt=""></span>
+                            <div class="float-left">
+                                <div class="body">
+                                    <div class="users-count"><span class="count">12</span> ч.</div>
+                                    <div class="users-count-description">отметились</div>
+                                </div>
+                                <div class="footer">
+                                    <span class="creator">Расписание</span>
+                                </div>
+                            </div>
+                            <div class="float-right information">
+                                <div class="info-block">
+                                    <div class="info">Сегодня, 10:20</div>
+                                    <div class="info-name">Дата создания</div>
+                                </div>
+                                <div class="info-block">
+                                    <div class="info"><img src="img/icons/timer_little.svg" width="12" alt="" class="timer"> 12 c</div>
+                                    <div class="info-name">Осталось</div>
+                                </div>
+                                <div class="info-block">
+                                    <div class="info">ПРИ-117, ИСТ-117</div>
+                                    <div class="info-name">Цель / Группы</div>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="#" class="session long popup-toggle" popup-target=".session-data">
+                            <span class="session-hide"><img src="img/icons/close_white.svg" width="10" alt=""></span>
+                            <div class="float-left">
+                                <div class="body">
+                                    <div class="users-count"><span class="count">12</span> ч.</div>
+                                    <div class="users-count-description">отметились</div>
+                                </div>
+                                <div class="footer">
+                                    <span class="creator">Расписание</span>
+                                </div>
+                            </div>
+                            <div class="float-right information">
+                                <div class="info-block">
+                                    <div class="info">Сегодня, 10:20</div>
+                                    <div class="info-name">Дата создания</div>
+                                </div>
+                                <div class="info-block">
+                                    <div class="info"><img src="img/icons/timer_little.svg" width="12" alt="" class="timer"> 12 c</div>
+                                    <div class="info-name">Осталось</div>
+                                </div>
+                                <div class="info-block">
+                                    <div class="info">ПРИ-117, ИСТ-117</div>
+                                    <div class="info-name">Цель / Группы</div>
+                                </div>
+                            </div>
+                        </a>
                         <div class="clearfix"></div>
                     </div>
                 </div>
             </div>
-            <div class="end-of-page">Вы достигли конца страницы</div>
             <div class="block loadmore no-selection"><img src="img/animation/loading_transparent.gif" class="js-loader d-none" alt=""> Загрузить еще...</div>
+            <div class="end-of-page">Вы достигли конца страницы</div>
         </div>
     </main>
     

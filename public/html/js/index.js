@@ -9,13 +9,11 @@ var selectpicker_data = {
 
 var updateSelects;
 (updateSelects = function(){
-    var selects = $('main select, #popup select');
-    selects.selectpicker(selectpicker_data);
+    $('main select, #popup select').selectpicker(selectpicker_data);
 })();
 
 var refreshSelects = function(){
-    var selects = $('main select, #popup select');
-    selects.selectpicker(selectpicker_data, 'refresh');
+    $('main select, #popup select').selectpicker(selectpicker_data, 'refresh');
 };
 
 var updateDatepicks;
@@ -114,9 +112,8 @@ $(function(){
     });
 
     $(document).on('click', 'input[type=reset]', function(){
-        setTimeout(() => {
-            $(this).parents('form').find('select').selectpicker('refresh');
-        }, 10);
+        $(this).parents('form').find('select').selectpicker('val', '');
+        $(this).parents('form').find('select').trigger('change');
     });
 
     $(document).on('click', '.qr-code', function(){
