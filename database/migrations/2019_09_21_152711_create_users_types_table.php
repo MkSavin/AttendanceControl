@@ -16,6 +16,8 @@ class CreateUsersTypesTable extends Migration
         Schema::create('users_types', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
+
+            $table->boolean('bot');
         });
     }
 
