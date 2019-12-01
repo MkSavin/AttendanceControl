@@ -1223,6 +1223,11 @@ main.redeem .redeem-description .blue {
 /* Library sets */
 .bootstrap-select .dropdown-item.active, .bootstrap-select .dropdown-item:active {
     background-color: #2188cc;
+    color: #fff;
+}
+
+.bootstrap-select .dropdown-item.active .text-muted, .bootstrap-select .dropdown-item:active .text-muted {
+    color: rgba(255,255,255,.5)!important;
 }
 
 .bootstrap-select .dropdown-menu {
