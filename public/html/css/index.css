@@ -12,6 +12,18 @@ body.nooverflow {
     overflow: hidden;
 }
 
+a {
+    color: #2188cc;
+}
+
+a:hover {
+    color: #085588;
+}
+
+a:active {
+    color: #515a66;
+}
+
 .fl_l {
     float: left;
 }
@@ -185,20 +197,44 @@ body > header, body > main {
     padding-right: 60px;
 }
 
+@media (min-width: 1620px) {
+    body > header {
+        zoom: 1.4;
+    }
+}
+
+@media (max-width: 480px) {
+    body > header, body > main {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    body > header {
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+}
+
 body.nooverflow > header, body.nooverflow > main {
     padding-right: 77px;
 }
 
 header {
     padding: 20px 0;
-    background: url('../img/bg_line.png') no-repeat center/cover;
     color: #fff;
+}
+
+body:not(.full-bg) > header {
+    background: url('../img/bg_line.png') no-repeat center/cover;
 }
 
 main {
     padding: 30px 0;
-    background: #f4f7fc;
     min-height: calc(100vh - 78px);
+}
+
+body:not(.full-bg) > main {
+    background: #f4f7fc;
 }
 
 header > .left, header > .right {
@@ -326,7 +362,7 @@ header > .right > .user > span.additional {
     font-weight: 500;
 }
 
-.dd, .block, .datepicker {
+.dd, .block, .datepicker, main.login > .login-form {
     box-shadow: 0 0 50px rgba(26, 27, 27, .13);
 }
 
@@ -386,6 +422,8 @@ div:last-of-type .block {
 .block:not(.no-padding) {
     padding: 16px;
 }
+
+
 
 .block .block-title {
     font-weight: 500;
@@ -816,7 +854,8 @@ main .end-of-page {
 #popup .session-create .session-info .info-row .info-row-data span.blue, .block .block-title .blue,
 #popup .session-data .info-row .info-row-data span.blue,
 #popup .session-users .body span.blue,
-#popup .session-users-add .body span.blue {
+#popup .session-users-add .body span.blue,
+#popup .user-data span.blue {
     background: #2188cc;
     padding: 6px 8px;
     border-radius: 3px;
@@ -826,7 +865,8 @@ main .end-of-page {
 }
 
 #popup .session-users .body span.blue,
-#popup .session-users-add .body span.blue {
+#popup .session-users-add .body span.blue,
+#popup .user-data span.blue {
     font-size: 14px;
     padding: 4px 6px;
 }
@@ -933,7 +973,8 @@ main .end-of-page {
     position: relative;
 }
 
-#popup .session-users .body>.body .noted-table {
+#popup .session-users .body .body .noted-table,
+#popup .user-data .noted-table {
     width: 100%;
     max-height: calc(100vh - 230px);
     overflow-y: auto;
@@ -942,14 +983,17 @@ main .end-of-page {
 }
 
 #popup .session-data .qr-data .noted-table table, 
-#popup .session-users .body .body .noted-table table {
+#popup .session-users .body .body .noted-table table, 
+#popup .user-data .noted-table table {
     width: 100%;
 }
 
 #popup .session-data .qr-data .noted-table tr > td, 
 #popup .session-data .qr-data .noted-table tr > th,
 #popup .session-users .body .body .noted-table tr > td, 
-#popup .session-users .body .body .noted-table tr > th {
+#popup .session-users .body .body .noted-table tr > th, 
+#popup .user-data .noted-table tr > td, 
+#popup .user-data .noted-table tr > th {
     padding: 12px 16px;
 }
 
@@ -976,6 +1020,8 @@ main .end-of-page {
 #popup .session-data .qr-data .noted-table tr > th,
 #popup .session-users .body .body .noted-table tr > td, 
 #popup .session-users .body .body .noted-table tr > th,
+#popup .user-data .noted-table tr > td, 
+#popup .user-data .noted-table tr > th,
 #popup .session-users .body .header,
 #popup .session-users-add .body .header {
     border-bottom: 2px solid #f3f6f8;
@@ -990,7 +1036,8 @@ main .end-of-page {
     min-width: 610px;
 }
 
-#popup .session-users .body .body .blue > span {
+#popup .session-users .body .body .blue > span,
+#popup .user-data .blue > span {
     font-size: 10px;
     opacity: .6;
 }
@@ -1047,6 +1094,132 @@ main .end-of-page {
     margin-bottom: 6px;
 }
 
+#popup .user-data .noted-table tr>td:first-of-type,
+#popup .user-data .noted-table tr>th:first-of-type {
+    padding-left: 0;
+}
+
+#popup .user-data .noted-table tr>td:last-of-type,
+#popup .user-data .noted-table tr>th:last-of-type {
+    padding-right: 0;
+}
+
+/* Page: Common */
+body.full-bg {
+    background: url('../img/bg_line.png') no-repeat center/cover;
+}
+
+/* Page: Login */
+main.login {
+    position: relative;
+}
+
+main.login > .login-form {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    border-radius: 5px;
+    width: 400px;
+}
+
+@media (min-width: 1620px) {
+    main.login > .login-form {
+        zoom: 1.4;
+    }
+}
+
+@media (min-width: 992px) {
+    main.login > .login-form {
+        width: 560px;
+    }
+}
+
+@media (max-width: 767px) {
+    main.login > .login-form {
+        width: 100%;
+        border-radius: 0;
+    }
+    body > main.login > .login-form > .login-wellcome {
+        font-size: 20px;
+    }
+}
+
+main.login > .login-form > .login-wellcome,
+main.login > .login-form > .login-body {
+    padding: 20px 26px;
+}
+
+main.login > .login-form > .login-wellcome {
+    font-size: 22px;
+    padding-bottom: 0;
+}
+
+main.login > .login-form > .login-wellcome b {
+    font-weight: 500;
+}
+
+main.login > .login-form > .login-body > div:not(:last-of-type) {
+    margin-bottom: 16px;
+}
+
+/* Page: Redeem */
+
+main.redeem {
+    position: relative;
+    color: #fff;
+}
+
+main.redeem > .center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+main.redeem h1 {
+    font-weight: 200;
+}
+
+main.redeem h1 > b {
+    font-weight: 300;
+}
+
+main.redeem .redeem-description {
+    font-weight: 300;
+    font-size: 22px;
+    margin: 24px 0;
+}
+
+main.redeem .redeem-description .blue {
+    background: #2188cc;
+    border-radius: 3px;
+    padding: 6px 8px;
+    font-weight: 400;
+}
+
+@media (max-width: 767px) {
+    main.redeem > .center {
+        width: 100%;
+        padding: 0 20px;
+    }
+
+    main.redeem h1 {
+        font-size: 30px;
+    }
+    
+    main.redeem .redeem-description {
+        font-size: 18px;
+        line-height: 32px;
+    }
+
+    main.redeem .redeem-description .blue {
+        padding: 4px 6px;
+    }
+}
+
 /* Library sets */
 .bootstrap-select .dropdown-item.active, .bootstrap-select .dropdown-item:active {
     background-color: #2188cc;
@@ -1083,8 +1256,16 @@ main .end-of-page {
 }
 
 .bootstrap-select.disabled {
-    opacity: .3;
+    opacity: 1;
     pointer-events: none;
+}
+
+.bootstrap-select.disabled > .dropdown-toggle {
+    background-color: #e9ecef;
+}
+
+.bootstrap-select.disabled .btn.disabled, .bootstrap-select.disabled .btn:disabled {
+    opacity: 1;
 }
 
 .datepicker {
