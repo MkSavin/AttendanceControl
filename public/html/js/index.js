@@ -25,7 +25,7 @@ var ps1 = null;
 
 var updateScrollbars;
 (updateScrollbars = function(){
-    if (!is_mobile) 
+    if (!is_mobile && $('.ps').length)
         ps1 = new PerfectScrollbar('.ps', {
             wheelSpeed: 0.4,
             wheelPropagation: true,
@@ -39,6 +39,11 @@ var refreshScrollbars;
         ps1.update();
 })();
 
+var closeDD = function() {
+    $('.dd').addClass('dd-hidden');
+    $('.dd-toggle').removeClass('active');
+};
+
 $(function(){
     refreshSelects();
     updateScrollbars();
@@ -49,8 +54,7 @@ $(function(){
         var v = $(e.target);
         var isDD = v.hasClass('dd') || v.hasClass('dd-toggle') || v.parents('.dd').length || v.parents('.dd-toggle').length;
         if(!isDD) {
-            $('.dd').addClass('dd-hidden');
-            $('.dd-toggle').removeClass('active');
+            closeDD();
         }
     });
 
@@ -82,6 +86,8 @@ $(function(){
         $(this).addClass('active');
         $('body').addClass('nooverflow');
         
+        closeDD();
+
         refreshSelects();
         updateDatepicks();
         updateScrollbars();
@@ -142,6 +148,10 @@ $(function(){
 
         parent.find('.js-session-create').toggleClass('disabled', !(userType && group && activeAt));
 
+    });
+
+    $(document).on('click', '.js-window-close', function(){
+        window.close();
     });
 
 });
