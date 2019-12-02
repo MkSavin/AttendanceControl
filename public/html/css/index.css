@@ -1126,6 +1126,10 @@ main .end-of-page {
     padding-top: 0;
 }
 
+#popup .user-list {
+    width: 800px;
+}
+
 /* Page: Common */
 body.full-bg {
     background: url('../img/bg_line.png') no-repeat center/cover;
