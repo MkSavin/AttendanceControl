@@ -851,6 +851,11 @@ main .end-of-page {
     padding-left: 0;
 }
 
+#popup .session-create .session-info .info-row .info-row-data span.red, .block .block-title .red,
+#popup .session-data .info-row .info-row-data span.red,
+#popup .session-users .body span.red,
+#popup .session-users-add .body span.red,
+#popup .user-data span.red,
 #popup .session-create .session-info .info-row .info-row-data span.blue, .block .block-title .blue,
 #popup .session-data .info-row .info-row-data span.blue,
 #popup .session-users .body span.blue,
@@ -862,6 +867,14 @@ main .end-of-page {
     color: #fff;
     margin: 0 5px;
     display: inline-block;
+}
+
+#popup .session-create .session-info .info-row .info-row-data span.red, .block .block-title .red,
+#popup .session-data .info-row .info-row-data span.red,
+#popup .session-users .body span.red,
+#popup .session-users-add .body span.red,
+#popup .user-data span.red {
+    background: #96596a;
 }
 
 #popup .session-users .body span.blue,
@@ -974,7 +987,7 @@ main .end-of-page {
 }
 
 #popup .session-users .body .body .noted-table,
-#popup .user-data .noted-table {
+#popup .noted-table.noted-table-wide {
     width: 100%;
     max-height: calc(100vh - 230px);
     overflow-y: auto;
@@ -984,7 +997,7 @@ main .end-of-page {
 
 #popup .session-data .qr-data .noted-table table, 
 #popup .session-users .body .body .noted-table table, 
-#popup .user-data .noted-table table {
+#popup .noted-table.noted-table-wide table {
     width: 100%;
 }
 
@@ -992,8 +1005,8 @@ main .end-of-page {
 #popup .session-data .qr-data .noted-table tr > th,
 #popup .session-users .body .body .noted-table tr > td, 
 #popup .session-users .body .body .noted-table tr > th, 
-#popup .user-data .noted-table tr > td, 
-#popup .user-data .noted-table tr > th {
+#popup .noted-table.noted-table-wide tr > td, 
+#popup .noted-table.noted-table-wide tr > th {
     padding: 12px 16px;
 }
 
@@ -1020,8 +1033,8 @@ main .end-of-page {
 #popup .session-data .qr-data .noted-table tr > th,
 #popup .session-users .body .body .noted-table tr > td, 
 #popup .session-users .body .body .noted-table tr > th,
-#popup .user-data .noted-table tr > td, 
-#popup .user-data .noted-table tr > th,
+#popup .noted-table.noted-table-wide tr > td, 
+#popup .noted-table.noted-table-wide tr > th,
 #popup .session-users .body .header,
 #popup .session-users-add .body .header {
     border-bottom: 2px solid #f3f6f8;
@@ -1094,14 +1107,23 @@ main .end-of-page {
     margin-bottom: 6px;
 }
 
-#popup .user-data .noted-table tr>td:first-of-type,
-#popup .user-data .noted-table tr>th:first-of-type {
+#popup .noted-table.noted-table-wide {
+    max-height: 400px;
+    position: relative;
+}
+
+#popup .noted-table.noted-table-wide tr>td:first-of-type,
+#popup .noted-table.noted-table-wide tr>th:first-of-type {
     padding-left: 0;
 }
 
-#popup .user-data .noted-table tr>td:last-of-type,
-#popup .user-data .noted-table tr>th:last-of-type {
+#popup .noted-table.noted-table-wide tr>td:last-of-type,
+#popup .noted-table.noted-table-wide tr>th:last-of-type {
     padding-right: 0;
+}
+
+#popup .noted-table.noted-table-wide.no-th-top-padding tr>th {
+    padding-top: 0;
 }
 
 /* Page: Common */
