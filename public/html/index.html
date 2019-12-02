@@ -24,7 +24,6 @@
                     <div class="dd-hidden dd dd-more">
                         <a href="#" class="popup-toggle" popup-target=".loading">Popup: Загрузка</a>
                         <a href="#" class="popup-toggle" popup-target=".text">Popup: Текст</a>
-                        <a href="#" class="popup-toggle" popup-target=".user-data">Popup: Данные пользователя</a>
                         <a href="#" class="popup-toggle" popup-target=".question-box">Popup: Вопрос</a>
                     </div>
                     <a href="#" class="overlay-close"></a>
@@ -68,17 +67,17 @@
                         <div class="col-sm">
                             <label for="popup-session-create-user-type">1. Выберите тип пользователя</label>
                             <select data-live-search="true" name="k" class="form-control js-usertype" id="popup-session-create-user-type">
-                                <option value="1" data-checkgroup="false" data-subtext="20 чел." selected>Спец. по кадрам</option>
-                                <option value="2" data-checkgroup="false" data-subtext="120 чел.">Преподаватель</option>
-                                <option value="3" data-checkgroup="true" data-subtext="1420 чел.">Студент</option>
+                                <option value="1" data-checkgroup="false" data-users-count="20" data-subtext="20 чел." selected>Спец. по кадрам</option>
+                                <option value="2" data-checkgroup="false" data-users-count="120" data-subtext="120 чел.">Преподаватель</option>
+                                <option value="3" data-checkgroup="true" data-users-count="1420" data-subtext="1420 чел.">Студент</option>
                             </select>
                         </div>
                         <div class="col-sm">
                             <label for="popup-session-create-user-group">2. Выберите группы пользователей</label>
                             <select data-live-search="true" name="n" multiple class="form-control js-usergroup" id="popup-session-create-user-group">
-                                <option value="1" data-subtext="20 чел.">ПРИ-117</option>
-                                <option value="2" data-subtext="20 чел.">ИСТ-117</option>
-                                <option value="3" data-subtext="20 чел.">ИСБ-117</option>
+                                <option value="1" data-users-count="20" data-subtext="20 чел.">ПРИ-117</option>
+                                <option value="2" data-users-count="20" data-subtext="20 чел.">ИСТ-117</option>
+                                <option value="3" data-users-count="20" data-subtext="20 чел.">ИСБ-117</option>
                             </select>
                         </div>
                     </div>
@@ -87,10 +86,10 @@
                             <label for="popup-session-create-active-time">3. Введите время активности</label>
                             <div class="row">
                                 <div class="col-sm">
-                                    <input type="text" class="form-control" id="popup-session-create-active-time" placeholder="20">
+                                    <input type="text" class="form-control js-active_time" id="popup-session-create-active-time" placeholder="20">
                                 </div>
                                 <div class="col-sm">
-                                    <select name="d" class="form-control" id="popup-session-create-active-time-pow">
+                                    <select name="d" class="form-control js-active_time-pow" id="popup-session-create-active-time-pow">
                                         <option value="1" selected>СЕК</option>
                                         <option value="2">МИН</option>
                                         <option value="3">ЧАС</option>
@@ -126,17 +125,17 @@
                         <div class="row info-row">
                             <div class="col-sm row">
                                 <div class="col-md-3 info-row-name">Запуск:</div>
-                                <div class="col-md info-row-data"><span>15 ноября 2019</span>, <span class="blue">10:21</span></div>
+                                <div class="col-md info-row-data"><span class="js-session-info-date-start">15 ноября 2019</span>, <span class="blue js-session-info-clock-start"><span class="hours">10</span>:<span class="minutes">21</span></span></div>
                             </div>
                             <div class="col-sm row">
                                 <div class="col-md-3 info-row-name">Конец:</div>
-                                <div class="col-md info-row-data"><span>15 ноября 2019</span>, <span class="blue">10:22</span></div>
+                                <div class="col-md info-row-data"><span class="js-session-info-date-end">15 ноября 2019</span>, <span class="blue js-session-info-clock-end"><span class="hours">10</span>:<span class="minutes">22</span></span></div>
                             </div>
                         </div>
                         <div class="row info-row">
                             <div class="col-sm row">
                                 <div class="col-md-3 info-row-name">Предп. нагрузка:</div>
-                                <div class="col-md info-row-data"><span class="blue">20</span> человек</div>
+                                <div class="col-md info-row-data"><span class="blue js-session-info-users-count">20</span> человек</div>
                             </div>
                         </div>
                         <div>
@@ -415,7 +414,7 @@
                 </div>
                 <div class="row mb-3">
                     <div class="col-md">
-                        <label for="popup-user-data-user-group">Группа</label>
+                        <label for="popup-user-data-user-group">Группа <a href="#" class="ml-2 popup-toggle" popup-target=".group-data">Открыть</a></label>
                         <select data-live-search="true" disabled name="n" class="form-control js-usergroup" id="popup-user-data-user-group">
                             <option value="1" data-subtext="20 чел." selected>ПРИ-117</option>
                             <option value="2" data-subtext="20 чел.">ИСТ-117</option>
@@ -431,7 +430,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="noted-table ps">
+                <div class="noted-table noted-table-wide ps">
                     <table>
                         <thead>
                             <tr>
@@ -503,6 +502,168 @@
                 </form>
             </div>
         </div>
+        <div class="window user-list">
+            <div class="header">
+                <span class="float-left title">Список пользователей</span>
+                <div class="float-right menu">
+                    <a href="#" class="overlay-close"></a>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="body">
+                <div class="noted-table noted-table-wide no-th-top-padding ps">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>ФИО</th>
+                                <th>ГРУППА</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td><a href="#" class="popup-toggle" popup-target=".user-data">Алексеев И.И</a></td>
+                                <td><a href="#" class="popup-toggle" popup-target=".group-data">ПРИ-117</a></td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td><a href="#" class="popup-toggle" popup-target=".user-data">Куппе Р.О</a></td>
+                                <td><a href="#" class="popup-toggle" popup-target=".group-data">ПРИ-117</a></td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td><a href="#" class="popup-toggle" popup-target=".user-data">Уппе О.Р</a></td>
+                                <td><a href="#" class="popup-toggle" popup-target=".group-data">ИРП-117</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="window group-data">
+            <div class="header">
+                <span class="float-left title">Группа <i>ПРИ-117</i></span>
+                <div class="float-right menu">
+                    <a href="#" class="overlay-more dd-toggle" dd-target=".dd-more"></a>
+                    <div class="dd-hidden dd dd-more">
+                        <a href="#" class="popup-toggle" popup-target=".group-edit">Редактировать группу</a>
+                        <a href="#">Удалить группу</a>
+                    </div>
+                    <a href="#" class="overlay-close"></a>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="body">
+                <div class="row mb-3">
+                    <div class="col-md">
+                        <label for="popup-group-data-group-name">Название</label>
+                        <input type="text" class="form-control" id="popup-group-data-group-name" disabled value="ПРИ-1">
+                    </div>
+                    <div class="col-md">
+                        <label for="popup-group-data-group-year">Год</label>
+                        <input type="text" class="form-control" id="popup-group-data-group-year" disabled value="17">
+                    </div>
+                </div>
+                <div class="noted-table noted-table-wide ps">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th width="40">#</th>
+                                <th>ФИО</th>
+                                <th width="120"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td><a href="#" class="popup-toggle" popup-target=".user-data">Савин М.К</a></td>
+                                <td><a href="#" class="button short red">Удалить</a></td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td><a href="#" class="popup-toggle" popup-target=".user-data">Куппе Р.О</a></td>
+                                <td><a href="#" class="button short red">Удалить</a></td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td><a href="#" class="popup-toggle" popup-target=".user-data">Уппе О.Р</a></td>
+                                <td><a href="#" class="button short red">Удалить</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="window group-edit">
+            <div class="header">
+                <span class="float-left title">Редактирование группы <i>ПРИ-117</i></span>
+                <div class="float-right menu">
+                    <a href="#" class="overlay-more dd-toggle" dd-target=".dd-more"></a>
+                    <div class="dd-hidden dd dd-more">
+                        <a href="#">Удалить группу</a>
+                    </div>
+                    <a href="#" class="overlay-close"></a>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="body">
+                <div class="row mb-3">
+                    <div class="col-md">
+                        <label for="popup-group-data-group-name">Название</label>
+                        <input type="text" class="form-control" id="popup-group-data-group-name" value="ПРИ-1">
+                    </div>
+                    <div class="col-md">
+                        <label for="popup-group-data-group-year">Год</label>
+                        <input type="text" class="form-control" id="popup-group-data-group-year" value="17">
+                    </div>
+                </div>
+                <div>
+                    <input type="submit" value="Сохранить" class="button float-right">
+                    <a href="#" class="button white mr-3 float-right popup-toggle" popup-target=".group-data">Отменить</a>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+        <div class="window group-list">
+            <div class="header">
+                <span class="float-left title">Список групп</span>
+                <div class="float-right menu">
+                    <a href="#" class="overlay-close"></a>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="body">
+                <div class="noted-table noted-table-wide no-th-top-padding ps">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>ГРУППА</th>
+                                <th>ГОД</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td><a href="#" class="popup-toggle" popup-target=".group-data">ПРИ-1</a></td>
+                                <td>17</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td><a href="#" class="popup-toggle" popup-target=".group-data">ИСТ-1</a></td>
+                                <td>17</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td><a href="#" class="popup-toggle" popup-target=".group-data">ИРП-1</a></td>
+                                <td>17</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
         <div class="window session-redeem">
             <div class="header">
                 <span class="float-left title">Использование сеанса</span>
@@ -530,13 +691,13 @@
         <div class="float-left left">
             <div class="title"><span>AControl</span></div>
             <div class="menu">
-                <a href="#">Меню 1</a>
-                <a href="#">Меню 2</a>
+                <a href="#" class="popup-toggle" popup-target=".user-list">Пользователи</a>
+                <a href="#" class="popup-toggle" popup-target=".group-list">Группы</a>
             </div>
         </div>
         <div class="float-right right">
             <div class="menu">
-                <a href="#">Меню 3</a>
+                <!-- <a href="#">Меню 3</a> -->
                 <a href="#" class="button white short mr-3 popup-toggle" popup-target=".session-redeem">Использовать сеанс</a> 
                 <a href="#" class="button white short popup-toggle" popup-target=".session-type">Создать сеанс</a>
             </div>
@@ -547,23 +708,23 @@
         </div>
         <div class="dd-hidden dd dd-user">
             <a href="#">Профиль</a>
-            <a href="#">Пункт меню 2</a>
+            <!-- <a href="#">Пункт меню 2</a> -->
             <a href="#">Выйти</a>
         </div>
         <div class="clearfix"></div>
     </header>
     <main>
         <div>
-            <div class="block time">
+            <div class="block time js-time">
                 <span class="clock">
                     <span class="hours">10</span>
                     <span class="minutes">20</span>
                     <span class="seconds">21</span>
                 </span>
-                <span class="date">
+                <span class="date js-date">
                     15 ноября 2019
                 </span>
-                <span class="week-type">
+                <span class="week-type js-weektype" data-num="Числитель" data-denum="Знаменатель">
                     Числитель
                 </span>
             </div>
@@ -764,6 +925,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.12/dist/js/bootstrap-select.min.js"></script>
     <script src="js/perfect-scrollbar.min.js"></script>
     <script src="js/datepicker.min.js"></script>
+    <script src="js/date.format.js"></script>
+    <script src="js/datetime.js"></script>
     <script src="js/index.js"></script>
 </body>
 </html>
