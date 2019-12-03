@@ -516,13 +516,21 @@ main .end-of-page {
     color: #fff;
 }
 
-.time > .clock > .seconds {
+.time > .clock > .seconds,
+.qr-data .clock > .seconds {
     font-size: 15px;
     opacity: .7;
 }
+.qr-data .clock > .seconds {
+    font-size: 14px;
+}
+
+.time > .clock > .minutes::before, .time > .clock > .seconds::before,
+.qr-data .clock > .minutes::before, .qr-data .clock > .seconds::before {
+    content: ':';
+}
 
 .time > .clock > .minutes::before, .time > .clock > .seconds::before {
-    content: ':';
     padding-right: 5px;
 }
 
@@ -725,6 +733,11 @@ main .end-of-page {
     font-size: 18px;
 }
 
+#popup .window .header .title .blue {
+    color: #fff;
+    font-size: 18px;
+}
+
 #popup .window .header .menu > a {
     background: rgba(0,0,0,.3);
     padding: 5px;
@@ -851,16 +864,7 @@ main .end-of-page {
     padding-left: 0;
 }
 
-#popup .session-create .session-info .info-row .info-row-data span.red, .block .block-title .red,
-#popup .session-data .info-row .info-row-data span.red,
-#popup .session-users .body span.red,
-#popup .session-users-add .body span.red,
-#popup .user-data span.red,
-#popup .session-create .session-info .info-row .info-row-data span.blue, .block .block-title .blue,
-#popup .session-data .info-row .info-row-data span.blue,
-#popup .session-users .body span.blue,
-#popup .session-users-add .body span.blue,
-#popup .user-data span.blue {
+#popup span.blue, #popup span.red, #popup span.yellow {
     background: #2188cc;
     padding: 6px 8px;
     border-radius: 3px;
@@ -869,17 +873,20 @@ main .end-of-page {
     display: inline-block;
 }
 
-#popup .session-create .session-info .info-row .info-row-data span.red, .block .block-title .red,
-#popup .session-data .info-row .info-row-data span.red,
-#popup .session-users .body span.red,
-#popup .session-users-add .body span.red,
-#popup .user-data span.red {
+#popup span.red {
     background: #96596a;
+}
+
+#popup span.yellow {
+    background: #cc961d;
 }
 
 #popup .session-users .body span.blue,
 #popup .session-users-add .body span.blue,
-#popup .user-data span.blue {
+#popup .user-data span.blue,
+#popup .window .header .title .blue,
+#popup .window .header .title .red,
+#popup .window .header .title .yellow {
     font-size: 14px;
     padding: 4px 6px;
 }
@@ -979,7 +986,7 @@ main .end-of-page {
 
 #popup .session-data .qr-data .noted-table {
     width: calc(100% + 15px);
-    height: calc(50vh - 151px);
+    height: calc(50vh - 136px);
     margin-left: -15px;
     margin-top: 16px;
     overflow-y: auto;
@@ -989,24 +996,18 @@ main .end-of-page {
 #popup .session-users .body .body .noted-table,
 #popup .noted-table.noted-table-wide {
     width: 100%;
-    max-height: calc(100vh - 230px);
+    max-height: calc(100vh - 300px);
     overflow-y: auto;
     position: relative;
     font-size: 15px;
 }
 
-#popup .session-data .qr-data .noted-table table, 
-#popup .session-users .body .body .noted-table table, 
-#popup .noted-table.noted-table-wide table {
+#popup .noted-table table {
     width: 100%;
 }
-
-#popup .session-data .qr-data .noted-table tr > td, 
-#popup .session-data .qr-data .noted-table tr > th,
-#popup .session-users .body .body .noted-table tr > td, 
-#popup .session-users .body .body .noted-table tr > th, 
-#popup .noted-table.noted-table-wide tr > td, 
-#popup .noted-table.noted-table-wide tr > th {
+ 
+#popup .noted-table tr > td, 
+#popup .noted-table tr > th {
     padding: 12px 16px;
 }
 
@@ -1029,12 +1030,8 @@ main .end-of-page {
     padding: 14px;
 }
 
-#popup .session-data .qr-data .noted-table tr > td, 
-#popup .session-data .qr-data .noted-table tr > th,
-#popup .session-users .body .body .noted-table tr > td, 
-#popup .session-users .body .body .noted-table tr > th,
-#popup .noted-table.noted-table-wide tr > td, 
-#popup .noted-table.noted-table-wide tr > th,
+#popup .noted-table tr > td, 
+#popup .noted-table tr > th,
 #popup .session-users .body .header,
 #popup .session-users-add .body .header {
     border-bottom: 2px solid #f3f6f8;

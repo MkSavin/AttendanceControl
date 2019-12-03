@@ -1,11 +1,11 @@
 var is_mobile = ((/Mobile|iPhone|iPod|BlackBerry|Windows Phone/i).test(navigator.userAgent || navigator.vendor || window.opera) ? true : false);
 
-var setMomentalInterval = function(fn, timeout) {
+var setMomentalInterval = function(fn, timeout = 1000) {
     fn();
     return setInterval(fn, timeout);
 };
 
-var setMomentalTimeout = function(fn, timeout) {
+var setMomentalTimeout = function(fn, timeout = 1000) {
     fn();
     return setTimeout(fn, timeout);
 };
@@ -74,6 +74,176 @@ setMomentalInterval(function(){
 var popupInterval;
 var popupTimer;
 
+var popupHandlers = function(){
+
+    var sessionCreateAction = function(self, button, when, type) {
+        self.find('select').first().trigger('change');
+
+        var dateStart;
+        var dateEnd;
+        var timeAdd;
+        var timePow;
+
+        popupInterval = setMomentalInterval(function(){
+            if (type == 'timed') {
+                dateStart = self.find('.js-active_at').val();
+                if (dateStart != '')
+                    dateStart = parseDate(dateStart);
+                else 
+                    dateStart = new Date();
+            } else if (type == 'momental') {
+                dateStart = new Date();
+            }
+
+            timePow = parseInt(self.find('.js-active_time-pow').find('option:selected').val());
+
+            timeAdd = self.find('.js-active_time').val();
+            dateEnd = new Date(dateStart.getTime() + parseInt(timeAdd == '' ? 20 : timeAdd) * Math.pow(60, timePow - 1) * 1000);
+
+            fillClock(self.find('.js-session-info-clock-start'), dateStart);
+            fillDate(self.find('.js-session-info-date-start'), dateStart);
+
+            fillClock(self.find('.js-session-info-clock-end'), dateEnd);
+            fillDate(self.find('.js-session-info-date-end'), dateEnd);
+        }, 1000);
+    }
+
+    $("#popup").on('popup-session-create-momental', function(e, button, when) {
+        $(this).find('.js-timed').addClass('d-none');
+        $(this).find('.js-momental').removeClass('d-none');
+        $(this).find('.js-nonmomental').remove();
+
+        $(this).find('.window').addClass('momental');
+
+        $(this).find('.js-session-create').attr('session-type', 'momental');
+
+        sessionCreateAction($(this), button, when, 'momental');
+    });
+
+    $("#popup").on('popup-session-create-timed', function(e, button, when) {
+        $(this).find('.js-nontimed').remove();
+        $(this).find('.js-momental').addClass('d-none');
+        $(this).find('.js-timed').removeClass('d-none');
+
+        $(this).find('.window').addClass('timed');
+
+        $(this).find('.js-session-create').attr('session-type', 'timed');
+
+        sessionCreateAction($(this), button, when, 'timed');
+    });
+
+    $("#popup").on('popup-session-data', function(e, button, when) {
+        var self = $(this);
+        var button = $(button);
+
+        // TODO: При подключении данные (тип) брать из Ajax
+        var sessionType = button.attr('session-type') == "momental";
+
+        var timeToClose = 20;
+        // TODO: При подключении заменить Date, если сеанс уже была начата (моментальная, но окно открыто заново)
+        var dateStart = new Date();
+        var timezoneOffset = dateStart.getTimezoneOffset()*60*1000;
+
+        var statusBar = self.find('.title .js-session-data-status');
+
+        if (sessionType) {
+            self.find('.qr-code').removeClass('hidden');
+            self.find('.js-session-data-timed_only').addClass('d-none');
+            // TODO: При подключении заменить правильно dateStart. Это дата старта сеанса
+        } else {
+            dateStart = new Date(dateStart.getTime() + 20 * 1000);
+            statusBar.removeClass('blue').removeClass('red').addClass('yellow');
+            statusBar.html(statusBar.data('await'));
+        }
+
+        var dateClose = new Date(dateStart.getTime() + timeToClose * 1000);
+        var deltaDate;
+
+        popupInterval = setMomentalInterval(function(){
+            var date = new Date();
+            if (!sessionType) {
+                deltaDate = new Date(dateStart.getTime() - date.getTime() + timezoneOffset);
+
+                if (deltaDate.getTime() <= timezoneOffset) {
+                    deltaDate = new Date(timezoneOffset);
+                    
+                    self.find('.js-session-data-clock-start').addClass('red');
+
+                    statusBar.removeClass('yellow').removeClass('red').addClass('blue');
+                    statusBar.html(statusBar.data('active'));
+
+                    self.find('.qr-code').removeClass('hidden');
+                }
+
+                fillClock(self.find('.js-session-data-clock-start'), deltaDate);
+            }
+
+            deltaDate = new Date(dateClose.getTime() - date.getTime() + timezoneOffset);
+
+            if (deltaDate.getTime() <= timezoneOffset) {
+                deltaDate = new Date(timezoneOffset);
+
+                self.find('.js-session-data-clock-end').addClass('red');
+
+                statusBar.removeClass('blue').removeClass('yellow').addClass('red');
+                statusBar.html(statusBar.data('notactive'));
+
+                self.find('.qr-code').addClass('hidden');
+
+                clearInterval(popupInterval);
+
+                return;
+            }
+
+            fillClock(self.find('.js-session-data-clock-end'), deltaDate);
+
+        });
+    });
+
+};
+
+var popupAdditionalActions = function(){
+    
+    $(document).on('change', '#popup .session-create select, #popup .session-create .js-active_at', function() {
+        var self = $(this);
+        var parent = self.parents('.session-create');
+
+        var userTypeElement = parent.find('.js-usertype > option:selected, .js-usertype > option');
+
+        var userType = userTypeElement.length > 0;
+        var group = true;
+
+        var activeAtElement = parent.find('.js-active_at');
+        var activeAt = activeAtElement.length == 0 || activeAtElement.val().length > 0;
+
+        var usersCountElement = parent.find('.js-session-info-users-count');
+        var usersCount = 0;
+
+        if (userType && userTypeElement.data("checkgroup")) {
+
+            group = parent
+            .find('.js-usergroup > option:selected, .js-usergroup > option')
+            .each(function(){
+                usersCount += parseInt($(this).data('users-count'));
+            })
+            .length > 0;
+
+            parent.find('.js-usergroup').removeClass('disabled');
+        } else {
+            group = true;
+            parent.find('.js-usergroup').addClass('disabled');
+            usersCount = parseInt(userTypeElement.data('users-count'));
+        }
+
+        usersCountElement.toggleClass('red', usersCount == 0);
+        usersCountElement.html(usersCount);
+        
+        parent.find('.js-session-create').toggleClass('disabled', !(userType && group && activeAt));
+
+    });
+    
+};
+
 $(function(){
     refreshSelects();
     updateScrollbars();
@@ -133,107 +303,24 @@ $(function(){
             $("#popup").trigger($(this).attr('popup-handler-after'), this, false);
     });
 
-    var sessionCreateAction = function(self, button, when, type) {
-        self.find('select').first().trigger('change');
-
-        var dateStart;
-        var dateEnd;
-        var timeAdd;
-        var timePow;
-
-        popupInterval = setMomentalInterval(function(){
-            if (type == 'timed') {
-                dateStart = self.find('.js-active_at').val();
-                if (dateStart != '')
-                    dateStart = parseDate(dateStart);
-                else 
-                    dateStart = new Date();
-            } else if (type == 'momental') {
-                dateStart = new Date();
-            }
-
-            timePow = parseInt(self.find('.js-active_time-pow').find('option:selected').val());
-
-            timeAdd = self.find('.js-active_time').val();
-            dateEnd = new Date(dateStart.getTime() + parseInt(timeAdd == '' ? 20 : timeAdd) * Math.pow(60, timePow - 1) * 1000);
-
-            fillClock(self.find('.js-session-info-clock-start'), dateStart);
-            fillDate(self.find('.js-session-info-date-start'), dateStart);
-
-            fillClock(self.find('.js-session-info-clock-end'), dateEnd);
-            fillDate(self.find('.js-session-info-date-end'), dateEnd);
-        }, 1000);
-    }
-
-    $("#popup").on('popup-session-create-momental', function(e, button, when) {
-        $(this).find('.js-timed').addClass('d-none');
-        $(this).find('.js-momental').removeClass('d-none');
-        $(this).find('.js-nonmomental').remove();
-
-        $(this).find('.window').addClass('momental');
-
-        sessionCreateAction($(this), button, when, 'momental');
-    });
-
-    $("#popup").on('popup-session-create-timed', function(e, button, when) {
-        $(this).find('.js-nontimed').remove();
-        $(this).find('.js-momental').addClass('d-none');
-        $(this).find('.js-timed').removeClass('d-none');
-
-        $(this).find('.window').addClass('timed');
-
-        sessionCreateAction($(this), button, when, 'timed');
-    });
-
     $(document).on('click', 'input[type=reset]', function(){
-        $(this).parents('form').find('select').selectpicker('val', '');
-        $(this).parents('form').find('select').trigger('change');
+        var form = $(this).parents('form');
+        form.find('select').selectpicker('val', '');
+        form.find('select').trigger('change');
+        form.find('select').find('option[default-selected]').each(function(){
+            $(this).parents('select').selectpicker('val', $(this).val());
+        })
     });
 
     $(document).on('click', '.qr-code', function(){
         $(this).toggleClass('hidden');
     });
 
-    $(document).on('change', '#popup .session-create select, #popup .session-create .js-active_at', function() {
-        var self = $(this);
-        var parent = self.parents('.session-create');
-
-        var userTypeElement = parent.find('.js-usertype > option:selected');
-
-        var userType = userTypeElement.length > 0;
-        var group = true;
-
-        var activeAtElement = parent.find('.js-active_at');
-        var activeAt = activeAtElement.length == 0 || activeAtElement.val().length > 0;
-
-        var usersCountElement = parent.find('.js-session-info-users-count');
-        var usersCount = 0;
-
-        if (userType && userTypeElement.data("checkgroup")) {
-
-            group = parent
-            .find('.js-usergroup > option:selected')
-            .each(function(){
-                usersCount += parseInt($(this).data('users-count'));
-            })
-            .length > 0;
-
-            parent.find('.js-usergroup').removeClass('disabled');
-        } else {
-            group = true;
-            parent.find('.js-usergroup').addClass('disabled');
-            usersCount = parseInt(userTypeElement.data('users-count'));
-        }
-
-        usersCountElement.toggleClass('red', usersCount == 0);
-        usersCountElement.html(usersCount);
-        
-        parent.find('.js-session-create').toggleClass('disabled', !(userType && group && activeAt));
-
-    });
-
     $(document).on('click', '.js-window-close', function(){
         window.close();
     });
+
+    popupHandlers();
+    popupAdditionalActions();
 
 });
