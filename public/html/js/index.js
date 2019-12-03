@@ -41,12 +41,13 @@ var ps1 = null;
 
 var updateScrollbars;
 (updateScrollbars = function(){
-    if (!is_mobile && $('.ps').length)
+    if (!is_mobile && $('.ps').length) {
         ps1 = new PerfectScrollbar('.ps', {
             wheelSpeed: 0.4,
             wheelPropagation: true,
             minScrollbarLength: 20
         });
+    }
 })();
 
 var refreshScrollbars;
@@ -87,10 +88,11 @@ var popupHandlers = function(){
         popupInterval = setMomentalInterval(function(){
             if (type == 'timed') {
                 dateStart = self.find('.js-active_at').val();
-                if (dateStart != '')
+                if (dateStart != '') {
                     dateStart = parseDate(dateStart);
-                else 
+                } else {
                     dateStart = new Date();
+                }
             } else if (type == 'momental') {
                 dateStart = new Date();
             }
@@ -250,8 +252,12 @@ $(function(){
 
     /* Drop Down close */
     $(document).on('click', function(e){
-        e.preventDefault();
         var v = $(e.target);
+        if (v.prop('nodeName').toLowerCase() == "a" && v.attr("href") != "#") {
+            return;
+        }
+
+        e.preventDefault();
         var isDD = v.hasClass('dd') || v.hasClass('dd-toggle') || v.parents('.dd').length || v.parents('.dd-toggle').length;
         if(!isDD) {
             closeDD();
@@ -285,8 +291,9 @@ $(function(){
         $("#popup").html("");
         $('.popup_stack > ' + $(this).attr('popup-target')).clone().appendTo("#popup");
 
-        if ($(this).attr('popup-handler'))
+        if ($(this).attr('popup-handler')) {
             $("#popup").trigger($(this).attr('popup-handler'), this, null);
+        }
 
         $("#popup").removeClass("hidden");
         $(this).addClass('active');

@@ -257,7 +257,7 @@ header > .left > .title, header > .right > .menu {
     padding-right: 30px;
 }
 
-header > .left > .title > span {
+header > .left > .title > a {
     font-size: 22px;
     font-weight: 600;
     color: #fff;
@@ -1187,14 +1187,14 @@ main.login > .login-form > .login-body > div:not(:last-of-type) {
     margin-bottom: 16px;
 }
 
-/* Page: Redeem */
+/* Page: Redeem / 404 */
 
-main.redeem {
+main.notify {
     position: relative;
     color: #fff;
 }
 
-main.redeem > .center {
+main.notify > .center {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -1202,21 +1202,21 @@ main.redeem > .center {
     text-align: center;
 }
 
-main.redeem h1 {
+main.notify h1 {
     font-weight: 200;
 }
 
-main.redeem h1 > b {
+main.notify h1 > b {
     font-weight: 300;
 }
 
-main.redeem .redeem-description {
+main.notify .notify-description {
     font-weight: 300;
     font-size: 22px;
     margin: 24px 0;
 }
 
-main.redeem .redeem-description .blue {
+main.notify .notify-description .blue {
     background: #2188cc;
     border-radius: 3px;
     padding: 6px 8px;
@@ -1224,21 +1224,21 @@ main.redeem .redeem-description .blue {
 }
 
 @media (max-width: 767px) {
-    main.redeem > .center {
+    main.notify > .center {
         width: 100%;
         padding: 0 20px;
     }
 
-    main.redeem h1 {
+    main.notify h1 {
         font-size: 30px;
     }
     
-    main.redeem .redeem-description {
+    main.notify .notify-description {
         font-size: 18px;
         line-height: 32px;
     }
 
-    main.redeem .redeem-description .blue {
+    main.notify .notify-description .blue {
         padding: 4px 6px;
     }
 }
