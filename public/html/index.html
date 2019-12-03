@@ -67,7 +67,7 @@
                         <div class="col-sm">
                             <label for="popup-session-create-user-type">1. Выберите тип пользователя</label>
                             <select data-live-search="true" name="k" class="form-control js-usertype" id="popup-session-create-user-type">
-                                <option value="1" data-checkgroup="false" data-users-count="20" data-subtext="20 чел." selected>Спец. по кадрам</option>
+                                <option value="1" data-checkgroup="false" data-users-count="20" data-subtext="20 чел." selected default-selected>Спец. по кадрам</option>
                                 <option value="2" data-checkgroup="false" data-users-count="120" data-subtext="120 чел.">Преподаватель</option>
                                 <option value="3" data-checkgroup="true" data-users-count="1420" data-subtext="1420 чел.">Студент</option>
                             </select>
@@ -90,7 +90,7 @@
                                 </div>
                                 <div class="col-sm">
                                     <select name="d" class="form-control js-active_time-pow" id="popup-session-create-active-time-pow">
-                                        <option value="1" selected>СЕК</option>
+                                        <option value="1" selected default-selected>СЕК</option>
                                         <option value="2">МИН</option>
                                         <option value="3">ЧАС</option>
                                     </select>
@@ -139,7 +139,7 @@
                             </div>
                         </div>
                         <div>
-                            <a href="#" class="button float-right disabled popup-toggle js-session-create" popup-target=".session-data">Создать сеанс</a>
+                            <a href="#" class="button float-right disabled popup-toggle js-session-create" popup-target=".session-data" popup-handler-after="popup-session-data">Создать сеанс</a>
                             <input type="reset" value="Очистить" class="button mr-3 white float-right">
                             <div class="clearfix"></div>
                         </div>
@@ -149,7 +149,7 @@
         </div>
         <div class="window session-data">
             <div class="header">
-                <span class="float-left title">Сеанс</span>
+                <span class="float-left title">Сеанс <span class="blue js-session-data-status" data-await="В ожидании" data-active="Активен" data-notactive="Закрыт">Активен</span></span>
                 <div class="float-right menu">
                     <a href="#" class="overlay-more dd-toggle" dd-target=".dd-more"></a>
                     <div class="dd-hidden dd dd-more">
@@ -171,12 +171,22 @@
                     </div>
                     <div class="col-sm qr-data">
                         <div class="row info-row">
-                            <div class="col-md info-row-name px-1">Осталось:</div>
-                            <div class="col-md-5 info-row-data  px-1"><span class="blue">20:31</span> мин.</div>
-                        </div>
-                        <div class="row info-row">
-                            <div class="col-md info-row-name px-1">Отметилось:</div>
-                            <div class="col-md-5 info-row-data  px-1"><span class="blue">1420</span> чел.</div>
+                            <div class="col-md w-33 px-0 js-session-data-timed_only">
+                                <label for="popup-session-data-clock-start">До старта</label><br>
+                                <span class="blue clock js-session-data-clock-start" id="popup-session-data-clock-start">
+                                    <span class="hours">20</span><span class="minutes">31</span><span class="seconds">20</span>
+                                </span>
+                            </div>
+                            <div class="col-md w-33 px-0">
+                                <label for="popup-session-data-clock-end">До конца</label><br>
+                                <span class="blue clock js-session-data-clock-end" id="popup-session-data-clock-end">
+                                    <span class="hours">20</span><span class="minutes">31</span><span class="seconds">20</span>
+                                </span>
+                            </div>
+                            <div class="col-md w-33 px-0">
+                                <label for="popup-session-data-users-count">Отметилось</label><br>
+                                <div id="popup-session-data-users-count"><span class="blue js-session-data-users-count">1420</span></div>
+                            </div>
                         </div>
                         <div class="noted-table ps">
                             <table>
