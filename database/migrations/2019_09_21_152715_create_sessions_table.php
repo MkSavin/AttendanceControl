@@ -17,13 +17,12 @@ class CreateSessionsTable extends Migration
             $table->increments('id');
 
             $table->integer('user_id')->unsigned();
-            $table->integer('group_id')->unsigned();
 
             $table->string('code')->index();
 
-            $table->timestamp('active_at')->default(DB::raw('CURRENT_TIMESTAMP'))
+            $table->timestamp('active_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->integer('activetime')->unsigned();
-            $table->boolean('active');
+            $table->boolean('active')->default(1);
 
             $table->timestamps();
         });

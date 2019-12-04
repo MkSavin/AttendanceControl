@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Main;
-use App\Models\LevelsIllustrations;
+use App\Models\Code;
+use App\Models\Session;
 
 class IndexController extends Controller
 {
@@ -15,7 +15,13 @@ class IndexController extends Controller
      */
     public function Get()
     {
-        return view('public.pages.index.index');
+
+        return view('public.pages.index.index', [
+            'sessions_active' => Session::GetFullActiveSessions(),
+            'sessions_notactive' => Session::GetFullNotActiveSessions(),
+            'sessions_await' => Session::GetFullAwaitSessions()
+        ]);
+
     }
 
 }
