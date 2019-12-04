@@ -21,6 +21,10 @@ class CreateForeigns extends Migration
 
         Schema::table('sessions', function (Blueprint $table) {
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+        });
+
+        Schema::table('sessions_groups', function (Blueprint $table) {
+            $table->foreign('session_id')->references('id')->on('sessions')->onDelete('cascade');
             $table->foreign('group_id')->references('id')->on('groups')->onDelete('cascade');
         });
 
@@ -50,6 +54,10 @@ class CreateForeigns extends Migration
 
         Schema::table('sessions', function (Blueprint $table) {
             $table->dropForeign('user_id');
+        });
+
+        Schema::table('sessions_groups', function (Blueprint $table) {
+            $table->dropForeign('session_id');
             $table->dropForeign('group_id');
         });
 
