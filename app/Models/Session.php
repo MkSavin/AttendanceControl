@@ -2,23 +2,26 @@
 
 namespace App\Models;
 
+use App\Traits\Relations\BelongsTo;
 use App\Traits\Relations\HasMany;
-use App\Traits\Relations\Has;
+use Carbon\CarbonInterval;
 use Illuminate\Database\Eloquent\Model;
 
 class Session extends Model
 {
 
-    use HasMany\Attendance;
-    use HasMany\SessionGroup;
-    use Has\UserType;
+    use HasMany\Attendance, HasMany\SessionGroup, BelongsTo\UserType, BelongsTo\User;
 
     protected $fillable = ['user_id', 'code', 'activetime', 'active'];
+
+    protected $dates = [
+        'active_at',
+    ];
 
     public static function FullSessions()
     {
 
-        return self::with('session_group', 'attendance'/* , 'user_type' */) /* ->where('user_id', App::user()->id) */;
+        return self::with('session_group', 'session_group.group', 'attendance', 'user', 'user_type') /* ->where('user_id', App::user()->id) */;
 
     }
 
@@ -33,38 +36,61 @@ class Session extends Model
                 $sessions = self::FullSessions()->where('active', 1)->get();
                 break;
             case 'notactive':
-                $sessions = self::FullSessions()->where('active', 0)->get();
+                $sessions = self::FullSessions()->where([
+                    ['active_at', '<=', now()],
+                    ['active', 0],
+                ])->get();
                 break;
             case 'await':
-                $sessions = self::FullSessions()->where('active_at', '>', time() - (24 * 60 * 60))->get();
+                $sessions = self::FullSessions()->where([
+                    ['active_at', '>', now()],
+                    ['active', 0],
+                ])->get();
                 break;
         }
 
-        $sessions->transform(function($item){
+        $sessions->transform(function ($item) {
             if (count($item->session_group)) {
                 $groups = $item->session_group;
 
-                $groups->transform(function($item){
-                    return $item->name;
+                $groups->transform(function ($item) {
+                    return $item->group->name . $item->group->year;
                 });
 
                 $item->target = implode(', ', $groups->toArray());
             } else {
-                // TODO: Target как тип пользователя
+                $item->target = 'Тип: ' . $item->user_type->name;
             }
 
-            $item->creatorAutomated = true;
+            $item->creatorAutomated = $item->user->user_type->bot == true;
 
-            $item->created = 'Сегодня, 12:20';
-            $item->createdTimestamp = time();
+            if (!$item->created_at) {
+                $item->created_at = $item->active_at;
+            }
 
-            $item->timeLeft = 12 . ' с';
+            $item->created = $item->created_at->format('d.m.Y в H:i');
 
-            $item->usersCount = 20;
+            // TODO: Реализовать относительные даты
+            /* $item->created = Carbon::now()->diffForHumans($item->created_at, [
+            'syntax' => 3,
+            'options' => Carbon::JUST_NOW | Carbon::ONE_DAY_WORDS | Carbon::TWO_DAY_WORDS,
+            ]); */
+
+            $item->createdTimestamp = $item->created_at->timestamp;
+
+            if ($item->active == 1) {
+                // TODO: Реализовать правильный подсчет оставшегося времени (правильно подключиться к timezone'ам)
+                // $item->timeLeft = CarbonInterval::seconds($item->activetime - (now()->timestamp - $item->active_at->timestamp))->cascade()->forHumans(['short' => true]);
+                $item->timeLeft = CarbonInterval::seconds($item->activetime)->cascade()->forHumans(['short' => true]);
+            } else {
+                $item->timeLeft = CarbonInterval::seconds($item->activetime)->cascade()->forHumans(['short' => true]);
+            }
+
+            $item->usersCount = count($item->attendance);
 
             return $item;
         });
-        
+
         return $sessions;
     }
 

@@ -864,7 +864,7 @@ main .end-of-page {
     padding-left: 0;
 }
 
-#popup span.blue, #popup span.red, #popup span.yellow {
+span.blue, span.red, span.yellow {
     background: #2188cc;
     padding: 6px 8px;
     border-radius: 3px;
@@ -873,11 +873,11 @@ main .end-of-page {
     display: inline-block;
 }
 
-#popup span.red {
+span.red {
     background: #96596a;
 }
 
-#popup span.yellow {
+span.yellow {
     background: #cc961d;
 }
 

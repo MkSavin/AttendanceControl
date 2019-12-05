@@ -17,14 +17,15 @@ class Code extends Model
      *
      * @return string
      */
-    public static function GeneratePrimaryCode() {
+    public static function GeneratePrimaryCode()
+    {
 
         $code = "";
 
-        for ($i=0; $i < self::CODE_LEN; $i++) { 
+        for ($i = 0; $i < self::CODE_LEN; $i++) {
             $code .= self::CODE_CHARS[rand(0, strlen(self::CODE_CHARS) - 1)];
         }
-        
+
         return $code;
 
     }
@@ -34,15 +35,15 @@ class Code extends Model
      *
      * @return string
      */
-    public static function ConvertToQRCode($primary) {
+    public static function ConvertToQRCode($primary)
+    {
 
         $code = base64_encode($primary);
 
         $code = implode('-', str_split($code, self::CODE_QR_QUANT_LEN));
-        
+
         return $code;
 
     }
-
 
 }

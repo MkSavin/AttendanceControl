@@ -17,6 +17,7 @@ class CreateSessionsTable extends Migration
             $table->increments('id');
 
             $table->integer('user_id')->unsigned();
+            $table->integer('user_type_id')->unsigned();
 
             $table->string('code')->index();
 
