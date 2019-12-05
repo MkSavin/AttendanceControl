@@ -15,11 +15,11 @@ class IndexController extends Controller
      */
     public function Get()
     {
-
+        
         return view('public.pages.index.index', [
-            'sessions_active' => Session::GetFullActiveSessions(),
-            'sessions_notactive' => Session::GetFullNotActiveSessions(),
-            'sessions_await' => Session::GetFullAwaitSessions()
+            'sessions_active' => Session::GetFullSessions('active'),
+            'sessions_notactive' => Session::GetFullSessions('notactive'),
+            'sessions_await' => Session::GetFullSessions('await')
         ]);
 
     }
