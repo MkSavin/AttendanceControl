@@ -27,47 +27,22 @@
                 Активные сеансы
             </div>
             <div class="block-body">
-                <a href="#" class="session red short popup-toggle" popup-target=".session-data">
-                    <span class="session-hide"><img src="public/img/icons/close_white.svg" width="10" alt=""></span>
-                    <div class="header">
-                        <div class="float-left">
-                            <div class="date">Сегодня, 10:20</div>
-                            <div class="creator">Расп.</div>
-                        </div>
-                        <div class="float-right time-timer"><img src="public/img/icons/timer_little.svg" width="12" alt="" class="timer"> 12 c</div>
-                    </div>
-                    <div class="body">
-                        <div class="users-count"><span class="count">12</span> ч.</div>
-                        <div class="users-count-description">отметились</div>
-                        <div class="groups">ПРИ-117, ИСТ-117</div>
-                    </div>
-                </a>
-                <a href="#" class="session long popup-toggle" popup-target=".session-data">
-                    <span class="session-hide"><img src="public/img/icons/close_white.svg" width="10" alt=""></span>
-                    <div class="float-left">
-                        <div class="body">
-                            <div class="users-count"><span class="count">12</span> ч.</div>
-                            <div class="users-count-description">отметились</div>
-                        </div>
-                        <div class="footer">
-                            <span class="creator">Расписание</span>
-                        </div>
-                    </div>
-                    <div class="float-right information">
-                        <div class="info-block">
-                            <div class="info">Сегодня, 10:20</div>
-                            <div class="info-name">Дата создания</div>
-                        </div>
-                        <div class="info-block">
-                            <div class="info"><img src="public/img/icons/timer_little.svg" width="12" alt="" class="timer"> 12 c</div>
-                            <div class="info-name">Осталось</div>
-                        </div>
-                        <div class="info-block">
-                            <div class="info">ПРИ-117, ИСТ-117</div>
-                            <div class="info-name">Цель / Группы</div>
-                        </div>
-                    </div>
-                </a>
+                @foreach($sessions_active as $session)
+                    @include('public.pages.index.parts.session_short', $session)
+                @endforeach
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <div class="block sessions">
+            <div class="block-title">
+                Сеансы в ожидании
+            </div>
+            <div class="block-body">
+                @foreach($sessions_await as $session)
+                    @include('public.pages.index.parts.session_short', $session)
+                @endforeach
                 <div class="clearfix"></div>
             </div>
         </div>
@@ -78,125 +53,9 @@
                 Прошедшие сеансы <span class="blue">Ноябрь 2019</span>
             </div>
             <div class="block-body">
-                <a href="#" class="session red short popup-toggle" popup-target=".session-data">
-                    <span class="session-hide"><img src="public/img/icons/close_white.svg" width="10" alt=""></span>
-                    <div class="header">
-                        <div class="float-left">
-                            <div class="date">Сегодня, 10:20</div>
-                            <div class="creator">Расп.</div>
-                        </div>
-                        <div class="float-right time-timer"><img src="public/img/icons/timer_little.svg" width="12" alt="" class="timer"> 12 c</div>
-                    </div>
-                    <div class="body">
-                        <div class="users-count"><span class="count">12</span> ч.</div>
-                        <div class="users-count-description">отметились</div>
-                        <div class="groups">ПРИ-117, ИСТ-117</div>
-                    </div>
-                </a>
-                <a href="#" class="session long popup-toggle" popup-target=".session-data">
-                    <span class="session-hide"><img src="public/img/icons/close_white.svg" width="10" alt=""></span>
-                    <div class="float-left">
-                        <div class="body">
-                            <div class="users-count"><span class="count">12</span> ч.</div>
-                            <div class="users-count-description">отметились</div>
-                        </div>
-                        <div class="footer">
-                            <span class="creator">Расписание</span>
-                        </div>
-                    </div>
-                    <div class="float-right information">
-                        <div class="info-block">
-                            <div class="info">Сегодня, 10:20</div>
-                            <div class="info-name">Дата создания</div>
-                        </div>
-                        <div class="info-block">
-                            <div class="info"><img src="public/img/icons/timer_little.svg" width="12" alt="" class="timer"> 12 c</div>
-                            <div class="info-name">Осталось</div>
-                        </div>
-                        <div class="info-block">
-                            <div class="info">ПРИ-117, ИСТ-117</div>
-                            <div class="info-name">Цель / Группы</div>
-                        </div>
-                    </div>
-                </a>
-                <a href="#" class="session long popup-toggle" popup-target=".session-data">
-                    <span class="session-hide"><img src="public/img/icons/close_white.svg" width="10" alt=""></span>
-                    <div class="float-left">
-                        <div class="body">
-                            <div class="users-count"><span class="count">12</span> ч.</div>
-                            <div class="users-count-description">отметились</div>
-                        </div>
-                        <div class="footer">
-                            <span class="creator">Расписание</span>
-                        </div>
-                    </div>
-                    <div class="float-right information">
-                        <div class="info-block">
-                            <div class="info">Сегодня, 10:20</div>
-                            <div class="info-name">Дата создания</div>
-                        </div>
-                        <div class="info-block">
-                            <div class="info"><img src="public/img/icons/timer_little.svg" width="12" alt="" class="timer"> 12 c</div>
-                            <div class="info-name">Осталось</div>
-                        </div>
-                        <div class="info-block">
-                            <div class="info">ПРИ-117, ИСТ-117</div>
-                            <div class="info-name">Цель / Группы</div>
-                        </div>
-                    </div>
-                </a>
-                <a href="#" class="session long popup-toggle" popup-target=".session-data">
-                    <span class="session-hide"><img src="public/img/icons/close_white.svg" width="10" alt=""></span>
-                    <div class="float-left">
-                        <div class="body">
-                            <div class="users-count"><span class="count">12</span> ч.</div>
-                            <div class="users-count-description">отметились</div>
-                        </div>
-                        <div class="footer">
-                            <span class="creator">Расписание</span>
-                        </div>
-                    </div>
-                    <div class="float-right information">
-                        <div class="info-block">
-                            <div class="info">Сегодня, 10:20</div>
-                            <div class="info-name">Дата создания</div>
-                        </div>
-                        <div class="info-block">
-                            <div class="info"><img src="public/img/icons/timer_little.svg" width="12" alt="" class="timer"> 12 c</div>
-                            <div class="info-name">Осталось</div>
-                        </div>
-                        <div class="info-block">
-                            <div class="info">ПРИ-117, ИСТ-117</div>
-                            <div class="info-name">Цель / Группы</div>
-                        </div>
-                    </div>
-                </a>
-                <a href="#" class="session long popup-toggle" popup-target=".session-data">
-                    <span class="session-hide"><img src="public/img/icons/close_white.svg" width="10" alt=""></span>
-                    <div class="float-left">
-                        <div class="body">
-                            <div class="users-count"><span class="count">12</span> ч.</div>
-                            <div class="users-count-description">отметились</div>
-                        </div>
-                        <div class="footer">
-                            <span class="creator">Расписание</span>
-                        </div>
-                    </div>
-                    <div class="float-right information">
-                        <div class="info-block">
-                            <div class="info">Сегодня, 10:20</div>
-                            <div class="info-name">Дата создания</div>
-                        </div>
-                        <div class="info-block">
-                            <div class="info"><img src="public/img/icons/timer_little.svg" width="12" alt="" class="timer"> 12 c</div>
-                            <div class="info-name">Осталось</div>
-                        </div>
-                        <div class="info-block">
-                            <div class="info">ПРИ-117, ИСТ-117</div>
-                            <div class="info-name">Цель / Группы</div>
-                        </div>
-                    </div>
-                </a>
+                @foreach($sessions_notactive as $session)
+                    @include('public.pages.index.parts.session_short', $session)
+                @endforeach
                 <div class="clearfix"></div>
             </div>
         </div>
