@@ -20,4 +20,6 @@ Route::group(['namespace' => 'API'], function () {
     Route::get('/users/aside', 'UsersController@GetAside');
     Route::get('/users/types', 'UsersController@GetTypes');
 
+    Route::get('/sessions/all', 'SessionsController@GetAll');
+
 });
