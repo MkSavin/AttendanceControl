@@ -1,4 +1,4 @@
-<a href="#" class="session long popup-toggle" popup-target=".session-data"  data-id="{{ $id }}">
+<a href="#" class="session long popup-toggle js-session-long" popup-target=".session-data"  data-id="{{ $id }}">
     <span class="session-hide"><img src="public/img/icons/close_white.svg" width="10" alt=""></span>
     <div class="float-left">
         <div class="body">

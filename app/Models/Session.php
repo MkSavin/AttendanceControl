@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use App\Helpers;
 use App\Traits\Relations\BelongsTo;
 use App\Traits\Relations\HasMany;
-use Carbon\CarbonInterval;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
+use \Carbon\CarbonInterval;
 
 class Session extends Model
 {
@@ -68,20 +70,14 @@ class Session extends Model
                 $item->created_at = $item->active_at;
             }
 
-            $item->created = $item->created_at->format('d.m.Y в H:i');
-
-            // TODO: Реализовать относительные даты
-            /* $item->created = Carbon::now()->diffForHumans($item->created_at, [
-            'syntax' => 3,
-            'options' => Carbon::JUST_NOW | Carbon::ONE_DAY_WORDS | Carbon::TWO_DAY_WORDS,
-            ]); */
+            $item->created = Helpers\DateTime::CarbonForRelativeHuman($item->created_at);
 
             $item->createdTimestamp = $item->created_at->timestamp;
 
-            if ($item->active == 1) {
-                // TODO: Реализовать правильный подсчет оставшегося времени (правильно подключиться к timezone'ам)
-                // $item->timeLeft = CarbonInterval::seconds($item->activetime - (now()->timestamp - $item->active_at->timestamp))->cascade()->forHumans(['short' => true]);
-                $item->timeLeft = CarbonInterval::seconds($item->activetime)->cascade()->forHumans(['short' => true]);
+            $seconds = $item->activetime - (now()->timestamp - $item->active_at->timestamp);
+
+            if ($item->active == 1 && $seconds > 0) {
+                $item->timeLeft = CarbonInterval::seconds($seconds)->cascade()->forHumans(['short' => true]);
             } else {
                 $item->timeLeft = CarbonInterval::seconds($item->activetime)->cascade()->forHumans(['short' => true]);
             }
