@@ -1,5 +1,29 @@
 var is_mobile = ((/Mobile|iPhone|iPod|BlackBerry|Windows Phone/i).test(navigator.userAgent || navigator.vendor || window.opera) ? true : false);
 
+var customJQFunctions = function() {
+    jQuery.fn.extend({
+        serializeSelect: function() {
+            var result = [];
+            this.find('option:selected').each(function(){
+                result.push($(this).val());
+            });
+            return result.join(',');
+        }
+    });
+};
+
+function throttle(f, delay){
+    var timer = null;
+    return function(){
+        var context = this, args = arguments;
+        clearTimeout(timer);
+        timer = window.setTimeout(function(){
+            f.apply(context, args);
+        },
+        delay || 500);
+    };
+}
+
 var setMomentalInterval = function(fn, timeout = 1000) {
     fn();
     return setInterval(fn, timeout);
@@ -20,6 +44,9 @@ var selectpicker_data = {
 var api_links = {
     sessions: {
         all: '/api/sessions/all'
+    },
+    users: {
+        full: '/api/users'
     }
 };
 
@@ -250,6 +277,46 @@ var popupHandlers = function(){
         });
     });
 
+    $('#popup').on('popup-user-list-create', function(e, button, when){
+        var self = $(this);
+
+        self.find('.js-loader').fadeIn(200);
+        self.find('.js-noted-table').fadeOut(200);
+        self.find('.js-no-results').fadeOut(200);
+
+        $.ajax({
+            url: api_links.users.full,
+            data: {
+                type: self.find('.js-user-type').serializeSelect(),
+                group: self.find('.js-user-group').serializeSelect(),
+                search: self.find('.js-user-search').val()
+            },
+            success: function(data) {
+                self.find('.js-loader').fadeOut(200);
+                if(data.length > 0) {
+                    self.find('.js-noted-table').fadeIn(200);
+
+                    self.find('.js-users-list').html("");
+                    data.forEach(function(user){
+                        var xmp = $('.js-user-list-row-templates').html();
+                        var element = $(xmp)[0].outerHTML;
+                        element = element
+                            .replace('#ID#', user.id)
+                            .replace('#TYPE#', user.user_type.name)
+                            .replace('#NAMESHORT#', user.name_short)
+                            .replace('#GROUP_ID#', user.group != null ? user.group.id : "")
+                            .replace('#GROUP_NAME#', user.group != null ? user.group.name_full : "");
+
+                        var element = $(element).appendTo('#popup .js-users-list');
+                    });
+                } else {
+                    self.find('.js-no-results').fadeIn(200);
+                }
+                refreshSelects();
+            }
+        });
+    });
+
 };
 
 var popupAdditionalActions = function(){
@@ -258,7 +325,7 @@ var popupAdditionalActions = function(){
         var self = $(this);
         var parent = self.parents('.session-create');
 
-        var userTypeElement = parent.find('.js-usertype > option:selected, .js-usertype > option');
+        var userTypeElement = parent.find('.js-user-type > option:selected, .js-user-type > option');
 
         var userType = userTypeElement.length > 0;
         var group = true;
@@ -270,18 +337,17 @@ var popupAdditionalActions = function(){
         var usersCount = 0;
 
         if (userType && userTypeElement.data("checkgroup")) {
-
             group = parent
-            .find('.js-usergroup > option:selected, .js-usergroup > option')
+            .find('.js-user-group > option:selected, .js-user-group > option')
             .each(function(){
                 usersCount += parseInt($(this).data('users-count'));
             })
             .length > 0;
 
-            parent.find('.js-usergroup').removeClass('disabled');
+            parent.find('.js-user-group').removeClass('disabled');
         } else {
             group = true;
-            parent.find('.js-usergroup').addClass('disabled');
+            parent.find('.js-user-group').addClass('disabled');
             usersCount = parseInt(userTypeElement.data('users-count'));
         }
 
@@ -292,9 +358,19 @@ var popupAdditionalActions = function(){
 
     });
     
+    $(document).on('change', '#popup .user-list select', function() {
+        $('#popup').trigger('popup-user-list-create');
+    });
+
+    $(document).on('keyup', '#popup .user-list .js-user-search', throttle(function() {
+        $('#popup').trigger('popup-user-list-create');
+    }));
+
 };
 
 $(function(){
+    customJQFunctions();
+
     refreshSelects();
     updateScrollbars();
 

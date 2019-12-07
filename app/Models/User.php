@@ -13,7 +13,7 @@ class User extends Authenticatable
     use BelongsTo\Group, BelongsTo\UserType;
 
     /**
-     * The attributes that are mass assignable.
+     * Аттрибуты массового определения
      *
      * @var array
      */
@@ -22,7 +22,7 @@ class User extends Authenticatable
     ];
 
     /**
-     * The attributes that should be hidden for arrays.
+     * Аттрибуты, которые будут скрыты из выборки из БД
      *
      * @var array
      */
@@ -30,9 +30,48 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    public static function getFull()
+    /**
+     * Псевдо-аттрибуты создаваемые на основе соответствующих аксессоров, которые должны попасть сразу в коллекцию при выборке данных из БД. Жадная подгрузка аксессор-аттрибутов
+     *
+     * @var array
+     */
+    protected $appends = [
+        'name_short',
+    ];
+
+    /**
+     * Получение полной информации о всех пользователях. Поддерживает фильтрацию
+     *
+     * @param boolean $type
+     * @param boolean $group
+     * @param boolean $search
+     * @return Collection
+     */
+    public static function getFull($type = false, $group = false, $search = false)
     {
-        return User::with('group', 'user_type')->get();
+        $users = User::with('group', 'user_type');
+        
+        if ($type) {
+            $users = $users->whereIn('user_type_id', explode(',', $type));
+        }
+        if ($group) {
+            $users = $users->whereIn('group_id', explode(',', $group));
+        }
+        if ($search) {
+            $users = $users->where('name', 'LIKE', '%' . $search . '%');
+        }
+
+        return $users->get();
+    }
+
+    /**
+     * Аксессор аттрибута name_short
+     *
+     * @return string
+     */
+    public function getNameShortAttribute()
+    {
+        return preg_replace('/(\w+) (\w)\w+ (\w)\w+/iu', '$1 $2.$3', $this->name);
     }
 
 }
