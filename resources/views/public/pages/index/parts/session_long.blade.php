@@ -6,7 +6,7 @@
             <div class="users-count-description">отметились</div>
         </div>
         @if($creatorAutomated)
-        <div class="footer">
+        <div class="footer js-creator">
             <span class="creator">Расписание</span>
         </div>
         @endif

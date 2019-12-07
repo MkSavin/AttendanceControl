@@ -17,6 +17,12 @@ var selectpicker_data = {
     selectedTextFormat: "count > 3"
 };
 
+var api_links = {
+    sessions: {
+        all: '/api/sessions/all'
+    }
+};
+
 var updateSelects;
 (updateSelects = function(){
     $('main select, #popup select').selectpicker(selectpicker_data);
@@ -71,6 +77,48 @@ setMomentalInterval(function(){
     var weekTypeElement = $('.js-weektype');
     weekTypeElement.html(weekType ? weekTypeElement.data('num') : weekTypeElement.data('denum'));
 }, 1000);
+
+if ($('.js-sessions-list').length) {
+    var sessionsAjax = function(sessionType = 'active', data){
+        $('.js-sessions-list-' + sessionType + ' .js-block-body').html("");
+        var session;
+        var clonableBlock = 'long';
+
+        if (sessionType == 'active') {
+            session = data.sessions_active;
+        } else if(sessionType == 'await') {
+            session = data.sessions_await;
+        } else if(sessionType == 'notactive') {
+            session = data.sessions_notactive;
+            clonableBlock = 'short';
+        }
+
+        session.forEach(function(session){
+            var element = $('.js-session-' + clonableBlock)[0].outerHTML;
+            element = element
+                .replace('#ID#', session.id)
+                .replace('#USERSCOUNT#', session.usersCount)
+                .replace('#CREATED#', session.created)
+                .replace('#CREATEDTIMESTAMP#', session.createdTimestamp)
+                .replace('#TIMELEFT#', session.timeLeft)
+                .replace('#TARGET#', session.target);
+            var element = $(element).appendTo('.js-sessions-list-' + sessionType + ' .js-block-body');
+            if (!session.creatorAutomated) {
+                element.find('.js-creator').remove();
+            }
+        });
+    };
+    setMomentalInterval(function(){
+        $.ajax({
+            url: api_links.sessions.all,
+            success: function(data) {
+                sessionsAjax('active', data);
+                sessionsAjax('await', data);
+                sessionsAjax('notactive', data);
+            }
+        });
+    }, 5000);
+}
 
 var popupInterval;
 var popupTimer;
