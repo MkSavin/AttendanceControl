@@ -48,7 +48,7 @@
             <div class="input-line row">
                 <div class="col-sm">
                     <label for="popup-session-create-user-type">1. Выберите тип пользователя</label>
-                    <select data-live-search="true" name="k" class="form-control js-usertype" id="popup-session-create-user-type">
+                    <select data-live-search="true" name="k" class="form-control js-user-type" id="popup-session-create-user-type">
                         <option value="1" data-checkgroup="false" data-users-count="20" data-subtext="20 чел." selected default-selected>Спец. по кадрам</option>
                         <option value="2" data-checkgroup="false" data-users-count="120" data-subtext="120 чел.">Преподаватель</option>
                         <option value="3" data-checkgroup="true" data-users-count="1420" data-subtext="1420 чел.">Студент</option>
@@ -56,7 +56,7 @@
                 </div>
                 <div class="col-sm">
                     <label for="popup-session-create-user-group">2. Выберите группы пользователей</label>
-                    <select data-live-search="true" name="n" multiple class="form-control js-usergroup" id="popup-session-create-user-group">
+                    <select data-live-search="true" name="n" multiple class="form-control js-user-group" id="popup-session-create-user-group">
                         <option value="1" data-users-count="20" data-subtext="20 чел.">ПРИ-117</option>
                         <option value="2" data-users-count="20" data-subtext="20 чел.">ИСТ-117</option>
                         <option value="3" data-users-count="20" data-subtext="20 чел.">ИСБ-117</option>
@@ -407,7 +407,7 @@
         <div class="row mb-3">
             <div class="col-md">
                 <label for="popup-user-data-user-group">Группа <a href="#" class="ml-2 popup-toggle" popup-target=".group-data">Открыть</a></label>
-                <select data-live-search="true" disabled name="n" class="form-control js-usergroup" id="popup-user-data-user-group">
+                <select data-live-search="true" disabled name="n" class="form-control js-user-group" id="popup-user-data-user-group">
                     <option value="1" data-subtext="20 чел." selected>ПРИ-117</option>
                     <option value="2" data-subtext="20 чел.">ИСТ-117</option>
                     <option value="3" data-subtext="20 чел.">ИСБ-117</option>
@@ -415,7 +415,7 @@
             </div>
             <div class="col-md">
                 <label for="popup-user-data-user-type">Тип пользователя</label>
-                <select data-live-search="true" disabled name="n" class="form-control js-usergroup" id="popup-user-data-user-type">
+                <select data-live-search="true" disabled name="n" class="form-control js-user-group" id="popup-user-data-user-type">
                     <option value="1" data-subtext="20 чел.">Спец. по кадрам</option>
                     <option value="2" data-subtext="20 чел.">Преподаватель</option>
                     <option value="3" data-subtext="20 чел." selected>Студент</option>
@@ -471,7 +471,7 @@
             <div class="row mb-3">
                 <div class="col-md">
                     <label for="popup-user-data-user-group">Группа</label>
-                    <select data-live-search="true" name="n" class="form-control js-usergroup" id="popup-user-data-user-group">
+                    <select data-live-search="true" name="n" class="form-control js-user-group" id="popup-user-data-user-group">
                         <option value="1" data-subtext="20 чел." selected>ПРИ-117</option>
                         <option value="2" data-subtext="20 чел.">ИСТ-117</option>
                         <option value="3" data-subtext="20 чел.">ИСБ-117</option>
@@ -479,7 +479,7 @@
                 </div>
                 <div class="col-md">
                     <label for="popup-user-data-user-type">Тип пользователя</label>
-                    <select data-live-search="true" name="n" class="form-control js-usergroup" id="popup-user-data-user-type">
+                    <select data-live-search="true" name="n" class="form-control js-user-group" id="popup-user-data-user-type">
                         <option value="1" data-subtext="20 чел.">Спец. по кадрам</option>
                         <option value="2" data-subtext="20 чел.">Преподаватель</option>
                         <option value="3" data-subtext="20 чел." selected>Студент</option>
@@ -506,57 +506,74 @@
         <div class="row mb-3">
             <div class="col-md w-33">
                 <label for="popup-user-list-user-type">Тип пользователя</label>
-                <select data-live-search="true" name="n" multiple class="form-control js-usergroup" id="popup-user-list-user-type">
-                    <option value="1" data-subtext="20 чел." selected>Спец. по кадрам</option>
+                <select data-live-search="true" name="n" multiple class="form-control js-user-type" id="popup-user-list-user-type">
+                    <option value="1" data-subtext="20 чел.">Спец. по кадрам</option>
                     <option value="2" data-subtext="20 чел.">Преподаватель</option>
-                    <option value="3" data-subtext="20 чел." selected>Студент</option>
+                    <option value="3" data-subtext="20 чел.">Студент</option>
                 </select>
             </div>
             <div class="col-md w-33">
                 <label for="popup-user-list-user-group">Группа</label>
-                <select data-live-search="true" name="n" multiple class="form-control js-usergroup" id="popup-user-list-user-group">
-                    <option value="1" data-subtext="20 чел." selected>ПРИ-117</option>
+                <select data-live-search="true" name="n" multiple class="form-control js-user-group" id="popup-user-list-user-group">
+                    <option value="1" data-subtext="20 чел.">ПРИ-117</option>
                     <option value="2" data-subtext="20 чел.">ИСТ-117</option>
                     <option value="3" data-subtext="20 чел.">ИСБ-117</option>
-                    <option value="4" data-subtext="20 чел." selected>ИРП-117</option>
+                    <option value="4" data-subtext="20 чел.">ИРП-117</option>
                 </select>
             </div>
-            <div class="col-md">
+            <div class="col-md w-33">
                 <label for="popup-user-data-search">Поиск</label>
-                <input type="text" class="form-control" id="popup-user-data-search">
+                <input type="text" class="js-user-search form-control" id="popup-user-data-search">
             </div>
         </div>
-        <div class="noted-table noted-table-wide ps">
-            <table>
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>ТИП</th>
-                        <th>ФИО</th>
-                        <th>ГРУППА</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Студент</td>
-                        <td><a href="#" class="popup-toggle" popup-target=".user-data">Алексеев И.И</a></td>
-                        <td><a href="#" class="popup-toggle" popup-target=".group-data">ПРИ-117</a></td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Студент</td>
-                        <td><a href="#" class="popup-toggle" popup-target=".user-data">Куппе Р.О</a></td>
-                        <td><a href="#" class="popup-toggle" popup-target=".group-data">ПРИ-117</a></td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>Спец. по кадрам</td>
-                        <td><a href="#" class="popup-toggle" popup-target=".user-data">Уппе О.Р</a></td>
-                        <td><a href="#" class="popup-toggle" popup-target=".group-data">ИРП-117</a></td>
-                    </tr>
-                </tbody>
-            </table>
+        <xmp class="d-none js-user-list-row-templates">
+            @include('public.layouts.parts.popupStackParts.usersList.userRow', [
+                'id' => '#ID#',
+                'type' => '#TYPE#',
+                'name_short' => '#NAMESHORT#',
+                'group' => [
+                    'id' => '#GROUP_ID#',
+                    'name' => '#GROUP_NAME#',
+                ],
+            ])
+        </xmp>
+        <div class="updatable-table">
+            <div class="no-results js-no-results" style="display:none">Пользователей, подходящих под Ваш набор фильтров, нет</div>
+            <div class="center no-selection loader js-loader">
+                <img src="public/img/animation/loading_transparent.gif" class="pevs-none" width="60" alt="">
+            </div>
+            <div class="noted-table noted-table-wide js-noted-table ps" style="display:none">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>ТИП</th>
+                            <th>ФИО</th>
+                            <th>ГРУППА</th>
+                        </tr>
+                    </thead>
+                    <tbody class="js-users-list">
+                        <tr>
+                            <td>1</td>
+                            <td>Студент</td>
+                            <td><a href="#" class="popup-toggle" popup-target=".user-data">Алексеев И.И</a></td>
+                            <td><a href="#" class="popup-toggle" popup-target=".group-data">ПРИ-117</a></td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Студент</td>
+                            <td><a href="#" class="popup-toggle" popup-target=".user-data">Куппе Р.О</a></td>
+                            <td><a href="#" class="popup-toggle" popup-target=".group-data">ПРИ-117</a></td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>Спец. по кадрам</td>
+                            <td><a href="#" class="popup-toggle" popup-target=".user-data">Уппе О.Р</a></td>
+                            <td><a href="#" class="popup-toggle" popup-target=".group-data">ИРП-117</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
@@ -653,6 +670,12 @@
         <div class="clearfix"></div>
     </div>
     <div class="body">
+        <div class="row mb-3">
+            <div class="col-md">
+                <label for="popup-user-data-search">Поиск</label>
+                <input type="text" class="form-control" id="popup-user-data-search">
+            </div>
+        </div>
         <div class="noted-table noted-table-wide no-th-top-padding ps">
             <table>
                 <thead>

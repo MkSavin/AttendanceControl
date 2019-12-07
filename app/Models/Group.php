@@ -9,14 +9,14 @@ class Group extends Model
 
     protected $fillable = ['name', 'year'];
     public $timestamps = false;
-    protected $appends = ['fullName'];
+    protected $appends = ['name_full'];
 
     /**
      * Аксессор. Полное название группы
      *
      * @return string
      */
-    public function getFullNameAttribute()
+    public function getNameFullAttribute()
     {
         return $this->name . $this->year;
     }

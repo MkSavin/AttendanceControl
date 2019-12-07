@@ -17,7 +17,10 @@ class UsersController extends Controller
      */
     public function Get()
     {
-        return response()->json(User::getFull(), 200);
+        $type = Input::get('type') ?? false;
+        $group = Input::get('group') ?? false;
+        $search = Input::get('search') ?? false;
+        return response()->json(User::getFull($type, $group, $search), 200);
     }
 
     /**

@@ -24,6 +24,10 @@ a:active {
     color: #515a66;
 }
 
+.w-33 {
+    width: calc(100% / 3);
+}
+
 .fl_l {
     float: left;
 }
@@ -1052,10 +1056,32 @@ span.yellow {
     opacity: .6;
 }
 
+#popup .updatable-table {
+    min-height: 60px;
+}
+
+#popup .updatable-table .loader {
+    position: absolute;
+    left: 0;
+    right: 0;
+    z-index: 100;
+}
+
+#popup .updatable-table .no-results {
+    font-weight: 500;
+    padding-top: 20px;
+    font-size: 17px;
+    text-align: center;
+}
+
 #popup .loading .body,
 #popup .text .body {
     height: 350px;
     position: relative;
+}
+
+#popup .body .center {
+    text-align: center;
 }
 
 #popup .loading .body .center,
@@ -1064,7 +1090,6 @@ span.yellow {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    text-align: center;
 }
 
 #popup .bigicon {

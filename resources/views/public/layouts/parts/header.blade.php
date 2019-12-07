@@ -1,8 +1,8 @@
 <div class="float-left left">
     <div class="title"><a href="/">AControl</a></div>
     <div class="menu">
-        <a href="#" class="popup-toggle" popup-target=".user-list">Пользователи</a>
-        <a href="#" class="popup-toggle" popup-target=".group-list">Группы</a>
+        <a href="#" class="popup-toggle" popup-target=".user-list" popup-handler-after="popup-user-list-create">Пользователи</a>
+        <a href="#" class="popup-toggle" popup-target=".group-list" popup-handler-after="popup-group-list-create">Группы</a>
     </div>
 </div>
 <div class="float-right right">
