@@ -522,8 +522,8 @@
                 </select>
             </div>
             <div class="col-md w-33">
-                <label for="popup-user-data-search">Поиск</label>
-                <input type="text" class="js-user-search form-control" id="popup-user-data-search">
+                <label for="popup-user-list-search">Поиск</label>
+                <input type="text" class="js-user-search form-control" id="popup-user-list-search">
             </div>
         </div>
         <xmp class="d-none js-user-list-row-templates">
@@ -672,37 +672,50 @@
     <div class="body">
         <div class="row mb-3">
             <div class="col-md">
-                <label for="popup-user-data-search">Поиск</label>
-                <input type="text" class="form-control" id="popup-user-data-search">
+                <label for="popup-group-list-search">Поиск</label>
+                <input type="text" class="form-control js-group-search" id="popup-group-list-search">
             </div>
         </div>
-        <div class="noted-table noted-table-wide no-th-top-padding ps">
-            <table>
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>ГРУППА</th>
-                        <th>ГОД</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td><a href="#" class="popup-toggle" popup-target=".group-data">ПРИ-1</a></td>
-                        <td>17</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td><a href="#" class="popup-toggle" popup-target=".group-data">ИСТ-1</a></td>
-                        <td>17</td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td><a href="#" class="popup-toggle" popup-target=".group-data">ИРП-1</a></td>
-                        <td>17</td>
-                    </tr>
-                </tbody>
-            </table>
+        <xmp class="d-none js-group-list-row-templates">
+            @include('public.layouts.parts.popupStackParts.groupsList.groupRow', [
+                'id' => '#ID#',
+                'name' => '#NAME#',
+                'year' => '#YEAR#',
+            ])
+        </xmp>
+        <div class="updatable-table">
+            <div class="no-results js-no-results" style="display:none">Групп, подходящих под Ваш набор фильтров, нет</div>
+            <div class="center no-selection loader js-loader">
+                <img src="public/img/animation/loading_transparent.gif" class="pevs-none" width="60" alt="">
+            </div>
+            <div class="noted-table noted-table-wide js-noted-table ps" style="display:none">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>ГРУППА</th>
+                            <th>ГОД</th>
+                        </tr>
+                    </thead>
+                    <tbody class="js-group-list">
+                        <tr>
+                            <td>1</td>
+                            <td><a href="#" class="popup-toggle" popup-target=".group-data">ПРИ-1</a></td>
+                            <td>17</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td><a href="#" class="popup-toggle" popup-target=".group-data">ИСТ-1</a></td>
+                            <td>17</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td><a href="#" class="popup-toggle" popup-target=".group-data">ИРП-1</a></td>
+                            <td>17</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>

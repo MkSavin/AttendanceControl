@@ -47,6 +47,9 @@ var api_links = {
     },
     users: {
         full: '/api/users'
+    },
+    groups: {
+        all: '/api/groups'
     }
 };
 
@@ -317,6 +320,42 @@ var popupHandlers = function(){
         });
     });
 
+    $('#popup').on('popup-group-list-create', function(e, button, when){
+        var self = $(this);
+
+        self.find('.js-loader').fadeIn(200);
+        self.find('.js-noted-table').fadeOut(200);
+        self.find('.js-no-results').fadeOut(200);
+
+        $.ajax({
+            url: api_links.groups.all,
+            data: {
+                search: self.find('.js-group-search').val()
+            },
+            success: function(data) {
+                self.find('.js-loader').fadeOut(200);
+                if(data.length > 0) {
+                    self.find('.js-noted-table').fadeIn(200);
+
+                    self.find('.js-group-list').html("");
+                    data.forEach(function(group){
+                        var xmp = $('.js-group-list-row-templates').html();
+                        var element = $(xmp)[0].outerHTML;
+                        element = element
+                            .replace('#ID#', group.id)
+                            .replace('#NAME#', group.name)
+                            .replace('#YEAR#', group.year)
+
+                        var element = $(element).appendTo('#popup .js-group-list');
+                    });
+                } else {
+                    self.find('.js-no-results').fadeIn(200);
+                }
+                refreshSelects();
+            }
+        });
+    });
+
 };
 
 var popupAdditionalActions = function(){
@@ -364,6 +403,10 @@ var popupAdditionalActions = function(){
 
     $(document).on('keyup', '#popup .user-list .js-user-search', throttle(function() {
         $('#popup').trigger('popup-user-list-create');
+    }));
+
+    $(document).on('keyup', '#popup .group-list .js-group-search', throttle(function() {
+        $('#popup').trigger('popup-group-list-create');
     }));
 
 };

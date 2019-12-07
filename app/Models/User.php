@@ -42,12 +42,12 @@ class User extends Authenticatable
     /**
      * Получение полной информации о всех пользователях. Поддерживает фильтрацию
      *
-     * @param boolean $type
-     * @param boolean $group
-     * @param boolean $search
+     * @param string|boolean $type
+     * @param string|boolean $group
+     * @param string|boolean $search
      * @return Collection
      */
-    public static function getFull($type = false, $group = false, $search = false)
+    public static function getFull($type = false, $group = false, $sort = false, $search = false)
     {
         $users = User::with('group', 'user_type');
         
@@ -59,6 +59,23 @@ class User extends Authenticatable
         }
         if ($search) {
             $users = $users->where('name', 'LIKE', '%' . $search . '%');
+        }
+
+        if ($sort) {
+            if (!is_array($sort)) {
+                $sort = [$sort];
+            }
+            foreach ($sort as $sortElement) {
+                if (!is_array($sortElement)) {
+                    $sortElement = [$sortElement, 'asc'];
+                }
+                $users = $users->orderBy($sortElement[0], $sortElement[1]);
+            }
+        } else {
+            $users = $users
+                ->orderBy('user_type_id', 'asc')
+                ->orderBy('group_id')
+                ->orderBy('id');
         }
 
         return $users->get();

@@ -12,6 +12,26 @@ class Group extends Model
     protected $appends = ['name_full'];
 
     /**
+     * Получение полной информации о всех группах. Поддерживает поиск
+     *
+     * @param boolean $search
+     * @return Collection
+     */
+    public static function getFull($search = false)
+    {
+        $groups = Group::orderBy('id');
+
+        if ($search) {
+            $groups = $groups
+                ->where('name', 'LIKE', '%' . $search . '%')
+                ->orWhere('year', 'LIKE', '%' . $search . '%')
+                ->orWhereRaw('CONCAT(name, year) LIKE \'%' . $search . '%\'');
+        }
+
+        return $groups->get();
+    }
+
+    /**
      * Аксессор. Полное название группы
      *
      * @return string

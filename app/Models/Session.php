@@ -20,31 +20,31 @@ class Session extends Model
         'active_at',
     ];
 
-    public static function FullSessions()
+    public static function fullSessions()
     {
 
         return self::with('session_group', 'session_group.group', 'attendance', 'user', 'user_type') /* ->where('user_id', App::user()->id) */;
 
     }
 
-    public static function GetFullSessions($type = 'all')
+    public static function getFullSessions($type = 'all')
     {
 
         switch ($type) {
             case 'all':
-                $sessions = self::FullSessions()->get();
+                $sessions = self::fullSessions()->get();
                 break;
             case 'active':
-                $sessions = self::FullSessions()->where('active', 1)->get();
+                $sessions = self::fullSessions()->where('active', 1)->get();
                 break;
             case 'notactive':
-                $sessions = self::FullSessions()->where([
+                $sessions = self::fullSessions()->where([
                     ['active_at', '<=', now()],
                     ['active', 0],
                 ])->get();
                 break;
             case 'await':
-                $sessions = self::FullSessions()->where([
+                $sessions = self::fullSessions()->where([
                     ['active_at', '>', now()],
                     ['active', 0],
                 ])->get();

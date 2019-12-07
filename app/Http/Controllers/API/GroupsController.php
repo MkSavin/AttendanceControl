@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Models\Group;
+use Illuminate\Support\Facades\Input;
 
 class GroupsController extends Controller
 {
@@ -14,7 +15,8 @@ class GroupsController extends Controller
      */
     public function Get()
     {
-        return response()->json(Group::get(), 200);
+        $search = Input::get('search') ?? false;
+        return response()->json(Group::getFull($search), 200);
     }
 
 }
