@@ -36,18 +36,18 @@
         'timeLeft' => '#TIMELEFT#',
     ])
 </div>
-<div class="sessions-list">
+<div class="sessions-list js-sessions-list">
     <!-- TODO:
     <div class="block search">
         <input type="submit" class="search-icon" value="">
         <input type="text" class="form-control form-control-lg" placeholder="Поиск...">
     </div> -->
-    <div class="{{ count($sessions_active) == 0 ? 'd-none' : '' }}">
+    <div class="js-sessions-list-active {{ count($sessions_active) == 0 ? 'd-none' : '' }}">
         <div class="block sessions">
             <div class="block-title">
                 Активные сеансы
             </div>
-            <div class="block-body">
+            <div class="block-body js-block-body">
                 @foreach($sessions_active as $session)
                     @include('public.pages.index.parts.session_long', $session)
                 @endforeach
@@ -55,12 +55,12 @@
             </div>
         </div>
     </div>
-    <div class="{{ count($sessions_await) == 0 ? 'd-none' : '' }}">
+    <div class="js-sessions-list-await {{ count($sessions_await) == 0 ? 'd-none' : '' }}">
         <div class="block sessions">
             <div class="block-title">
                 Сеансы в ожидании
             </div>
-            <div class="block-body">
+            <div class="block-body js-block-body">
                 @foreach($sessions_await as $session)
                     @include('public.pages.index.parts.session_long', $session)
                 @endforeach
@@ -68,12 +68,12 @@
             </div>
         </div>
     </div>
-    <div class="{{ count($sessions_notactive) == 0 ? 'd-none' : '' }}">
+    <div class="js-sessions-list-notactive {{ count($sessions_notactive) == 0 ? 'd-none' : '' }}">
         <div class="block sessions">
             <div class="block-title">
                 Прошедшие сеансы <!--<span class="blue">Ноябрь 2019</span>-->
             </div>
-            <div class="block-body">
+            <div class="block-body js-block-body">
                 @foreach($sessions_notactive as $session)
                     @include('public.pages.index.parts.session_short', $session)
                 @endforeach
@@ -81,7 +81,7 @@
             </div>
         </div>
     </div>
-    <div class="block loadmore no-selection"><img src="public/img/animation/loading_transparent.gif" class="js-loader d-none" alt=""> Загрузить еще...</div>
-    <div class="end-of-page">Вы достигли конца страницы</div>
+    <!-- <div class="block loadmore no-selection"><img src="public/img/animation/loading_transparent.gif" class="js-loader d-none" alt=""> Загрузить еще...</div> -->
+    <!-- <div class="end-of-page">Вы достигли конца страницы</div> -->
 </div>
 @endsection
