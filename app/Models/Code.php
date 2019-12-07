@@ -17,7 +17,7 @@ class Code extends Model
      *
      * @return string
      */
-    public static function GeneratePrimaryCode()
+    public static function generatePrimaryCode()
     {
 
         $code = "";
@@ -35,7 +35,7 @@ class Code extends Model
      *
      * @return string
      */
-    public static function ConvertToQRCode($primary)
+    public static function convertToQRCode($primary)
     {
 
         $code = base64_encode($primary);

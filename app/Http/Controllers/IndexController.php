@@ -17,9 +17,9 @@ class IndexController extends Controller
     {
         
         return view('public.pages.index.index', [
-            'sessions_active' => Session::GetFullSessions('active'),
-            'sessions_notactive' => Session::GetFullSessions('notactive'),
-            'sessions_await' => Session::GetFullSessions('await')
+            'sessions_active' => Session::getFullSessions('active'),
+            'sessions_notactive' => Session::getFullSessions('notactive'),
+            'sessions_await' => Session::getFullSessions('await')
         ]);
 
     }
