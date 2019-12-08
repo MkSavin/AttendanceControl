@@ -22,6 +22,8 @@ class CreateUsersTable extends Migration
             $table->integer('user_type_id')->unsigned();
             $table->integer('group_id')->unsigned()->nullable();
 
+            $table->string('api_token', 80)->unique()->nullable()->default(null);
+
             $table->rememberToken();
             $table->timestamps();
         });

@@ -2,7 +2,10 @@
 
 namespace App\Models;
 
+use Auth;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
+use Lang;
 
 class Code extends Model
 {
@@ -19,15 +22,7 @@ class Code extends Model
      */
     public static function generatePrimaryCode()
     {
-
-        $code = "";
-
-        for ($i = 0; $i < self::CODE_LEN; $i++) {
-            $code .= self::CODE_CHARS[rand(0, strlen(self::CODE_CHARS) - 1)];
-        }
-
-        return $code;
-
+        return Str::random(self::CODE_LEN);
     }
 
     /**
@@ -37,12 +32,114 @@ class Code extends Model
      */
     public static function convertToQRCode($primary)
     {
-
         $code = base64_encode($primary);
 
         $code = implode('-', str_split($code, self::CODE_QR_QUANT_LEN));
 
         return $code;
+    }
+
+    /**
+     * Метод конвертации первичного кода в код для qr
+     *
+     * @return string
+     */
+    public static function convertFromQRCode($code)
+    {
+        $code = str_replace('-', '', $code);
+
+        return base64_decode($code);
+    }
+
+    public static function useCode($code)
+    {
+        $user = Auth::user();
+        if (!$user) {
+            return [
+                "error" => true,
+                "code" => 10,
+                "msg" => Lang::get('auth.not-loggined'),
+            ];
+        }
+        if (!$code) {
+            return [
+                "error" => true,
+                "code" => 1000,
+                "msg" => Lang::get('sessionCode.use.error.codeEmpty'),
+            ];
+        }
+
+        $code = explode('code=', $code);
+        $code = $code[count($code) - 1];
+
+        $code = self::convertFromQRCode($code);
+
+        $session = Session::where('code', $code)->with('user', 'session_group', 'session_group.group')->first();
+        if ($session) {
+            $groupExists = false;
+
+            $session->session_group->map(function ($item) use ($user, &$groupExists) {
+                if ($item->group->id == $user->group_id) {
+                    $groupExists = true;
+                }
+            });
+
+            if ($session->user_type_id == $user->user_type_id && $groupExists) {
+
+                if (!$session->active) {
+                    return [
+                        "error" => true,
+                        "code" => 1003,
+                        "msg" => Lang::get('sessionCode.use.error.sessionIsNotActive'),
+                    ];
+                }
+
+                if (!Attendance::where([
+                    ['session_id', $session->id],
+                    ['user_id', $user->id],
+                ])->first()) {
+                    $id = Attendance::create([
+                        'user_id' => $user->id,
+                        'session_id' => $session->id,
+                    ]);
+
+                    if ($id) {
+                        return [
+                            "error" => false,
+                            "success" => true,
+                            "msg" => Lang::get('sessionCode.use.success'),
+                            "attendance_id" => $id,
+                            "session" => $session,
+                        ];
+                    } else {
+                        return [
+                            "error" => true,
+                            "code" => 1005,
+                            "msg" => Lang::get('sessionCode.use.error.unknown'),
+                        ];
+                    }
+                } else {
+                    return [
+                        "error" => true,
+                        "code" => 1004,
+                        "msg" => Lang::get('sessionCode.use.error.alreadyExists'),
+                    ];
+                }
+
+            } else {
+                return [
+                    "error" => true,
+                    "code" => 1002,
+                    "msg" => Lang::get('sessionCode.use.error.userNotFit'),
+                ];
+            }
+        } else {
+            return [
+                "error" => true,
+                "code" => 1001,
+                "msg" => Lang::get('sessionCode.use.error.sessionNotFind'),
+            ];
+        }
 
     }
 

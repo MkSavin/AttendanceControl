@@ -354,7 +354,7 @@
 </div>
 <div class="window text">
     <div class="header">
-        <span class="float-left title">Текст</span>
+        <span class="float-left title js-title">Текст</span>
         <div class="float-right menu">
             <a href="#" class="overlay-close"></a>
         </div>
@@ -362,9 +362,9 @@
     </div>
     <div class="body">
         <div class="center">
-            <div class="bigicon bigicon-warning"></div>
-            <div class="title">Какое-то нативное сообщение. Ошибка</div>
-            <div>Произошла какая-то ошибка дадададададада тада дадафвыафы авыафыв афвы</div>
+            <div class="bigicon js-type bigicon-warning"></div>
+            <div class="title js-title">Какое-то нативное сообщение. Ошибка</div>
+            <div class="js-text">Произошла какая-то ошибка дадададададада тада дадафвыафы авыафыв афвы</div>
         </div>
     </div>
 </div>
@@ -716,11 +716,11 @@
         <form method="POST">
             <div>
                 <label for="popup-session-redeem-code">1. Введите URL или код сеанса</label>
-                <input type="text" class="form-control" id="popup-session-redeem-code" placeholder="{{ route('redeem') }}?code=RSEU-EGHJ-3VCW">
+                <input type="text" class="js-session-redeem-code form-control" id="popup-session-redeem-code" placeholder="{{ route('redeem') }}?code=RSEU-EGHJ-3VCW">
             </div>
             <div class="mt-3">
                 <label for="popup-session-redeem-redeem" class="redeem-label">2. Нажмите кнопку <i>Использовать</i></label>
-                <a href="#" class="button float-right popup-toggle" popup-target=".text" id="popup-session-redeem-redeem">Использовать</a>
+                <a href="#" class="js-session-redeem-submit button float-right" id="popup-session-redeem-redeem">Использовать</a>
                 <div class="clearfix"></div>
             </div>
         </form>

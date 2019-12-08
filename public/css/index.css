@@ -75,6 +75,20 @@ a:active {
     font-size: 14px;
 }
 
+.button.loading {
+    color: transparent!important;
+}
+.button.loading:after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 30px;
+    height: 30px;
+    background: url('../img/animation/loading_white_transparent.svg') no-repeat center/contain;
+}
+
 .button.disabled {
     opacity: .3;
     cursor: default;
@@ -118,7 +132,7 @@ a:active {
     width: 12px;
     height: 12px;
     display: inline-block;
-    background: url(../img/icons/plus_white.svg) no-repeat center/contain;
+    background: url('../img/icons/plus_white.svg') no-repeat center/contain;
 }
 
 .button.short.icon:before {
@@ -129,17 +143,17 @@ a:active {
 }
 
 .button.white.icon.icon-plus:before {
-    background-image: url(../img/icons/plus_dark.svg);
+    background-image: url('../img/icons/plus_dark.svg');
 }
 .button.white.icon.icon-back:before {
-    background-image: url(../img/icons/back_dark.svg);
+    background-image: url('../img/icons/back_dark.svg');
 }
 
 .button.icon.icon-plus:before {
-    background-image: url(../img/icons/plus_white.svg);
+    background-image: url('../img/icons/plus_white.svg');
 }
 .button.icon.icon-back:before {
-    background-image: url(../img/icons/back_white.svg);
+    background-image: url('../img/icons/back_white.svg');
 }
 
 .form-control {
@@ -399,6 +413,9 @@ header > .right > .user > span.additional {
 .dd.dd-user {
     top: 78px;
     right: 56px;
+}
+
+body:not(.full-bg) .dd.dd-user {
     border-top-left-radius: 0;
     border-top-right-radius: 0;
 }
@@ -1102,6 +1119,10 @@ span.yellow {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+}
+
+#popup .text .body .center {
+    width: 80%;
 }
 
 #popup .bigicon {
