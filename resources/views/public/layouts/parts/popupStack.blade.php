@@ -716,7 +716,7 @@
         <form method="POST">
             <div>
                 <label for="popup-session-redeem-code">1. Введите URL или код сеанса</label>
-                <input type="text" class="form-control" id="popup-session-redeem-code" placeholder="https://ac.elerance.com/redeem?code=RSEU-EGHJ-3VCW">
+                <input type="text" class="form-control" id="popup-session-redeem-code" placeholder="{{ route('redeem') }}?code=RSEU-EGHJ-3VCW">
             </div>
             <div class="mt-3">
                 <label for="popup-session-redeem-redeem" class="redeem-label">2. Нажмите кнопку <i>Использовать</i></label>

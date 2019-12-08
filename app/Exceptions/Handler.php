@@ -58,7 +58,9 @@ class Handler extends ExceptionHandler
             $exception instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
 
             return response()->view('errors.404', [], 400);
-        }
+        }/*  else if ($exception instanceof \Symfony\Component\Debug\Exception\FatalErrorException) {
+            return response()->view('errors.500', [], 500);
+        } */
 
         return parent::render($request, $exception);
     }

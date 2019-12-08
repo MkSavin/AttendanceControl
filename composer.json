@@ -11,7 +11,8 @@
         "laravel/tinker": "~1.0",
         "phpunit/dbunit": "^3.0",
         "phpunit/phpunit": "^6.5",
-        "php-amqplib/php-amqplib": ">=2.9.0"
+        "php-amqplib/php-amqplib": ">=2.9.0",
+        "buzz/laravel-google-captcha": "^2.1"
     },
     "require-dev": {
         "filp/whoops": "~2.0",
