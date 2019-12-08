@@ -2,14 +2,27 @@
 
 namespace App\Models;
 
+use App\Traits\Relations\HasMany;
 use Illuminate\Database\Eloquent\Model;
 
 class Group extends Model
 {
 
+    use HasMany\User;
+
     protected $fillable = ['name', 'year'];
     public $timestamps = false;
     protected $appends = ['name_full'];
+
+    /**
+     * Аксессор. Полное название группы
+     *
+     * @return string
+     */
+    public function getNameFullAttribute()
+    {
+        return $this->name . $this->year;
+    }
 
     /**
      * Получение полной информации о всех группах. Поддерживает поиск
@@ -32,13 +45,17 @@ class Group extends Model
     }
 
     /**
-     * Аксессор. Полное название группы
+     * Получение полной информации о группе и ее пользователях
      *
-     * @return string
+     * @param int $id
+     * @return Collection
      */
-    public function getNameFullAttribute()
+    public static function getOneFull($id)
     {
-        return $this->name . $this->year;
+        $user = self::with('user')
+            ->where('id', $id);
+
+        return $user->first();
     }
 
 }

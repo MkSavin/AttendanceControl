@@ -15,13 +15,26 @@ class IndexController extends Controller
      */
     public function Get()
     {
-        
         return view('public.pages.index.index', [
             'sessions_active' => Session::getFullSessions('active'),
             'sessions_notactive' => Session::getFullSessions('notactive'),
             'sessions_await' => Session::getFullSessions('await')
         ]);
+    }
 
+    /**
+     * GET-Контроллер для страницы redeem
+     *
+     * @return View
+     */
+    public function Redeem()
+    {
+        // TODO: Подключить представление страницы redeem
+        return view('public.pages.index.index', [
+            'sessions_active' => Session::getFullSessions('active'),
+            'sessions_notactive' => Session::getFullSessions('notactive'),
+            'sessions_await' => Session::getFullSessions('await')
+        ]);
     }
 
 }

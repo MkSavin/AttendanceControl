@@ -1,5 +1,10 @@
 var is_mobile = ((/Mobile|iPhone|iPod|BlackBerry|Windows Phone/i).test(navigator.userAgent || navigator.vendor || window.opera) ? true : false);
 
+String.prototype.replaceAll = function(search, replacement) {
+    var target = this;
+    return target.replace(new RegExp(search, 'g'), replacement);
+};
+
 var customJQFunctions = function() {
     jQuery.fn.extend({
         serializeSelect: function() {
@@ -48,9 +53,15 @@ var api_links = {
     users: {
         full: '/api/users'
     },
+    user: {
+        one: '/api/user'
+    },
     groups: {
         all: '/api/groups'
-    }
+    },
+    group: {
+        one: '/api/group'
+    },
 };
 
 var updateSelects;
@@ -304,11 +315,11 @@ var popupHandlers = function(){
                         var xmp = $('.js-user-list-row-templates').html();
                         var element = $(xmp)[0].outerHTML;
                         element = element
-                            .replace('#ID#', user.id)
-                            .replace('#TYPE#', user.user_type.name)
-                            .replace('#NAMESHORT#', user.name_short)
-                            .replace('#GROUP_ID#', user.group != null ? user.group.id : "")
-                            .replace('#GROUP_NAME#', user.group != null ? user.group.name_full : "");
+                            .replaceAll('#ID#', user.id)
+                            .replaceAll('#TYPE#', user.user_type.name)
+                            .replaceAll('#NAMESHORT#', user.name_short)
+                            .replaceAll('#GROUP_ID#', user.group != null ? user.group.id : "")
+                            .replaceAll('#GROUP_NAME#', user.group != null ? user.group.name_full : "");
 
                         var element = $(element).appendTo('#popup .js-users-list');
                     });
@@ -342,9 +353,9 @@ var popupHandlers = function(){
                         var xmp = $('.js-group-list-row-templates').html();
                         var element = $(xmp)[0].outerHTML;
                         element = element
-                            .replace('#ID#', group.id)
-                            .replace('#NAME#', group.name)
-                            .replace('#YEAR#', group.year)
+                            .replaceAll('#ID#', group.id)
+                            .replaceAll('#NAME#', group.name)
+                            .replaceAll('#YEAR#', group.year);
 
                         var element = $(element).appendTo('#popup .js-group-list');
                     });
@@ -356,6 +367,112 @@ var popupHandlers = function(){
         });
     });
 
+    $('#popup').on('popup-user-data-create', function(e, button, when){
+        var self = $(this);
+        var button = $(button);
+        var userId = button.attr('popup-data');
+
+        self.find('.js-loader').fadeIn(200);
+        self.find('.js-noted-table').fadeOut(200);
+        self.find('.js-no-results').fadeOut(200);
+
+        $.ajax({
+            url: api_links.user.one,
+            data: {
+                id: userId
+            },
+            success: function(data) {
+                self.find('.js-loader').fadeOut(200);
+
+                self.find('.js-user-data-edit').attr('popup-data', data.id);
+                self.find('.js-user-data-delete').attr('popup-data', data.id);
+
+                self.find('.js-user-data-name_short').html(data.name_short);
+                self.find('.js-user-data-name').val(data.name);
+
+                if (data.group != null) {
+                    self.find('.js-user-data-group-id').attr('popup-data', data.group.id);
+                    self.find('.js-user-data-group-name').val(data.group.name_full);
+                } else {
+                    self.find('.js-user-data-group').remove();
+                }
+
+                self.find('.js-user-data-type-id').attr('popup-data', data.user_type.id);
+                self.find('.js-user-data-type-name').val(data.user_type.name);
+
+                if(data.attendance.length > 0) {
+                    self.find('.js-noted-table').fadeIn(200);
+
+                    self.find('.js-attendance-list').html("");
+                    data.attendance.forEach(function(attendance){
+                        var xmp = $('.js-attendance-list-row-templates').html();
+                        var createdTime = attendance.createdTime.split(':');
+                        var element = $(xmp)[0].outerHTML;
+                        element = element
+                            .replaceAll('#ID#', attendance.id)
+                            .replaceAll('#DATE#', attendance.createdDate)
+                            .replaceAll('#TIME_HOURS#', createdTime[0])
+                            .replaceAll('#TIME_MINUTES#', createdTime[1])
+                            .replaceAll('#TIME_SECONDS#', createdTime[2])
+                            .replaceAll('#SESSION_ID#', attendance.session.id)
+                            .replaceAll('#SESSION_CODE#', attendance.session.code)
+                            .replaceAll('#CREATOR_ID#', attendance.session.user.id)
+                            .replaceAll('#CREATOR_NAME_SHORT#', attendance.session.user.name_short);
+
+                        var element = $(element).appendTo('#popup .js-attendance-list');
+                    });
+                } else {
+                    self.find('.js-no-results').fadeIn(200);
+                }
+                refreshSelects();
+            }
+        });
+    });
+
+    $('#popup').on('popup-group-data-create', function(e, button, when){
+        var self = $(this);
+        var button = $(button);
+        var groupId = button.attr('popup-data');
+
+        self.find('.js-loader').fadeIn(200);
+        self.find('.js-noted-table').fadeOut(200);
+        self.find('.js-no-results').fadeOut(200);
+
+        $.ajax({
+            url: api_links.group.one,
+            data: {
+                id: groupId
+            },
+            success: function(data) {
+                self.find('.js-loader').fadeOut(200);
+
+                self.find('.js-group-data-edit').attr('popup-data', data.id);
+                self.find('.js-group-data-delete').attr('popup-data', data.id);
+
+                self.find('.js-group-data-name').val(data.name);
+                self.find('.js-group-data-name-full').html(data.name_full);
+                self.find('.js-group-data-year').val(data.year);
+
+                if(data.user.length > 0) {
+                    self.find('.js-noted-table').fadeIn(200);
+
+                    self.find('.js-user-list').html("");
+                    data.user.forEach(function(user){
+                        var xmp = $('.js-user-list-row-templates').html();
+                        var element = $(xmp)[0].outerHTML;
+                        element = element
+                            .replaceAll('#ID#', user.id)
+                            .replaceAll('#NAME#', user.name);
+
+                        var element = $(element).appendTo('#popup .js-user-list');
+                    });
+                } else {
+                    self.find('.js-no-results').fadeIn(200);
+                }
+                refreshSelects();
+            }
+        });
+    });
 };
 
 var popupAdditionalActions = function(){

@@ -4,7 +4,26 @@ namespace App\Helpers;
 class DateTime
 {
 
+    /**
+     * Форматирование даты и времени типа Carbon в человеко-понятный формат
+     *
+     * @param Carbon $carbon
+     * @return string
+     */
     public static function CarbonForRelativeHuman($carbon)
+    {
+        
+        return self::CarbonRelative($carbon) . ", в " . $carbon->format('H:i');
+
+    }
+
+    /**
+     * Форматирование даты типа Carbon в относительный формат
+     *
+     * @param Carbon $carbon
+     * @return string
+     */
+    public static function CarbonRelative($carbon)
     {
         
         $relativeDate = $carbon->format('Y.m.d');
@@ -16,7 +35,7 @@ class DateTime
             $relativeDate = "Завтра";
         }
 
-        return $relativeDate . ", в " . $carbon->format('H:i');
+        return $relativeDate;
 
     }
 

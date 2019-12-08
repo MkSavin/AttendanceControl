@@ -15,3 +15,8 @@ Route::get('/', [
     'uses' => 'IndexController@Get',
     'title' => 'Главная'
 ])->name('index');
+
+Route::get('/redeem', [
+    'uses' => 'IndexController@Redeem',
+    'title' => 'Использование сеанса'
+])->name('redeem');

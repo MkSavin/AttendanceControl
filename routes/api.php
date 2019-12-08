@@ -16,9 +16,14 @@ use Illuminate\Http\Request;
 Route::group(['namespace' => 'API'], function () {
     
     Route::get('/groups', 'GroupsController@Get');
+
+    Route::get('/group/', 'GroupsController@GetOne');
+
     Route::get('/users', 'UsersController@Get');
     Route::get('/users/aside', 'UsersController@GetAside');
     Route::get('/users/types', 'UsersController@GetTypes');
+
+    Route::get('/user/', 'UsersController@GetOne');
 
     Route::get('/sessions/all', 'SessionsController@GetAll');
 

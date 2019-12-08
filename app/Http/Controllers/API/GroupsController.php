@@ -9,7 +9,7 @@ class GroupsController extends Controller
 {
 
     /**
-     * GET-Контроллер для страницы users
+     * GET-Контроллер для страницы groups
      *
      * @return string
      */
@@ -17,6 +17,17 @@ class GroupsController extends Controller
     {
         $search = Input::get('search') ?? false;
         return response()->json(Group::getFull($search), 200);
+    }
+
+    /**
+     * GET-Контроллер для страницы group
+     *
+     * @return string
+     */
+    public function GetOne()
+    {
+        $id = Input::get('id');
+        return response()->json(Group::getOneFull($id), 200);
     }
 
 }
