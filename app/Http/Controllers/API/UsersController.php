@@ -41,12 +41,22 @@ class UsersController extends Controller
     public function GetAside()
     {
         $fulluser = Input::get('fullUser');
-
         return response()->json(collect([
             'users' => $fulluser ? User::getFull() : User::get(),
             'groups' => Group::get(),
             'types' => UserType::get(),
         ]), 200);
+    }
+
+    /**
+     * GET-Контроллер для страницы user
+     *
+     * @return string
+     */
+    public function GetOne()
+    {
+        $id = Input::get('id');
+        return response()->json(User::getOneFull($id), 200);
     }
 
 }

@@ -388,13 +388,13 @@
 </div>
 <div class="window user-data">
     <div class="header">
-        <span class="float-left title">Пользователь <i>Савин М.К</i></span>
+        <span class="float-left title">Пользователь <i class="js-user-data-name_short">Савин М.К</i></span>
         <div class="float-right menu">
-            <a href="#" class="overlay-more dd-toggle" dd-target=".dd-more"></a>
+            <!-- <a href="#" class="overlay-more dd-toggle" dd-target=".dd-more"></a>
             <div class="dd-hidden dd dd-more">
-                <a href="#" class="popup-toggle" popup-target=".user-edit">Редактировать пользователя</a>
-                <a href="#">Удалить пользователя</a>
-            </div>
+                <a href="#" class="js-user-data-edit popup-toggle" popup-target=".user-edit" popup-data="0">Редактировать пользователя</a>
+                <a href="#" class="js-user-data-delete popup-toggle" popup-target=".user-edit" popup-data="0">Удалить пользователя</a>
+            </div> -->
             <a href="#" class="overlay-close"></a>
         </div>
         <div class="clearfix"></div>
@@ -402,51 +402,40 @@
     <div class="body">
         <div class="mb-3">
             <label for="popup-user-data-user-name">ФИО</label>
-            <input type="text" class="form-control" id="popup-user-data-user-name" disabled value="Савин Максим Константинович">
+            <input type="text" class="js-user-data-name form-control" id="popup-user-data-user-name" disabled value="Савин Максим Константинович">
         </div>
         <div class="row mb-3">
-            <div class="col-md">
-                <label for="popup-user-data-user-group">Группа <a href="#" class="ml-2 popup-toggle" popup-target=".group-data">Открыть</a></label>
-                <select data-live-search="true" disabled name="n" class="form-control js-user-group" id="popup-user-data-user-group">
-                    <option value="1" data-subtext="20 чел." selected>ПРИ-117</option>
-                    <option value="2" data-subtext="20 чел.">ИСТ-117</option>
-                    <option value="3" data-subtext="20 чел.">ИСБ-117</option>
-                </select>
+            <div class="js-user-data-group col-md">
+                <label for="popup-user-data-user-group">Группа <a href="#" class="js-user-data-group-id ml-2 popup-toggle" popup-handler-after="popup-group-data-create" popup-target=".group-data">Открыть</a></label>
+                <input type="text" class="js-user-data-group-name form-control" id="popup-user-data-user-group" disabled value="ПРИ-117">
             </div>
             <div class="col-md">
-                <label for="popup-user-data-user-type">Тип пользователя</label>
-                <select data-live-search="true" disabled name="n" class="form-control js-user-group" id="popup-user-data-user-type">
-                    <option value="1" data-subtext="20 чел.">Спец. по кадрам</option>
-                    <option value="2" data-subtext="20 чел.">Преподаватель</option>
-                    <option value="3" data-subtext="20 чел." selected>Студент</option>
-                </select>
+                <label for="popup-user-data-user-type">Тип пользователя <!-- <a href="#" class="js-user-data-type-id ml-2 popup-toggle" popup-handler-after="popup-type-data-create" popup-target=".type-data">Открыть</a> --></label>
+                <input type="text" class="js-user-data-type-name form-control" id="popup-user-data-user-type" disabled value="Студент">
             </div>
         </div>
-        <div class="noted-table noted-table-wide ps">
-            <table>
-                <thead>
-                    <tr>
-                        <th>ДАТА И ВРЕМЯ</th>
-                        <th>СЕАНС</th>
-                        <th>ВЕДУЩИЙ</th>
-                        <th width="120"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Сегодня, в <span class="blue">20:17<span class="sub">:20</span></span></td>
-                        <td><a href="#" class="popup-toggle" popup-target=".session-data">RSEU-EGHJ-3VCW</a></td>
-                        <td><a href="#" class="popup-toggle" popup-target=".user-data">Алексеев И.И</a></td>
-                        <td><a href="#" class="button short red">Удалить</a></td>
-                    </tr>
-                    <tr>
-                        <td>Сегодня, в <span class="blue">20:17<span class="sub">:21</span></span></td>
-                        <td><a href="#" class="popup-toggle" popup-target=".session-data">RSEU-EGHJ-3VCW</a></td>
-                        <td><a href="#" class="popup-toggle" popup-target=".user-data">Алексеев И.И</a></td>
-                        <td><a href="#" class="button short red">Удалить</a></td>
-                    </tr>
-                </tbody>
-            </table>
+        <xmp class="d-none js-attendance-list-row-templates">
+            @include('public.layouts.parts.popupStackParts.userData.attendanceRow')
+        </xmp>
+        <label for="popup-user-data-noted-table">Посещаемость</label>
+        <div class="updatable-table" id="popup-user-data-noted-table">
+            <div class="no-results js-no-results" style="display:none">Сеансов, в которых пользователь отметился, нет</div>
+            <div class="center no-selection loader js-loader">
+                <img src="public/img/animation/loading_transparent.gif" class="pevs-none" width="60" alt="">
+            </div>
+            <div class="noted-table noted-table-wide no-th-top-padding js-noted-table ps" style="display:none">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ДАТА И ВРЕМЯ</th>
+                            <th>СЕАНС</th>
+                            <th>ВЕДУЩИЙ</th>
+                            <!-- <th width="120"></th> -->
+                        </tr>
+                    </thead>
+                    <tbody class="js-attendance-list"></tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
@@ -537,12 +526,13 @@
                 ],
             ])
         </xmp>
-        <div class="updatable-table">
+        <label for="popup-user-list-noted-table">Пользователи</label>
+        <div class="updatable-table" id="popup-user-list-noted-table">
             <div class="no-results js-no-results" style="display:none">Пользователей, подходящих под Ваш набор фильтров, нет</div>
             <div class="center no-selection loader js-loader">
                 <img src="public/img/animation/loading_transparent.gif" class="pevs-none" width="60" alt="">
             </div>
-            <div class="noted-table noted-table-wide js-noted-table ps" style="display:none">
+            <div class="noted-table noted-table-wide no-th-top-padding js-noted-table ps" style="display:none">
                 <table>
                     <thead>
                         <tr>
@@ -579,13 +569,13 @@
 </div>
 <div class="window group-data">
     <div class="header">
-        <span class="float-left title">Группа <i>ПРИ-117</i></span>
+        <span class="float-left title">Группа <i class="js-group-data-name-full">ПРИ-117</i></span>
         <div class="float-right menu">
-            <a href="#" class="overlay-more dd-toggle" dd-target=".dd-more"></a>
+            <!-- <a href="#" class="overlay-more dd-toggle" dd-target=".dd-more"></a>
             <div class="dd-hidden dd dd-more">
-                <a href="#" class="popup-toggle" popup-target=".group-edit">Редактировать группу</a>
-                <a href="#">Удалить группу</a>
-            </div>
+                <a href="#" class="js-group-data-edit popup-toggle" popup-target=".group-edit" popup-data="0">Редактировать группу</a>
+                <a href="#" class="js-group-data-delete popup-toggle" popup-target=".group-edit" popup-data="0">Удалить группу</a>
+            </div> -->
             <a href="#" class="overlay-close"></a>
         </div>
         <div class="clearfix"></div>
@@ -594,40 +584,34 @@
         <div class="row mb-3">
             <div class="col-md">
                 <label for="popup-group-data-group-name">Название</label>
-                <input type="text" class="form-control" id="popup-group-data-group-name" disabled value="ПРИ-1">
+                <input type="text" class="js-group-data-name form-control" id="popup-group-data-group-name" disabled value="ПРИ-1">
             </div>
             <div class="col-md">
                 <label for="popup-group-data-group-year">Год</label>
-                <input type="text" class="form-control" id="popup-group-data-group-year" disabled value="17">
+                <input type="text" class="js-group-data-year form-control" id="popup-group-data-group-year" disabled value="17">
             </div>
         </div>
-        <div class="noted-table noted-table-wide ps">
-            <table>
-                <thead>
-                    <tr>
-                        <th width="40">#</th>
-                        <th>ФИО</th>
-                        <th width="120"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td><a href="#" class="popup-toggle" popup-target=".user-data">Савин М.К</a></td>
-                        <td><a href="#" class="button short red">Удалить</a></td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td><a href="#" class="popup-toggle" popup-target=".user-data">Куппе Р.О</a></td>
-                        <td><a href="#" class="button short red">Удалить</a></td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td><a href="#" class="popup-toggle" popup-target=".user-data">Уппе О.Р</a></td>
-                        <td><a href="#" class="button short red">Удалить</a></td>
-                    </tr>
-                </tbody>
-            </table>
+        <xmp class="d-none js-user-list-row-templates">
+            @include('public.layouts.parts.popupStackParts.groupData.userRow')
+        </xmp>
+        <label for="popup-group-data-noted-table">Пользователи</label>
+        <div class="updatable-table" id="popup-group-data-noted-table">
+            <div class="no-results js-no-results" style="display:none">Пользователей, принадлежащих этой группе, нет</div>
+            <div class="center no-selection loader js-loader">
+                <img src="public/img/animation/loading_transparent.gif" class="pevs-none" width="60" alt="">
+            </div>
+            <div class="noted-table noted-table-wide no-th-top-padding js-noted-table ps" style="display:none">
+                <table>
+                    <thead>
+                        <tr>
+                            <th width="40">#</th>
+                            <th>ФИО</th>
+                            <!-- <th width="120"></th> -->
+                        </tr>
+                    </thead>
+                    <tbody class="js-user-list"></tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
@@ -683,12 +667,13 @@
                 'year' => '#YEAR#',
             ])
         </xmp>
-        <div class="updatable-table">
+        <label for="popup-group-list-noted-table">Группы</label>
+        <div class="updatable-table" id="popup-group-list-noted-table">
             <div class="no-results js-no-results" style="display:none">Групп, подходящих под Ваш набор фильтров, нет</div>
             <div class="center no-selection loader js-loader">
                 <img src="public/img/animation/loading_transparent.gif" class="pevs-none" width="60" alt="">
             </div>
-            <div class="noted-table noted-table-wide js-noted-table ps" style="display:none">
+            <div class="noted-table noted-table-wide no-th-top-padding js-noted-table ps" style="display:none">
                 <table>
                     <thead>
                         <tr>

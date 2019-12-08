@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\Relations\BelongsTo;
+use App\Traits\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -10,7 +11,7 @@ class User extends Authenticatable
 {
 
     use Notifiable;
-    use BelongsTo\Group, BelongsTo\UserType;
+    use BelongsTo\Group, BelongsTo\UserType, HasMany\Attendance;
 
     /**
      * Аттрибуты массового определения
@@ -40,6 +41,16 @@ class User extends Authenticatable
     ];
 
     /**
+     * Аксессор аттрибута name_short
+     *
+     * @return string
+     */
+    public function getNameShortAttribute()
+    {
+        return preg_replace('/(\w+) (\w)\w+ (\w)\w+/iu', '$1 $2.$3', $this->name);
+    }
+
+    /**
      * Получение полной информации о всех пользователях. Поддерживает фильтрацию
      *
      * @param string|boolean $type
@@ -50,7 +61,7 @@ class User extends Authenticatable
     public static function getFull($type = false, $group = false, $sort = false, $search = false)
     {
         $users = User::with('group', 'user_type');
-        
+
         if ($type) {
             $users = $users->whereIn('user_type_id', explode(',', $type));
         }
@@ -82,13 +93,17 @@ class User extends Authenticatable
     }
 
     /**
-     * Аксессор аттрибута name_short
+     * Получение полной информации о пользователе и его посещениях
      *
-     * @return string
+     * @param int $id
+     * @return Collection
      */
-    public function getNameShortAttribute()
+    public static function getOneFull($id)
     {
-        return preg_replace('/(\w+) (\w)\w+ (\w)\w+/iu', '$1 $2.$3', $this->name);
+        $user = self::with('group', 'user_type', 'attendance', 'attendance.session', 'attendance.session.user')
+            ->where('id', $id);
+
+        return $user->first();
     }
 
 }
