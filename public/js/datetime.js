@@ -38,10 +38,14 @@ var fillClock = function(clock, datetime) {
 }
 
 var fillDate = function(date, datetime) {
-
     // dateTime.getDate возвращает ДЕНЬ. Здесь getDay НЕ использовать!
     date.html(datetime.getDate() + " " + datetime_data.strings.months.parental[datetime.getMonth()] + " " + datetime.getFullYear())
-
+}
+var fillDateShort = function(date, datetime) {
+    date.html(datetime.getDate() + " " + datetime_data.strings.months.parental_short[datetime.getMonth()] + " " + datetime.getFullYear())
+}
+var fillDateNumeric = function(date, datetime) {
+    date.html(datetime.getDate() + "." + datetime.getMonth() + "." + datetime.getFullYear())
 }
 
 var parseDate = function(date) {

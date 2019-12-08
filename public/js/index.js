@@ -126,6 +126,7 @@ setMomentalInterval(function(){
     var clock = $('main .js-time');
     fillClock(clock, date);
     fillDate($('.js-date'), date);
+    fillDateShort($('.js-date-mobile'), date);
 
     var weekType = (new Date()).getWeekType();
     var weekTypeElement = $('.js-weektype');

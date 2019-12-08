@@ -1,12 +1,12 @@
 <div class="float-left left">
     <div class="title"><a href="/">AControl</a></div>
-    <div class="menu header-control">
+    <div class="menu header-control d-none d-sm-inline-block">
         <a href="#" class="popup-toggle" popup-target=".user-list" popup-handler-after="popup-user-list-create">Пользователи</a>
         <a href="#" class="popup-toggle" popup-target=".group-list" popup-handler-after="popup-group-list-create">Группы</a>
     </div>
 </div>
 @if(isset($currentUser))
-<div class="float-right right header-control">
+<div class="float-right right header-control d-none d-sm-inline-block">
     <div class="menu">
         <!-- <a href="#">Меню 3</a> -->
         <a href="#" class="button white short mr-3 popup-toggle" popup-target=".session-redeem">Использовать сеанс</a> 
