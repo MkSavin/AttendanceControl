@@ -27,4 +27,9 @@ Route::group(['namespace' => 'API'], function () {
 
     Route::get('/sessions/all', 'SessionsController@GetAll');
 
+    Route::group(['middleware' => 'auth:api'], function () {
+
+        Route::get('/session/usecode', 'SessionsController@UseCode');
+
+    });
 });

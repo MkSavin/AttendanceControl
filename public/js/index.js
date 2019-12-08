@@ -50,6 +50,9 @@ var api_links = {
     sessions: {
         all: '/api/sessions/all'
     },
+    session: {
+        usecode: '/api/session/usecode'
+    },
     users: {
         full: '/api/users'
     },
@@ -62,6 +65,10 @@ var api_links = {
     group: {
         one: '/api/group'
     },
+};
+
+var links = {
+    redeem: '/redeem'
 };
 
 var updateSelects;
@@ -106,6 +113,12 @@ var refreshScrollbars;
 var closeDD = function() {
     $('.dd').addClass('dd-hidden');
     $('.dd-toggle').removeClass('active');
+};
+
+var openPopup = function(target, handler = false, data = false) {
+    var popup = $('<a href="#" class="popup-toggle" popup-target=".' + target + '" ' + (handler != "" ? 'popup-handler-after="' + handler + '"' : '') + (data != "" ? 'popup-data=\'' + JSON.stringify(data) + '\'' : '') + '></a>');
+    $('.js-popup-openers').append(popup);
+    popup.trigger('click');
 };
 
 setMomentalInterval(function(){
@@ -473,6 +486,17 @@ var popupHandlers = function(){
             }
         });
     });
+
+    $('#popup').on('popup-text-create', function(e, button, when){
+        var self = $(this);
+        var button = $(button);
+        var text = JSON.parse(button.attr('popup-data'));
+
+        self.find('.js-type').removeClass('bigicon-*').addClass('bigicon-' + text.type);
+        self.find('.js-title').html(text.title);
+        self.find('.js-text').html(text.text);
+    });
+
 };
 
 var popupAdditionalActions = function(){
@@ -491,7 +515,7 @@ var popupAdditionalActions = function(){
 
         var usersCountElement = parent.find('.js-session-info-users-count');
         var usersCount = 0;
-        console.log(userTypeElement.data("checkgroup"));
+        
         if (userType && userTypeElement.data("checkgroup")) {
             group = parent
             .find('.js-user-group > option:selected')
@@ -524,6 +548,43 @@ var popupAdditionalActions = function(){
 
     $(document).on('keyup', '#popup .group-list .js-group-search', throttle(function() {
         $('#popup').trigger('popup-group-list-create');
+    }));
+
+    $(document).on('click', '#popup .js-session-redeem-submit', throttle(function() {
+        var parent = $(this).parents('#popup');
+        var qrCode = parent.find('.js-session-redeem-code').val();
+
+        parent.find('.js-session-redeem-submit').addClass('loading pevs-none');
+
+        $.ajax({
+            headers: {
+                Accept: 'application/json'
+            },
+            url: links.redeem,
+            data: {
+                code: qrCode
+            },
+            success: function(data) {
+                var type, title, text = data.msg;
+
+                console.log(data);
+
+                if (data.error) {
+                    type = "warning";
+                    title = "Ошибка!";
+                } else {
+                    type = "annotation";
+                    title = "Сеанс использован";
+                    text = 'Сеанс успешно использован.<br><span class="blue">' + data.session.user.name_short + '</span> благодарит Вас за посещение';
+                }
+
+                openPopup('text', 'popup-text-create', {
+                    type: type,
+                    title: title,
+                    text: text
+                });
+            }
+        });
     }));
 
 };

@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="{{ asset('public/css/index.css') }}">
 </head>
 <body class="@yield('bodyclass')">
+    <div class="js-popup-openers d-none"></div>
     <div id="popup" class="hidden"></div>
     <div class="popup_stack">
         @include('public.layouts.parts.popupStack')

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\API;
 
 use App\Models\Session;
+use App\Models\Code;
+use Illuminate\Support\Facades\Input;
 
 class SessionsController extends Controller
 {
@@ -17,8 +19,18 @@ class SessionsController extends Controller
         return response()->json([
             'sessions_active' => Session::getFullSessions('active'),
             'sessions_notactive' => Session::getFullSessions('notactive'),
-            'sessions_await' => Session::getFullSessions('await')
+            'sessions_await' => Session::getFullSessions('await'),
         ], 200);
+    }
+
+    /**
+     * GET-Контроллер для страницы session/usecode
+     *
+     * @return string
+     */
+    public function UseCode()
+    {
+        return response()->json(Code::useCode(Input::get('code')), 200);
     }
 
 }

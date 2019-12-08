@@ -13,7 +13,7 @@ class Attendance extends Model
 
     public $table = "attendance";
 
-    protected $fillable = ['users_id', 'sessions_id'];
+    protected $fillable = ['user_id', 'session_id'];
 
     /**
      * Псевдо-аттрибуты создаваемые на основе соответствующих аксессоров, которые должны попасть сразу в коллекцию при выборке данных из БД. Жадная подгрузка аксессор-аттрибутов
