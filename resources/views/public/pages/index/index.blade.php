@@ -8,7 +8,10 @@
             <span class="minutes">20</span>
             <span class="seconds">21</span>
         </span>
-        <span class="date js-date">
+        <span class="date js-date d-none d-sm-inline-block">
+            15 ноября 2019
+        </span>
+        <span class="date js-date-mobile d-sm-none">
             15 ноября 2019
         </span>
         <span class="week-type js-weektype" data-num="Числитель" data-denum="Знаменатель">

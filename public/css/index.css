@@ -573,6 +573,29 @@ main .end-of-page {
     font-size: 17px;
 }
 
+@media (max-width: 575px) {
+    .time {
+        width: 100%;
+    }
+
+    .time > .clock, .time > .week-type {
+        font-size: 16px;
+    }
+    
+    .time > .clock > .seconds,
+    .qr-data .clock > .seconds {
+        font-size: 13px;
+    }
+
+    .qr-data .clock > .seconds {
+        font-size: 12px;
+    }
+
+    .time > .date {
+        font-size: 14px;
+    }
+}
+
 .sessions-list > div:not(:last-of-type) {
     margin-bottom: 30px;
 }
@@ -609,11 +632,22 @@ main .end-of-page {
 }
 
 .sessions .session.long {
-    width: 300px;
+    width: 280px;
 }
 
 .sessions .session.short .header * {
-    font-size: 14px;
+    font-size: 12px;
+}
+
+@media (max-width: 575px) {
+    .sessions .session.long,
+    .sessions .session.short {
+        width: 100%;
+    }
+
+    .sessions .session.short .header * {
+        font-size: 14px;
+    }
 }
 
 .sessions .session.short .header .creator {
@@ -717,7 +751,7 @@ main .end-of-page {
 }
 
 .sessions .session.long > .information {
-    width: 150px;
+    width: 130px;
     padding: 8px;
 }
 
@@ -733,6 +767,39 @@ main .end-of-page {
 
 .sessions .session.long > .information > .info-block:not(:last-of-type) {
     margin-bottom: 8px;
+}
+
+@media (max-width: 575px) {
+    .sessions .session.long > .information {
+        width: calc(100% - 130px);
+    }
+}
+
+@media (max-width: 350px) {
+    .sessions .session.long > div:not(.information) {
+        width: 100px;
+    }
+
+    .sessions .session.long > .information {
+        width: calc(100% - 110px);
+    }
+
+    .sessions .session.long > div:not(.information) > .body > .users-count {
+        font-size: 23px;
+        line-height: 20px;
+    }
+
+    .sessions .session.long > div:not(.information) > .body > .users-count-description {
+        font-size: 12px;
+        opacity: .3;
+        margin-bottom: 10px;
+    }
+}
+
+@media (max-width: 380px) {
+    body {
+        zoom: .85;
+    }
 }
 
 #popup {
