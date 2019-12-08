@@ -481,7 +481,7 @@ var popupAdditionalActions = function(){
         var self = $(this);
         var parent = self.parents('.session-create');
 
-        var userTypeElement = parent.find('.js-user-type > option:selected, .js-user-type > option');
+        var userTypeElement = parent.find('.js-user-type > option:selected');
 
         var userType = userTypeElement.length > 0;
         var group = true;
@@ -491,10 +491,10 @@ var popupAdditionalActions = function(){
 
         var usersCountElement = parent.find('.js-session-info-users-count');
         var usersCount = 0;
-
+        console.log(userTypeElement.data("checkgroup"));
         if (userType && userTypeElement.data("checkgroup")) {
             group = parent
-            .find('.js-user-group > option:selected, .js-user-group > option')
+            .find('.js-user-group > option:selected')
             .each(function(){
                 usersCount += parseInt($(this).data('users-count'));
             })
@@ -537,7 +537,11 @@ $(function(){
     /* Drop Down close */
     $(document).on('click', function(e){
         var v = $(e.target);
-        if (v.prop('nodeName').toLowerCase() == "a" && v.attr("href") != "#") {
+        if (
+            v.prop('nodeName').toLowerCase() == "a" && v.attr("href") != "#" ||
+            v.prop('nodeName').toLowerCase() == "input" && v.attr("type") == "submit" ||
+            v.prop('nodeName').toLowerCase() == "button"
+        ) {
             return;
         }
 

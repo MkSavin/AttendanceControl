@@ -223,6 +223,14 @@ body.nooverflow > header, body.nooverflow > main {
     padding-right: 77px;
 }
 
+body.no-header > header {
+    display: none;
+}
+
+body.no-header-controls > header .header-control {
+    display: none;
+}
+
 header {
     padding: 20px 0;
     color: #fff;
@@ -235,6 +243,10 @@ body:not(.full-bg) > header {
 main {
     padding: 30px 0;
     min-height: calc(100vh - 78px);
+}
+
+body.no-header main {
+    min-height: calc(100vh);
 }
 
 body:not(.full-bg) > main {
