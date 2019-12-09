@@ -2,14 +2,14 @@
 
 namespace App\Models;
 
-use App\Helpers;
 use App\Traits\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\Models\Attributes;
 
 class Attendance extends Model
 {
 
-    use BelongsTo\Session;
+    use BelongsTo\Session, Attributes\CreatedAt;
 
     public $table = "attendance";
 
@@ -26,25 +26,5 @@ class Attendance extends Model
         'createdTime',
         'createdTimestamp',
     ];
-
-    public function getCreatedAttribute()
-    {
-        return Helpers\DateTime::CarbonForRelativeHuman($this->created_at);
-    }
-
-    public function getCreatedDateAttribute()
-    {
-        return Helpers\DateTime::CarbonRelative($this->created_at);
-    }
-
-    public function getCreatedTimeAttribute()
-    {
-        return $this->created_at->format('H:i:s');
-    }
-
-    public function getCreatedTimestampAttribute()
-    {
-        return $this->created_at->timestamp;
-    }
 
 }

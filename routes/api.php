@@ -30,6 +30,7 @@ Route::group(['namespace' => 'API'], function () {
     Route::group(['middleware' => 'auth:api'], function () {
 
         Route::get('/session/usecode', 'SessionsController@UseCode');
+        Route::get('/session/create', 'SessionsController@Create');
 
     });
 });

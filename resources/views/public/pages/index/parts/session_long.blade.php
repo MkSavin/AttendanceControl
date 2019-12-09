@@ -18,7 +18,7 @@
         </div>
         <div class="info-block">
             <div class="info"><img src="public/img/icons/timer_little.svg" width="12" alt="" class="timer"> {{ $timeLeft }} </div>
-            <div class="info-name">Осталось</div>
+            <div class="info-name js-timer-description" timer-active="Осталось" timer-await="Длительность">Осталось</div>
         </div>
         <div class="info-block">
             <div class="info">{{ $target }}</div>

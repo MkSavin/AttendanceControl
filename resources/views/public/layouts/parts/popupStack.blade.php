@@ -46,6 +46,9 @@
     <div class="body">
         <form method="POST">
             <div class="input-line row">
+                <xmp class="d-none js-session-create-select-option">
+                    <option value="#ID#" data-checkgroup="#CHECKGROUP#" data-users-count="#USERS_COUNT#" data-subtext="#USERS_COUNT# чел.">#NAME_FULL#</option>
+                </xmp>
                 <div class="col-sm">
                     <label for="popup-session-create-user-type">1. Выберите тип пользователя</label>
                     <select data-live-search="true" name="k" class="form-control js-user-type" id="popup-session-create-user-type">
@@ -54,7 +57,7 @@
                         <option value="3" data-checkgroup="true" data-users-count="1420" data-subtext="1420 чел.">Студент</option>
                     </select>
                 </div>
-                <div class="col-sm">
+                <div class="col-sm mt-3 mt-sm-0">
                     <label for="popup-session-create-user-group">2. Выберите группы пользователей</label>
                     <select data-live-search="true" name="n" multiple class="form-control js-user-group" id="popup-session-create-user-group">
                         <option value="1" data-users-count="20" data-subtext="20 чел.">ПРИ-117</option>
@@ -63,7 +66,7 @@
                     </select>
                 </div>
             </div>
-            <div class="input-line row">
+            <div class="input-line mt-3 mt-sm-0 row">
                 <div class="col-sm">
                     <label for="popup-session-create-active-time">3. Введите время активности</label>
                     <div class="row">
@@ -71,7 +74,7 @@
                             <input type="text" class="form-control js-active_time" id="popup-session-create-active-time" placeholder="20">
                         </div>
                         <div class="col-sm">
-                            <select name="d" class="form-control js-active_time-pow" id="popup-session-create-active-time-pow">
+                            <select name="d" class="mt-3 mt-sm-0 form-control js-active_time-pow" id="popup-session-create-active-time-pow">
                                 <option value="1" selected default-selected>СЕК</option>
                                 <option value="2">МИН</option>
                                 <option value="3">ЧАС</option>
@@ -79,7 +82,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-sm">
+                <div class="col-sm mt-3 mt-sm-0">
                     <div class="warning">
                         <div class="title">Внимание!</div>
                         <div class="body">
@@ -88,12 +91,12 @@
                     </div>
                 </div>
             </div>
-            <div class="input-line row js-nonmomental">
+            <div class="input-line mt-3 mt-sm-0 row js-nonmomental">
                 <div class="col-sm">
                     <label for="popup-session-create-start-time">4. Введите дату начала активности</label>
                     <input type="text" class="form-control jq-datepicker js-active_at" data-timepicker="true" id="popup-session-create-start-time">
                 </div>
-                <div class="col-sm">
+                <div class="col-sm mt-3 mt-sm-0">
                     <div class="annotation">
                         <div class="title">Примечание!</div>
                         <div class="body">
@@ -106,22 +109,22 @@
                 <div class="title">Информация о сеансе</div>
                 <div class="row info-row">
                     <div class="col-sm row">
-                        <div class="col-md-3 info-row-name">Запуск:</div>
-                        <div class="col-md info-row-data"><span class="js-session-info-date-start">15 ноября 2019</span>, <span class="blue js-session-info-clock-start"><span class="hours">10</span>:<span class="minutes">21</span></span></div>
+                        <div class="col-3 info-row-name">Запуск:</div>
+                        <div class="col info-row-data"><span class="js-session-info-date-start">15 ноября 2019</span>, <span class="blue js-session-info-clock-start"><span class="hours">10</span>:<span class="minutes">21</span></span></div>
                     </div>
-                    <div class="col-sm row">
-                        <div class="col-md-3 info-row-name">Конец:</div>
-                        <div class="col-md info-row-data"><span class="js-session-info-date-end">15 ноября 2019</span>, <span class="blue js-session-info-clock-end"><span class="hours">10</span>:<span class="minutes">22</span></span></div>
+                    <div class="col-sm mt-3 mt-sm-0 row">
+                        <div class="col-3 info-row-name">Конец:</div>
+                        <div class="col info-row-data"><span class="js-session-info-date-end">15 ноября 2019</span>, <span class="blue js-session-info-clock-end"><span class="hours">10</span>:<span class="minutes">22</span></span></div>
                     </div>
                 </div>
                 <div class="row info-row">
                     <div class="col-sm row">
-                        <div class="col-md-3 info-row-name">Предп. нагрузка:</div>
-                        <div class="col-md info-row-data"><span class="blue js-session-info-users-count">20</span> человек</div>
+                        <div class="col-3 info-row-name">Предп. нагрузка:</div>
+                        <div class="col info-row-data"><span class="blue js-session-info-users-count">20</span> человек</div>
                     </div>
                 </div>
                 <div>
-                    <a href="#" class="button float-right disabled popup-toggle js-session-create" popup-target=".session-data" popup-handler-after="popup-session-data">Создать сеанс</a>
+                    <a href="#" class="button float-right disabled js-session-create">Создать сеанс</a>
                     <input type="reset" value="Очистить" class="button mr-3 white float-right">
                     <div class="clearfix"></div>
                 </div>
@@ -409,7 +412,7 @@
                 <label for="popup-user-data-user-group">Группа <a href="#" class="js-user-data-group-id ml-2 popup-toggle" popup-handler-after="popup-group-data-create" popup-target=".group-data">Открыть</a></label>
                 <input type="text" class="js-user-data-group-name form-control" id="popup-user-data-user-group" disabled value="ПРИ-117">
             </div>
-            <div class="col-md">
+            <div class="js-user-data-type col-md mt-3 mt-sm-0">
                 <label for="popup-user-data-user-type">Тип пользователя <!-- <a href="#" class="js-user-data-type-id ml-2 popup-toggle" popup-handler-after="popup-type-data-create" popup-target=".type-data">Открыть</a> --></label>
                 <input type="text" class="js-user-data-type-name form-control" id="popup-user-data-user-type" disabled value="Студент">
             </div>
@@ -493,6 +496,9 @@
     </div>
     <div class="body">
         <div class="row mb-3">
+            <xmp class="d-none js-user-list-select-option">
+                <option value="#ID#" data-subtext="#USERS_COUNT# чел.">#NAME_FULL#</option>
+            </xmp>
             <div class="col-md w-33">
                 <label for="popup-user-list-user-type">Тип пользователя</label>
                 <select data-live-search="true" name="n" multiple class="form-control js-user-type" id="popup-user-list-user-type">
