@@ -11,6 +11,7 @@ class SessionGroup extends Model
     use BelongsTo\Group;
 
     public $table = "sessions_groups";
+    public $timestamps = false;
 
     protected $fillable = ['session_id', 'group_id'];
 

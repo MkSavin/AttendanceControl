@@ -33,4 +33,14 @@ class SessionsController extends Controller
         return response()->json(Code::useCode(Input::get('code')), 200);
     }
 
+    public function Create()
+    {
+        $userType = intval(Input::get('userType'));
+        $groups = Input::get('groups');
+        $activeTime = intval(Input::get('activeTime'));
+        $activeAt = Input::get('activeAt');
+
+        return response()->json(Session::createSession($userType, $groups, $activeTime, $activeAt), 200);
+    }
+
 }

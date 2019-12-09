@@ -51,10 +51,12 @@ var api_links = {
         all: '/api/sessions/all'
     },
     session: {
-        usecode: '/api/session/usecode'
+        usecode: '/api/session/usecode',
+        create: '/api/session/create'
     },
     users: {
-        full: '/api/users'
+        full: '/api/users',
+        aside: '/api/users/aside'
     },
     user: {
         one: '/api/user'
@@ -77,7 +79,7 @@ var updateSelects;
 })();
 
 var refreshSelects = function(){
-    $('main select, #popup select').selectpicker(selectpicker_data, 'refresh');
+    $('main select, #popup select').selectpicker(selectpicker_data, 'refresh').selectpicker('refresh');
 };
 
 var updateDatepicks;
@@ -135,7 +137,9 @@ setMomentalInterval(function(){
 
 if ($('.js-sessions-list').length) {
     var sessionsAjax = function(sessionType = 'active', data){
-        $('.js-sessions-list-' + sessionType + ' .js-block-body').html("");
+        var sessionElement = $('.js-sessions-list-' + sessionType);
+        sessionElement.find('.js-block-body').html("");
+
         var session;
         var clonableBlock = 'long';
 
@@ -147,6 +151,8 @@ if ($('.js-sessions-list').length) {
             session = data.sessions_notactive;
             clonableBlock = 'short';
         }
+        
+        sessionElement.toggleClass('d-none', session.length == 0);
 
         session.forEach(function(session){
             var element = $('.js-session-' + clonableBlock)[0].outerHTML;
@@ -160,6 +166,11 @@ if ($('.js-sessions-list').length) {
             var element = $(element).appendTo('.js-sessions-list-' + sessionType + ' .js-block-body');
             if (!session.creatorAutomated) {
                 element.find('.js-creator').remove();
+            }
+            if (sessionType == 'await') {
+                element.find('.js-timer-description').html(element.find('.js-timer-description').attr('timer-await'));
+            } else {
+                element.find('.js-timer-description').html(element.find('.js-timer-description').attr('timer-active'));
             }
         });
     };
@@ -188,7 +199,60 @@ var popupHandlers = function(){
         var timeAdd;
         var timePow;
 
+        var type = self.find('.js-user-type').serializeSelect();
+        var group = self.find('.js-user-group').serializeSelect();
+        
+        $.ajax({
+            url: api_links.users.aside,
+            success: function(data) {
+                if (data.types.length > 0) {
+                    self.find('.js-user-type select').html("");
+                    var typesSelected = type.split(',');
+                    data.types.forEach(function(type){
+                        var xmp = self.find('.js-session-create-select-option').html();
+                        
+                        var element = $(xmp)[0].outerHTML;
+
+                        element = element
+                            .replaceAll('#ID#', type.id)
+                            .replaceAll('#USERS_COUNT#', type.count)
+                            .replaceAll('#NAME_FULL#', type.name)
+                            .replaceAll('#CHECKGROUP#', type.countGroups > 0);
+
+                        var element = $(element).appendTo('#popup .session-create .js-user-type select');
+
+                        if (typesSelected.includes(type.id+"")) {
+                            element.attr('selected', true);
+                        }
+                    });
+                }
+
+                if (data.groups.length > 0) {
+                    self.find('.js-user-group select').html("");
+                    var groupsSelected = group.split(',');
+                    data.groups.forEach(function(group){
+                        var xmp = self.find('.js-session-create-select-option').html();
+                        
+                        var element = $(xmp)[0].outerHTML;
+                        element = element
+                            .replaceAll('#ID#', group.id)
+                            .replaceAll('#USERS_COUNT#', group.count)
+                            .replaceAll('#NAME_FULL#', group.name_full)
+                            .replaceAll('#CHECKGROUP#', 'false');
+
+                        var element = $(element).appendTo('#popup .session-create .js-user-group select');
+                        if (groupsSelected.includes(group.id+"")) {
+                            element.attr('selected', true);
+                        }
+                    });
+                }
+
+                refreshSelects();
+            }
+        });
+
         popupInterval = setMomentalInterval(function(){
+            dateStart = new Date();
             if (type == 'timed') {
                 dateStart = self.find('.js-active_at').val();
                 if (dateStart != '') {
@@ -196,8 +260,6 @@ var popupHandlers = function(){
                 } else {
                     dateStart = new Date();
                 }
-            } else if (type == 'momental') {
-                dateStart = new Date();
             }
 
             timePow = parseInt(self.find('.js-active_time-pow').find('option:selected').val());
@@ -237,9 +299,11 @@ var popupHandlers = function(){
         sessionCreateAction($(this), button, when, 'timed');
     });
 
-    $("#popup").on('popup-session-data', function(e, button, when) {
+    $("#popup").on('popup-session-data-create', function(e, button, when) {
         var self = $(this);
         var button = $(button);
+
+        console.log(button.attr('popup-data'));
 
         // TODO: При подключении данные (тип) брать из Ajax
         var sessionType = button.attr('session-type') == "momental";
@@ -308,6 +372,9 @@ var popupHandlers = function(){
     $('#popup').on('popup-user-list-create', function(e, button, when){
         var self = $(this);
 
+        var type = self.find('.js-user-type').serializeSelect();
+        var group = self.find('.js-user-group').serializeSelect();
+
         self.find('.js-loader').fadeIn(200);
         self.find('.js-noted-table').fadeOut(200);
         self.find('.js-no-results').fadeOut(200);
@@ -315,18 +382,18 @@ var popupHandlers = function(){
         $.ajax({
             url: api_links.users.full,
             data: {
-                type: self.find('.js-user-type').serializeSelect(),
-                group: self.find('.js-user-group').serializeSelect(),
+                type: type,
+                group: group,
                 search: self.find('.js-user-search').val()
             },
             success: function(data) {
                 self.find('.js-loader').fadeOut(200);
-                if(data.length > 0) {
+                if(data.users.length > 0) {
                     self.find('.js-noted-table').fadeIn(200);
-
+                    
                     self.find('.js-users-list').html("");
-                    data.forEach(function(user){
-                        var xmp = $('.js-user-list-row-templates').html();
+                    data.users.forEach(function(user){
+                        var xmp = self.find('.js-user-list-row-templates').html();
                         var element = $(xmp)[0].outerHTML;
                         element = element
                             .replaceAll('#ID#', user.id)
@@ -340,6 +407,47 @@ var popupHandlers = function(){
                 } else {
                     self.find('.js-no-results').fadeIn(200);
                 }
+                
+                if (data.types.length > 0) {
+                    self.find('.js-user-type select').html("");
+                    var typesSelected = type.split(',');
+                    data.types.forEach(function(type){
+                        var xmp = self.find('.js-user-list-select-option').html();
+                        
+                        var element = $(xmp)[0].outerHTML;
+
+                        element = element
+                            .replaceAll('#ID#', type.id)
+                            .replaceAll('#USERS_COUNT#', type.count)
+                            .replaceAll('#NAME_FULL#', type.name);
+
+                        var element = $(element).appendTo('#popup .user-list .js-user-type select');
+
+                        if (typesSelected.includes(type.id+"")) {
+                            element.attr('selected', true);
+                        }
+                    });
+                }
+
+                if (data.groups.length > 0) {
+                    self.find('.js-user-group select').html("");
+                    var groupsSelected = group.split(',');
+                    data.groups.forEach(function(group){
+                        var xmp = self.find('.js-user-list-select-option').html();
+                        
+                        var element = $(xmp)[0].outerHTML;
+                        element = element
+                            .replaceAll('#ID#', group.id)
+                            .replaceAll('#USERS_COUNT#', group.count)
+                            .replaceAll('#NAME_FULL#', group.name_full);
+
+                        var element = $(element).appendTo('#popup .user-list .js-user-group select');
+                        if (groupsSelected.includes(group.id+"")) {
+                            element.attr('selected', true);
+                        }
+                    });
+                }
+
                 refreshSelects();
             }
         });
@@ -409,6 +517,7 @@ var popupHandlers = function(){
                     self.find('.js-user-data-group-name').val(data.group.name_full);
                 } else {
                     self.find('.js-user-data-group').remove();
+                    self.find('.js-user-data-type').removeClass('mt-3');
                 }
 
                 self.find('.js-user-data-type-id').attr('popup-data', data.user_type.id);
@@ -551,7 +660,7 @@ var popupAdditionalActions = function(){
         $('#popup').trigger('popup-group-list-create');
     }));
 
-    $(document).on('click', '#popup .js-session-redeem-submit', throttle(function() {
+    $(document).on('click', '#popup .js-session-redeem-submit', function() {
         var parent = $(this).parents('#popup');
         var qrCode = parent.find('.js-session-redeem-code').val();
 
@@ -567,8 +676,6 @@ var popupAdditionalActions = function(){
             },
             success: function(data) {
                 var type, title, text = data.msg;
-
-                console.log(data);
 
                 if (data.error) {
                     type = "warning";
@@ -586,8 +693,47 @@ var popupAdditionalActions = function(){
                 });
             }
         });
-    }));
+    });
+    
+    $(document).on('click', '#popup .session-create .js-session-create', function() {
+        var self = $(this);
+        var parent = self.parents('.window');
 
+        var userType = parent.find('.js-user-type').serializeSelect();
+        var groups = parent.find('.js-user-group').serializeSelect();
+
+        var activeTime = parent.find('.js-active_time').val();
+        activeTime = activeTime ? activeTime : 20;
+
+        var activeTimePow = parseInt(parent.find('.js-active_time-pow').serializeSelect());
+
+        activeTime = activeTime * Math.pow(60, activeTimePow - 1);
+
+        var activeAt = parent.find('.js-active_at').val();
+
+        $.ajax({
+            url: api_links.session.create,
+            data: {
+                userType: userType,
+                groups: groups,
+                activeTime: activeTime,
+                activeAt: activeAt,
+                api_token: user.api_token
+            },
+            success: function(data) {
+                console.log(data);
+                if (!data.error) {
+                    openPopup('session-data', 'popup-session-data-create', data.session.id);
+                } else {
+                    openPopup('text', 'popup-text-create', {
+                        type: "warning",
+                        title: "Ошибка!",
+                        text: data.msg
+                    });
+                }
+            }
+        });
+    });
 };
 
 $(function(){
@@ -675,6 +821,14 @@ $(function(){
 
     $(document).on('click', '.js-window-close', function(){
         window.close();
+    });
+
+    $(document).on('click', '.js-menu-popup-close', function(){
+        $('.js-menu-popup').addClass('d-none');
+    });
+
+    $(document).on('click', '.js-menu-popup-open', function(){
+        $('.js-menu-popup').removeClass('d-none');
     });
 
     popupHandlers();

@@ -13,6 +13,9 @@ class DateTime
     public static function CarbonForRelativeHuman($carbon)
     {
         
+        if (!$carbon) {
+            return "";
+        }
         return self::CarbonRelative($carbon) . ", в " . $carbon->format('H:i');
 
     }
@@ -25,7 +28,10 @@ class DateTime
      */
     public static function CarbonRelative($carbon)
     {
-        
+        if (!$carbon) {
+            return "";
+        }
+
         $relativeDate = $carbon->format('Y.m.d');
         if ($carbon->isYesterday()) {
             $relativeDate = "Вчера";

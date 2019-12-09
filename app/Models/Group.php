@@ -12,7 +12,16 @@ class Group extends Model
 
     protected $fillable = ['name', 'year'];
     public $timestamps = false;
-    protected $appends = ['name_full'];
+
+    /**
+     * Псевдо-аттрибуты создаваемые на основе соответствующих аксессоров, которые должны попасть сразу в коллекцию при выборке данных из БД. Жадная подгрузка аксессор-аттрибутов
+     *
+     * @var array
+     */
+    protected $appends = [
+        'name_full',
+        'count',
+    ];
 
     /**
      * Аксессор. Полное название группы
@@ -22,6 +31,16 @@ class Group extends Model
     public function getNameFullAttribute()
     {
         return $this->name . $this->year;
+    }
+
+    /**
+     * Аксессор. Количество пользователей группы
+     *
+     * @return string
+     */
+    public function getCountAttribute()
+    {
+        return User::where('group_id', $this->id)->count();
     }
 
     /**
