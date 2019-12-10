@@ -328,7 +328,7 @@ var popupHandlers = function(){
                         var element = $(xmp)[0].outerHTML;
 
                         element = element
-                            .replaceAll('#TIME#', '4 с.')
+                            .replaceAll('#TIME#', attendance.differance)
                             .replaceAll('#USER_ID#', attendance.user.id)
                             .replaceAll('#USER_NAME_SHORT#', attendance.user.name_short)
                             .replaceAll('#GROUP_ID#', attendance.user.group.id)
@@ -346,24 +346,24 @@ var popupHandlers = function(){
     };
 
     var sessionDataAction = function(self, button, sessionData) {
-        
-        console.log(sessionData);
 
         self.find('.js-session-data-qrcode').attr('src', sessionData.qrImage);
 
         var sessionType = sessionData.status;
 
-        // TODO: При подключении заменить Date, если сеанс уже была начат (моментальная, но окно открыто заново)
         var dateStart = new Date(sessionData.activeTimestamp * 1000);
-        var timezoneOffset = dateStart.getTimezoneOffset()*60*1000;
+        var timezoneOffset = dateStart.getTimezoneOffset() * 60*1000;
 
         var statusBar = self.find('.title .js-session-data-status');
+
+        $('.js-session-data-attendance-full').attr('popup-data', sessionData.id);
+        $('.js-session-data-attendance-add').attr('popup-data', sessionData.id);
 
         if (sessionType == 'active') {
             self.find('.qr-code').removeClass('hidden');
             self.find('.js-session-data-timed_only').addClass('d-none');
             // TODO: При подключении заменить правильно dateStart. Это дата старта сеанса
-        } else {
+        } else if (sessionType == 'await') {
             statusBar.removeClass('blue').removeClass('red').addClass('yellow');
             statusBar.html(statusBar.data('await'));
         }
@@ -421,6 +421,9 @@ var popupHandlers = function(){
         } else {
             statusBar.removeClass('blue').removeClass('yellow').addClass('red');
             statusBar.html(statusBar.data('closed'));
+
+            self.find('.js-session-data-timed_only').addClass('d-none');
+            self.find('.js-session-data-clock-end').removeClass('blue').addClass('red');
 
             sessionDataAttendanceUpdateAction(self, button, sessionData);
         }

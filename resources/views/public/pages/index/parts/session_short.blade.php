@@ -1,5 +1,5 @@
 <a href="#" class="session red short popup-toggle js-session-short" popup-target=".session-data" popup-handler-after="popup-session-data-create" popup-data="{{ $id }}">
-    <span class="session-hide"><img src="public/img/icons/close_white.svg" width="10" alt=""></span>
+    <!-- <span class="session-hide"><img src="public/img/icons/close_white.svg" width="10" alt=""></span> -->
     <div class="header">
         <div class="float-left">
             <div class="date" data-timestamp="{{ $createdTimestamp }}">{{ isset($createdDateTime) ? $createdDateTime : "" }}</div>
