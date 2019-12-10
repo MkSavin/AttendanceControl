@@ -14,9 +14,11 @@ use \Carbon\CarbonInterval;
 class Session extends Model
 {
 
-    use HasMany\Attendance, HasMany\SessionGroup, BelongsTo\UserType, BelongsTo\User, Attributes\CreatedAt;
+    use HasMany\Attendance, HasMany\SessionGroup, BelongsTo\UserType, BelongsTo\User, Attributes\CreatedAt, Attributes\ActiveAt;
 
-    protected $fillable = ['user_id', 'user_type_id', 'code', 'activetime', 'active', 'active_at'];
+    const QRCODER_API = 'https://api.qrserver.com/v1/create-qr-code/?size=300x300&margin=40&data=';
+
+    protected $fillable = ['user_id', 'user_type_id', 'code', 'activetime', 'active_at'];
 
     protected $dates = [
         'active_at',
@@ -28,11 +30,65 @@ class Session extends Model
      * @var array
      */
     protected $appends = [
-        'created',
+        'createdDateTime',
         'createdDate',
         'createdTime',
         'createdTimestamp',
+        'qrCode',
+        'qrImage',
+        'activeDateTime',
+        'activeDate',
+        'activeAtTime',
+        'activeTimestamp',
+        'status',
+        'timeLeft',
     ];
+
+    /**
+     * Аксессор. Аттрибут qrCode - вторичный код (для qr-кода)
+     *
+     * @return string
+     */
+    public function getQRCodeAttribute()
+    {
+        return Code::convertToQRCode($this->code);
+    }
+
+    /**
+     * Аксессор. Аттрибут qrImage - ссылка на изображение qr-кода
+     *
+     * @return string
+     */
+    public function getQRImageAttribute()
+    {
+        return self::QRCODER_API . route('redeem') . '?code=' . $this->qrCode;
+    }
+
+    /**
+     * Аксессор. Статус сеанса
+     *
+     * @return string
+     */
+    public function getStatusAttribute()
+    {
+        return now()->lessThan($this->active_at) ? 'await' : (now()->lessThanOrEqualTo($this->active_at->copy()->addSeconds($this->activetime)) ? 'active' : 'closed');
+    }
+
+    /**
+     * Аксессор. Оставшееся время
+     *
+     * @return string
+     */
+    public function getTimeLeftAttribute()
+    {
+        $seconds = $this->activetime - (now()->timestamp - $this->active_at->timestamp);
+
+        if ($this->active == 1 && $seconds > 0) {
+            return CarbonInterval::seconds($seconds)->cascade()->forHumans(['short' => true]);
+        } else {
+            return CarbonInterval::seconds($this->activetime)->cascade()->forHumans(['short' => true]);
+        }
+    }
 
     /**
      * Вспомогательный метод получения предварительного запроса в БД
@@ -54,25 +110,12 @@ class Session extends Model
     public static function getFullSessions($type = 'all')
     {
 
-        switch ($type) {
-            case 'all':
-                $sessions = self::fullSessions()->get();
-                break;
-            case 'active':
-                $sessions = self::fullSessions()->where('active', 1)->get();
-                break;
-            case 'notactive':
-                $sessions = self::fullSessions()->where([
-                    ['active_at', '<=', now()],
-                    ['active', 0],
-                ])->get();
-                break;
-            case 'await':
-                $sessions = self::fullSessions()->where([
-                    ['active_at', '>', now()],
-                    ['active', 0],
-                ])->get();
-                break;
+        $sessions = self::fullSessions()->get();
+        if ($type != 'all') {
+            $sessions = $sessions->reject(function ($item) use ($type) {
+                return $item->status != $type;
+            })
+            ->values(); // Нормализация id сеансов в списке
         }
 
         $sessions->transform(function ($item) {
@@ -94,18 +137,6 @@ class Session extends Model
                 $item->created_at = $item->active_at;
             }
 
-            // $item->created = Helpers\DateTime::CarbonForRelativeHuman($item->created_at);
-
-            // $item->createdTimestamp = $item->created_at->timestamp;
-
-            $seconds = $item->activetime - (now()->timestamp - $item->active_at->timestamp);
-
-            if ($item->active == 1 && $seconds > 0) {
-                $item->timeLeft = CarbonInterval::seconds($seconds)->cascade()->forHumans(['short' => true]);
-            } else {
-                $item->timeLeft = CarbonInterval::seconds($item->activetime)->cascade()->forHumans(['short' => true]);
-            }
-
             $item->usersCount = count($item->attendance);
 
             return $item;
@@ -114,6 +145,15 @@ class Session extends Model
         return $sessions;
     }
 
+    /**
+     * Метод создания сеанса
+     *
+     * @param string|int $userType
+     * @param string|int $groups
+     * @param int $activeTime
+     * @param string $activeAt
+     * @return Collection
+     */
     public static function createSession($userType, $groups, $activeTime, $activeAt)
     {
         $user = Auth::user();
@@ -122,9 +162,9 @@ class Session extends Model
         // $user->hasRight('session.create');
         /*
         return [
-            "error" => true,
-            "code" => 111,
-            "msg" => Lang::get('rights.error.noRights'),
+        "error" => true,
+        "code" => 111,
+        "msg" => Lang::get('rights.error.noRights'),
         ];
          */
 
@@ -139,9 +179,9 @@ class Session extends Model
             // && $userType->hasRight('session.use')
             /*
             return [
-                "error" => true,
-                "code" => 2002,
-                "msg" => Lang::get('session.create.error.userTypeHasNoRight'),
+            "error" => true,
+            "code" => 2002,
+            "msg" => Lang::get('session.create.error.userTypeHasNoRight'),
             ];
              */
             return [
@@ -158,17 +198,18 @@ class Session extends Model
         $activeAtAttribute = [];
 
         if ($activeAt) {
-            $activeAtAttribute['active_at'] = Carbon::createFromFormat('Y.m.d H:i', $activeAt);
+            $activeAt = Carbon::createFromFormat('Y.m.d H:i', $activeAt);
+        } else {
+            $activeAt = Carbon::Now();
         }
 
-        $session = Session::create(array_merge([
+        $session = Session::create([
             'user_id' => $user->id,
             'user_type_id' => $userType,
             'activetime' => $activeTime,
-            'active' => $activeAt ? 0 : 1,
             'active_at' => $activeAt,
             'code' => Code::generatePrimaryCode(),
-        ], $activeAtAttribute));
+        ]);
 
         if (!$session) {
             return [

@@ -51,8 +51,10 @@ var api_links = {
         all: '/api/sessions/all'
     },
     session: {
+        one: '/api/session',
         usecode: '/api/session/usecode',
-        create: '/api/session/create'
+        create: '/api/session/create',
+        attendance: '/api/session/attendance',
     },
     users: {
         full: '/api/users',
@@ -70,7 +72,7 @@ var api_links = {
 };
 
 var links = {
-    redeem: '/redeem'
+    redeem: '/redeem',
 };
 
 var updateSelects;
@@ -147,11 +149,11 @@ if ($('.js-sessions-list').length) {
             session = data.sessions_active;
         } else if(sessionType == 'await') {
             session = data.sessions_await;
-        } else if(sessionType == 'notactive') {
-            session = data.sessions_notactive;
+        } else if(sessionType == 'closed') {
+            session = data.sessions_closed;
             clonableBlock = 'short';
         }
-        
+
         sessionElement.toggleClass('d-none', session.length == 0);
 
         session.forEach(function(session){
@@ -159,7 +161,7 @@ if ($('.js-sessions-list').length) {
             element = element
                 .replace('#ID#', session.id)
                 .replace('#USERSCOUNT#', session.usersCount)
-                .replace('#CREATED#', session.created)
+                .replace('#CREATED#', session.createdDateTime)
                 .replace('#CREATEDTIMESTAMP#', session.createdTimestamp)
                 .replace('#TIMELEFT#', session.timeLeft)
                 .replace('#TARGET#', session.target);
@@ -177,37 +179,38 @@ if ($('.js-sessions-list').length) {
     setMomentalInterval(function(){
         $.ajax({
             url: api_links.sessions.all,
+            data: {
+                api_token: user.api_token
+            },
             success: function(data) {
                 sessionsAjax('active', data);
                 sessionsAjax('await', data);
-                sessionsAjax('notactive', data);
+                sessionsAjax('closed', data);
             }
         });
     }, 5000);
 }
 
-var popupInterval;
+var popupInterval, popupInterval2;
 var popupTimer;
 
 var popupHandlers = function(){
 
     var sessionCreateAction = function(self, button, when, type) {
-        self.find('select').first().trigger('change');
-
         var dateStart;
         var dateEnd;
         var timeAdd;
         var timePow;
 
-        var type = self.find('.js-user-type').serializeSelect();
-        var group = self.find('.js-user-group').serializeSelect();
+        var types = self.find('.js-user-type').serializeSelect();
+        var groups = self.find('.js-user-group').serializeSelect();
         
         $.ajax({
             url: api_links.users.aside,
             success: function(data) {
                 if (data.types.length > 0) {
                     self.find('.js-user-type select').html("");
-                    var typesSelected = type.split(',');
+                    var typesSelected = types.split(',');
                     data.types.forEach(function(type){
                         var xmp = self.find('.js-session-create-select-option').html();
                         
@@ -229,7 +232,7 @@ var popupHandlers = function(){
 
                 if (data.groups.length > 0) {
                     self.find('.js-user-group select').html("");
-                    var groupsSelected = group.split(',');
+                    var groupsSelected = groups.split(',');
                     data.groups.forEach(function(group){
                         var xmp = self.find('.js-session-create-select-option').html();
                         
@@ -247,12 +250,15 @@ var popupHandlers = function(){
                     });
                 }
 
+                self.find('select').first().trigger('change');
+
                 refreshSelects();
             }
         });
 
         popupInterval = setMomentalInterval(function(){
             dateStart = new Date();
+            
             if (type == 'timed') {
                 dateStart = self.find('.js-active_at').val();
                 if (dateStart != '') {
@@ -273,6 +279,7 @@ var popupHandlers = function(){
             fillClock(self.find('.js-session-info-clock-end'), dateEnd);
             fillDate(self.find('.js-session-info-date-end'), dateEnd);
         }, 1000);
+
     }
 
     $("#popup").on('popup-session-create-momental', function(e, button, when) {
@@ -299,74 +306,149 @@ var popupHandlers = function(){
         sessionCreateAction($(this), button, when, 'timed');
     });
 
-    $("#popup").on('popup-session-data-create', function(e, button, when) {
-        var self = $(this);
-        var button = $(button);
+    var sessionDataAttendanceUpdateAction = function(self, button, sessionData) {
+        $.ajax({
+            url: api_links.session.attendance,
+            data: {
+                id: sessionData.id,
+                api_token: user.api_token
+            },
+            success: function(data) {
+                self.find('.js-loader').fadeOut(200);
+                self.find('.js-session-data-users-count').html(data.length);
+                
+                if (data.length > 0) {
+                    self.find('.js-noted-table').fadeIn(200);
+                    self.find('.js-no-results').fadeOut(200);
+                    $('.js-session-data-attendance-full').removeClass('disabled');
+                    
+                    self.find('.js-attendance-list').html("");
+                    data.forEach(function(attendance){
+                        var xmp = $('.js-attendance-list-row-templates').html();
+                        var element = $(xmp)[0].outerHTML;
 
-        console.log(button.attr('popup-data'));
+                        element = element
+                            .replaceAll('#TIME#', '4 с.')
+                            .replaceAll('#USER_ID#', attendance.user.id)
+                            .replaceAll('#USER_NAME_SHORT#', attendance.user.name_short)
+                            .replaceAll('#GROUP_ID#', attendance.user.group.id)
+                            .replaceAll('#GROUP_NAME_FULL#', attendance.user.group.name_full);
 
-        // TODO: При подключении данные (тип) брать из Ajax
-        var sessionType = button.attr('session-type') == "momental";
+                        var element = $(element).appendTo('#popup .js-attendance-list');
+                    });
+                } else {
+                    self.find('.js-no-results').fadeIn(200);
+                    self.find('.js-noted-table').fadeOut(200);
+                    $('.js-session-data-attendance-full').addClass('disabled');
+                }
+            }
+        });
+    };
 
-        var timeToClose = 20;
-        // TODO: При подключении заменить Date, если сеанс уже была начата (моментальная, но окно открыто заново)
-        var dateStart = new Date();
+    var sessionDataAction = function(self, button, sessionData) {
+        
+        console.log(sessionData);
+
+        self.find('.js-session-data-qrcode').attr('src', sessionData.qrImage);
+
+        var sessionType = sessionData.status;
+
+        // TODO: При подключении заменить Date, если сеанс уже была начат (моментальная, но окно открыто заново)
+        var dateStart = new Date(sessionData.activeTimestamp * 1000);
         var timezoneOffset = dateStart.getTimezoneOffset()*60*1000;
 
         var statusBar = self.find('.title .js-session-data-status');
 
-        if (sessionType) {
+        if (sessionType == 'active') {
             self.find('.qr-code').removeClass('hidden');
             self.find('.js-session-data-timed_only').addClass('d-none');
             // TODO: При подключении заменить правильно dateStart. Это дата старта сеанса
         } else {
-            dateStart = new Date(dateStart.getTime() + 20 * 1000);
             statusBar.removeClass('blue').removeClass('red').addClass('yellow');
             statusBar.html(statusBar.data('await'));
         }
 
-        var dateClose = new Date(dateStart.getTime() + timeToClose * 1000);
+        var dateClose = new Date(dateStart.getTime() + sessionData.activetime * 1000);
         var deltaDate;
 
-        popupInterval = setMomentalInterval(function(){
-            var date = new Date();
-            if (!sessionType) {
-                deltaDate = new Date(dateStart.getTime() - date.getTime() + timezoneOffset);
+        if (sessionType != 'closed') {
+            
+            self.find('.js-loader').fadeIn(200);
+            self.find('.js-noted-table').fadeOut(200);
+            self.find('.js-no-results').fadeOut(200);
+
+            popupInterval = setMomentalInterval(function(){
+                var date = new Date();
+                
+                if (sessionType == 'await') {
+                    deltaDate = new Date(dateStart.getTime() - date.getTime() + timezoneOffset);
+                    if (deltaDate.getTime() <= timezoneOffset) {
+                        deltaDate = new Date(timezoneOffset);
+                        
+                        self.find('.js-session-data-clock-start').addClass('red');
+
+                        statusBar.removeClass('yellow').removeClass('red').addClass('blue');
+                        statusBar.html(statusBar.data('active'));
+
+                        self.find('.qr-code').removeClass('hidden');
+                    }
+
+                    fillClock(self.find('.js-session-data-clock-start'), deltaDate);
+                }
+
+                deltaDate = new Date(dateClose.getTime() - date.getTime() + timezoneOffset);
 
                 if (deltaDate.getTime() <= timezoneOffset) {
                     deltaDate = new Date(timezoneOffset);
-                    
-                    self.find('.js-session-data-clock-start').addClass('red');
 
-                    statusBar.removeClass('yellow').removeClass('red').addClass('blue');
-                    statusBar.html(statusBar.data('active'));
+                    self.find('.js-session-data-clock-end').addClass('red');
 
-                    self.find('.qr-code').removeClass('hidden');
+                    statusBar.removeClass('blue').removeClass('yellow').addClass('red');
+                    statusBar.html(statusBar.data('closed'));
+
+                    self.find('.qr-code').addClass('hidden');
+
+                    clearInterval(popupInterval);
+
+                    return;
                 }
 
-                fillClock(self.find('.js-session-data-clock-start'), deltaDate);
-            }
+                fillClock(self.find('.js-session-data-clock-end'), deltaDate);
+            });
+            popupInterval2 = setMomentalInterval(function(){
+                sessionDataAttendanceUpdateAction(self, button, sessionData);
+            }, 2500);
+        } else {
+            statusBar.removeClass('blue').removeClass('yellow').addClass('red');
+            statusBar.html(statusBar.data('closed'));
 
-            deltaDate = new Date(dateClose.getTime() - date.getTime() + timezoneOffset);
+            sessionDataAttendanceUpdateAction(self, button, sessionData);
+        }
 
-            if (deltaDate.getTime() <= timezoneOffset) {
-                deltaDate = new Date(timezoneOffset);
+    };
 
-                self.find('.js-session-data-clock-end').addClass('red');
+    $("#popup").on('popup-session-data-create', function(e, button, when) {
+        var self = $(this);
+        var button = $(button);
 
-                statusBar.removeClass('blue').removeClass('yellow').addClass('red');
-                statusBar.html(statusBar.data('notactive'));
+        if (parseInt(button.attr('popup-data'))) {
 
-                self.find('.qr-code').addClass('hidden');
+            $.ajax({
+                url: api_links.session.one,
+                data: {
+                    id: button.attr('popup-data'),
+                    api_token: user.api_token
+                }, 
+                success: function(data) {
+                    sessionDataAction(self, button, data);
+                }
+            });
 
-                clearInterval(popupInterval);
+            return;
+        }
 
-                return;
-            }
+        sessionDataAction(self, button, JSON.parse(button.attr('popup-data')));
 
-            fillClock(self.find('.js-session-data-clock-end'), deltaDate);
-
-        });
     });
 
     $('#popup').on('popup-user-list-create', function(e, button, when){
@@ -721,9 +803,16 @@ var popupAdditionalActions = function(){
                 api_token: user.api_token
             },
             success: function(data) {
-                console.log(data);
                 if (!data.error) {
-                    openPopup('session-data', 'popup-session-data-create', data.session.id);
+                    if (data.session.status == 'active') {
+                        openPopup('session-data', 'popup-session-data-create', data.session);
+                    } else {
+                        openPopup('text', 'popup-text-create', {
+                            type: "annotation",
+                            title: "Сеанс создан!",
+                            text: "Ваш сеанс создан! Ожидайте начала сеанса. Начало сеанса: " + data.session.activeDateTime
+                        });
+                    }
                 } else {
                     openPopup('text', 'popup-text-create', {
                         type: "warning",
@@ -773,6 +862,7 @@ $(function(){
         $('body').removeClass('nooverflow');
         
         clearInterval(popupInterval);
+        clearInterval(popupInterval2);
         clearTimeout(popupTimer);
     });
 
@@ -782,6 +872,7 @@ $(function(){
             $("#popup").trigger($(this).attr('popup-handler-before'), this, true);
 
         clearInterval(popupInterval);
+        clearInterval(popupInterval2);
         clearTimeout(popupTimer);
 
         $("#popup").html("");

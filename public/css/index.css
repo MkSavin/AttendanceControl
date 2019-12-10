@@ -760,6 +760,10 @@ main .end-of-page {
     margin-bottom: 10px;
 }
 
+.sessions .session.short .body > .groups {
+    font-size: 16px;
+}
+
 .sessions .session .time-timer .timer {
     margin-top: -3px;
     margin-right: 3px;
@@ -838,6 +842,21 @@ main .end-of-page {
 .sessions .session.long > .information {
     width: 130px;
     padding: 8px;
+}
+
+.sessions .session.long > .information > .info-block > div,
+.sessions .session.short .body > .groups {
+    overflow: hidden; 
+    white-space: nowrap; 
+    text-overflow: ellipsis;
+}
+
+.sessions .session.long > .information > .info-block > div {
+    max-height: 20px;
+}
+
+.sessions .session.short .body > .groups {
+    max-height: 26px;
 }
 
 .sessions .session.long > .information > .info-block > .info {
@@ -1196,7 +1215,7 @@ span.yellow {
     font-size: 18px;
 }
 
-#popup .session-data .qr-data .noted-table {
+#popup .session-data .qr-data .noted-table-container {
     width: calc(100% + 15px);
     height: calc(50vh - 136px);
     margin-left: -15px;
@@ -1222,7 +1241,6 @@ span.yellow {
     }
 
 }
-
 
 #popup .noted-table table {
     width: 100%;

@@ -22,7 +22,7 @@
 <div class="d-none js-sessions-templates">
     @include('public.pages.index.parts.session_long', [
         'id' => '#ID#',
-        'created' => '#CREATED#',
+        'createdDateTime' => '#CREATED#',
         'createdTimestamp' => '#CREATEDTIMESTAMP#',
         'creatorAutomated' => true,
         'usersCount' => '#USERSCOUNT#',
@@ -31,7 +31,7 @@
     ])
     @include('public.pages.index.parts.session_short', [
         'id' => '#ID#',
-        'created' => '#CREATED#',
+        'createdDateTime' => '#CREATED#',
         'createdTimestamp' => '#CREATEDTIMESTAMP#',
         'creatorAutomated' => true,
         'usersCount' => '#USERSCOUNT#',
@@ -52,7 +52,7 @@
             </div>
             <div class="block-body js-block-body">
                 @foreach($sessions_active as $session)
-                    @include('public.pages.index.parts.session_long', $session)
+                    @include('public.pages.index.parts.session_long', $session->toArray())
                 @endforeach
                 <div class="clearfix"></div>
             </div>
@@ -71,13 +71,13 @@
             </div>
         </div>
     </div>
-    <div class="js-sessions-list-notactive {{ count($sessions_notactive) == 0 ? 'd-none' : '' }}">
+    <div class="js-sessions-list-closed {{ count($sessions_closed) == 0 ? 'd-none' : '' }}">
         <div class="block sessions">
             <div class="block-title">
                 Прошедшие сеансы <!--<span class="blue">Ноябрь 2019</span>-->
             </div>
             <div class="block-body js-block-body">
-                @foreach($sessions_notactive as $session)
+                @foreach($sessions_closed as $session)
                     @include('public.pages.index.parts.session_short', $session)
                 @endforeach
                 <div class="clearfix"></div>

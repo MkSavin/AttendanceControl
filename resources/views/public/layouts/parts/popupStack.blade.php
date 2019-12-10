@@ -52,17 +52,17 @@
                 <div class="col-sm">
                     <label for="popup-session-create-user-type">1. Выберите тип пользователя</label>
                     <select data-live-search="true" name="k" class="form-control js-user-type" id="popup-session-create-user-type">
-                        <option value="1" data-checkgroup="false" data-users-count="20" data-subtext="20 чел." selected default-selected>Спец. по кадрам</option>
-                        <option value="2" data-checkgroup="false" data-users-count="120" data-subtext="120 чел.">Преподаватель</option>
-                        <option value="3" data-checkgroup="true" data-users-count="1420" data-subtext="1420 чел.">Студент</option>
+                        <option value="1" data-checkgroup="false" data-users-count="0" data-subtext="0 чел." selected default-selected>Спец. по кадрам</option>
+                        <option value="2" data-checkgroup="false" data-users-count="0" data-subtext="0 чел.">Преподаватель</option>
+                        <option value="3" data-checkgroup="true" data-users-count="0" data-subtext="0 чел.">Студент</option>
                     </select>
                 </div>
                 <div class="col-sm mt-3 mt-sm-0">
                     <label for="popup-session-create-user-group">2. Выберите группы пользователей</label>
                     <select data-live-search="true" name="n" multiple class="form-control js-user-group" id="popup-session-create-user-group">
-                        <option value="1" data-users-count="20" data-subtext="20 чел.">ПРИ-117</option>
-                        <option value="2" data-users-count="20" data-subtext="20 чел.">ИСТ-117</option>
-                        <option value="3" data-users-count="20" data-subtext="20 чел.">ИСБ-117</option>
+                        <option value="1" data-users-count="0" data-subtext="0 чел.">ПРИ-117</option>
+                        <option value="2" data-users-count="0" data-subtext="0 чел.">ИСТ-117</option>
+                        <option value="3" data-users-count="0" data-subtext="0 чел.">ИСБ-117</option>
                     </select>
                 </div>
             </div>
@@ -120,7 +120,7 @@
                 <div class="row info-row">
                     <div class="col-sm row">
                         <div class="col-3 info-row-name">Предп. нагрузка:</div>
-                        <div class="col info-row-data"><span class="blue js-session-info-users-count">20</span> человек</div>
+                        <div class="col info-row-data"><span class="blue js-session-info-users-count">0</span> человек</div>
                     </div>
                 </div>
                 <div>
@@ -134,7 +134,7 @@
 </div>
 <div class="window session-data">
     <div class="header">
-        <span class="float-left title">Сеанс <span class="blue js-session-data-status" data-await="В ожидании" data-active="Активен" data-notactive="Закрыт">Активен</span></span>
+        <span class="float-left title">Сеанс <span class="blue js-session-data-status" data-await="В ожидании" data-active="Активен" data-closed="Закрыт">Активен</span></span>
         <div class="float-right menu">
             <a href="#" class="overlay-more dd-toggle" dd-target=".dd-more"></a>
             <div class="dd-hidden dd dd-more">
@@ -152,83 +152,51 @@
                 <div class="data">
                     <div class="unhide">Нажмите, чтобы показать</div>
                 </div>
-                <img src="public/img/qr/elerance.gif" width="100%" height="100%" alt="">
+                <img src="public/img/qr/elerance.gif" class="js-session-data-qrcode" width="100%" height="100%" alt="">
             </div>
             <div class="col-sm qr-data">
                 <div class="row info-row">
                     <div class="col-md w-33 px-0 js-session-data-timed_only">
                         <label for="popup-session-data-clock-start">До старта</label><br>
                         <span class="blue clock js-session-data-clock-start" id="popup-session-data-clock-start">
-                            <span class="hours">20</span><span class="minutes">31</span><span class="seconds">20</span>
+                            <span class="hours">00</span><span class="minutes">00</span><span class="seconds">00</span>
                         </span>
                     </div>
                     <div class="col-md w-33 px-0">
                         <label for="popup-session-data-clock-end">До конца</label><br>
                         <span class="blue clock js-session-data-clock-end" id="popup-session-data-clock-end">
-                            <span class="hours">20</span><span class="minutes">31</span><span class="seconds">20</span>
+                            <span class="hours">00</span><span class="minutes">00</span><span class="seconds">00</span>
                         </span>
                     </div>
                     <div class="col-md w-33 px-0">
                         <label for="popup-session-data-users-count">Отметилось</label><br>
-                        <div id="popup-session-data-users-count"><span class="blue js-session-data-users-count">1420</span></div>
+                        <div id="popup-session-data-users-count"><span class="blue js-session-data-users-count">0</span></div>
                     </div>
                 </div>
-                <div class="noted-table ps">
+                <xmp class="d-none js-attendance-list-row-templates">
+                    @include('public.layouts.parts.popupStackParts.sessionData.attendanceRow')
+                </xmp>
+                <div class="noted-table-container updatable-table" id="popup-user-data-noted-table">
+                    <div class="no-results js-no-results" style="display:none">Отметившихся пользователей нет</div>
+                    <div class="center no-selection loader js-loader">
+                        <img src="public/img/animation/loading_transparent.gif" class="pevs-none" width="60" alt="">
+                    </div>
+                    <div class="noted-table js-noted-table ps" style="display:none">
                     <table>
                         <thead>
                             <tr>
                                 <th>ВРЕМЯ</th>
                                 <th>ФИО</th>
-                                <th>ГРУППА</th>
+                                <th class="js-session-data-col-group">ГРУППА</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>4 c.</td>
-                                <td><a href="#" class="popup-toggle" popup-target=".user-data">Савин М.К</a></td>
-                                <td><a href="#" class="popup-toggle" popup-target=".group-data">ПРИ-117</a></td>
-                            </tr>
-                            <tr>
-                                <td>3 c.</td>
-                                <td><a href="#" class="popup-toggle" popup-target=".user-data">Куппе Р.О</a></td>
-                                <td><a href="#" class="popup-toggle" popup-target=".group-data">ПРИ-117</a></td>
-                            </tr>
-                            <tr>
-                                <td>2 c.</td>
-                                <td><a href="#" class="popup-toggle" popup-target=".user-data">Козловский А.Г</a></td>
-                                <td><a href="#" class="popup-toggle" popup-target=".group-data">ИДБ-117</a></td>
-                            </tr>
-                            <tr>
-                                <td>1 c.</td>
-                                <td><a href="#" class="popup-toggle" popup-target=".user-data">Информационовский Е.К</a></td>
-                                <td><a href="#" class="popup-toggle" popup-target=".group-data">ЖБ-117</a></td>
-                            </tr>
-                            <tr>
-                                <td>1 c.</td>
-                                <td><a href="#" class="popup-toggle" popup-target=".user-data">Уппе Р.О</a></td>
-                                <td><a href="#" class="popup-toggle" popup-target=".group-data">ИРП-117</a></td>
-                            </tr>
-                            <tr>
-                                <td>1 c.</td>
-                                <td><a href="#" class="popup-toggle" popup-target=".user-data">Уппе Р.О</a></td>
-                                <td><a href="#" class="popup-toggle" popup-target=".group-data">ИРП-117</a></td>
-                            </tr>
-                            <tr>
-                                <td>1 c.</td>
-                                <td><a href="#" class="popup-toggle" popup-target=".user-data">Уппе Р.О</a></td>
-                                <td><a href="#" class="popup-toggle" popup-target=".group-data">ИРП-117</a></td>
-                            </tr>
-                            <tr>
-                                <td>1 c.</td>
-                                <td><a href="#" class="popup-toggle" popup-target=".user-data">Уппе Р.О</a></td>
-                                <td><a href="#" class="popup-toggle" popup-target=".group-data">ИРП-117</a></td>
-                            </tr>
-                        </tbody>
+                        <tbody class="js-attendance-list"></tbody>
                     </table>
+                    </div>
                 </div>
                 <div class="session-buttons">
-                    <a href="#" class="button float-right popup-toggle" popup-target=".session-users">Просмотреть всех</a>
-                    <a href="#" class="button mr-3 white float-right popup-toggle icon icon-plus" popup-target=".session-users-add">Добавить</a>
+                    <a href="#" class="js-session-data-attendance-full button float-right popup-toggle" popup-target=".session-users">Просмотреть всех</a>
+                    <a href="#" class="js-session-data-attendance-add button mr-3 white float-right popup-toggle icon icon-plus" popup-target=".session-users-add">Добавить</a>
                     <div class="clearfix"></div>
                 </div>
             </div>

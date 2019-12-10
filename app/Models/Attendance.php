@@ -9,7 +9,7 @@ use App\Traits\Models\Attributes;
 class Attendance extends Model
 {
 
-    use BelongsTo\Session, Attributes\CreatedAt;
+    use BelongsTo\Session, BelongsTo\User, Attributes\CreatedAt;
 
     public $table = "attendance";
 
@@ -21,10 +21,21 @@ class Attendance extends Model
      * @var array
      */
     protected $appends = [
-        'created',
+        'createdDateTime',
         'createdDate',
         'createdTime',
         'createdTimestamp',
     ];
+
+    /**
+     * Метод получения полной информации о посещении
+     *
+     * @param int $id
+     * @return Collection
+     */
+    public static function getFullBySession($id)
+    {
+        return self::with('session', 'user', 'user.group')->where('session_id', $id)->get();
+    }
 
 }
