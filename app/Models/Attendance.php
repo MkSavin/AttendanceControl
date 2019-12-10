@@ -35,7 +35,14 @@ class Attendance extends Model
      */
     public static function getFullBySession($id)
     {
-        return self::with('session', 'user', 'user.group')->where('session_id', $id)->get();
+        $attendance = self::with('session', 'user', 'user.group')->where('session_id', $id)->get();
+
+        $attendance->transform(function($item){
+            $item->differance = $item->created_at->diffAsCarbonInterval($item->session->active_at, false)->cascade()->forHumans(['short' => true]);
+            return $item;
+        }); 
+
+        return $attendance;
     }
 
 }
