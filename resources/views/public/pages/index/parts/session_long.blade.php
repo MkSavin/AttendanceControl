@@ -1,4 +1,4 @@
-<a href="#" class="session long popup-toggle js-session-long" popup-target=".session-data"  data-id="{{ $id }}">
+<a href="#" class="session long popup-toggle js-session-long" popup-target=".session-data" popup-handler-after="popup-session-data-create" popup-data="{{ $id }}">
     <span class="session-hide"><img src="public/img/icons/close_white.svg" width="10" alt=""></span>
     <div class="float-left">
         <div class="body">
@@ -13,7 +13,7 @@
     </div>
     <div class="float-right information">
         <div class="info-block">
-            <div class="info" data-timestamp="{{ $createdTimestamp }}">{{ $created }}</div>
+            <div class="info" data-timestamp="{{ $createdTimestamp }}">{{ isset($createdDateTime) ? $createdDateTime : "" }}</div>
             <div class="info-name">Дата создания</div>
         </div>
         <div class="info-block">

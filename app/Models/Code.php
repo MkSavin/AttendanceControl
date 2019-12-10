@@ -86,7 +86,7 @@ class Code extends Model
 
             if ($session->user_type_id == $user->user_type_id && $groupExists) {
 
-                if (!$session->active) {
+                if ($session->status != "active") {
                     return [
                         "error" => true,
                         "code" => 1003,
