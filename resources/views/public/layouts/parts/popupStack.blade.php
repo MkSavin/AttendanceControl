@@ -286,10 +286,10 @@
                     <div class="col-sm w-50">
                         <label for="popup-session-create-user-group">1. Выберите группы пользователей</label>
                         <select data-live-search="true" name="n" multiple class="form-control" id="popup-session-create-user-group">
-                            <option value="1">ПРИ-117</option>
-                            <option value="2">ИСТ-117</option>
-                            <option value="3">ИСБ-117</option>
-                            <option value="4">ЖБ-117</option>
+                            <option value="1" data-subtext="20 чел.">ПРИ-117</option>
+                            <option value="2" data-subtext="20 чел.">ИСТ-117</option>
+                            <option value="3" data-subtext="20 чел.">ИСБ-117</option>
+                            <option value="4" data-subtext="20 чел.">ЖБ-117</option>
                         </select>
                     </div>
                     <div class="col-sm w-50">
