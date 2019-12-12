@@ -195,8 +195,8 @@
                     </div>
                 </div>
                 <div class="session-buttons">
-                    <a href="#" class="js-session-data-attendance-full button float-right popup-toggle" popup-target=".session-users">Просмотреть всех</a>
-                    <a href="#" class="js-session-data-attendance-add button mr-3 white float-right popup-toggle icon icon-plus" popup-target=".session-users-add">Добавить</a>
+                    <a href="#" class="js-session-data-attendance-full button float-right popup-toggle" popup-handler-after="popup-session-users-create" popup-target=".session-users">Просмотреть всех</a>
+                    <a href="#" class="js-session-data-attendance-add button mr-3 white float-right popup-toggle icon icon-plus" popup-handler-after="popup-session-users-add-create" popup-target=".session-users-add">Добавить</a>
                     <div class="clearfix"></div>
                 </div>
             </div>
@@ -213,15 +213,18 @@
     </div>
     <div class="body nopadding">
         <div class="header">
-            <a href="#" class="button short white popup-toggle icon icon-back" popup-target=".session-data">Назад к сеансу</a>
-            <a href="#" class="button short white float-right popup-toggle icon icon-plus" popup-target=".session-users-add">Добавить</a>
+            <a href="#" class="js-session-users-back button short white popup-toggle icon icon-back" popup-handler-after="popup-session-data-create" popup-target=".session-data">Назад к сеансу</a>
+            <a href="#" class="js-session-users-add button short white float-right popup-toggle icon icon-plus" popup-handler-after="popup-session-users-add-create" popup-target=".session-users-add">Добавить</a>
             <div class="clearfix"></div>
         </div>
         <div class="body">
+            <xmp class="d-none js-session-users-select-option">
+                <option value="#ID#" data-users-count="#USERS_COUNT#" data-subtext="#USERS_COUNT# чел.">#NAME_FULL#</option>
+            </xmp>
             <div class="filters row">
                 <div class="col-sm">
                     <label for="popup-session-users-user-group">Группы пользователей</label>
-                    <select data-live-search="true" name="n" multiple class="form-control" id="popup-session-users-user-group">
+                    <select data-live-search="true" name="n" multiple class="js-users-groups form-control" id="popup-session-users-user-group">
                         <option value="1" data-subtext="20 чел.">ПРИ-117</option>
                         <option value="2" data-subtext="18 чел.">ИСТ-117</option>
                         <option value="3" data-subtext="20 чел.">ИСБ-117</option>
@@ -232,38 +235,34 @@
                 </div>
                 <div class="col-sm">
                     <label for="popup-session-users-user-group">Поиск</label>
-                    <input type="text" class="form-control">
+                    <input type="text" class="js-search form-control">
                 </div>
             </div>
-            <div class="noted-table ps">
+            <xmp class="d-none js-attendance-list-row-templates">
+                @include('public.layouts.parts.popupStackParts.sessionUsers.attendanceRow')
+            </xmp>
+            <div class="noted-table-container updatable-table" id="popup-user-data-noted-table">
+                <div class="no-results js-no-results" style="display:none">Пользователей, с таким набором фильтров, нет</div>
+                <div class="center no-selection loader js-loader">
+                    <img src="public/img/animation/loading_transparent.gif" class="pevs-none" width="60" alt="">
+                </div>
+                <div class="noted-table js-noted-table ps" style="display:none">
                 <table>
-                    <thead>
+                <thead>
                         <tr>
                             <th>ДАТА И ВРЕМЯ</th>
                             <th>ФИО</th>
                             <th>ГРУППА</th>
-                            <th width="120"></th>
+                            <!-- <th width="120"></th> -->
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>Сегодня, в <span class="blue">20:17<span class="sub">:20</span></span><span class="blue">-19 с.</span></td>
-                            <td><a href="#" class="popup-toggle" popup-target=".user-data">Савин М.К</a></td>
-                            <td><b><a href="#" class="popup-toggle" popup-target=".group-data">ПРИ-117</a></b></td>
-                            <td><a href="#" class="button short red">Удалить</a></td>
-                        </tr>
-                        <tr>
-                            <td>Сегодня, в <span class="blue">20:17<span class="sub">:21</span></span><span class="blue">-20 с.</span></td>
-                            <td><a href="#" class="popup-toggle" popup-target=".user-data">Куппе Р.О</a></td>
-                            <td><b><a href="#" class="popup-toggle" popup-target=".group-data">ПРИ-117</a></b></td>
-                            <td><a href="#" class="button short red">Удалить</a></td>
-                        </tr>
-                    </tbody>
+                    <tbody class="js-attendance-list"></tbody>
                 </table>
+                </div>
             </div>
         </div>
         <div class="footer">
-            <label class="mb-0">Пользователей в таблице: <span class="blue">20</span></label>
+            <label class="mb-0">Пользователей в таблице: <span class="js-attendance-count blue">20</span></label>
         </div>
     </div>
 </div>
@@ -277,24 +276,31 @@
     </div>
     <div class="body nopadding">
         <div class="header">
-            <a href="#" class="button short white popup-toggle icon icon-back" popup-target=".session-data">Назад к сеансу</a>
+            <a href="#" class="js-session-data button short white mr-3 popup-toggle icon icon-back" popup-handler-after="popup-session-data-create" popup-target=".session-data">Назад к сеансу</a>
+            <a href="#" class="js-session-users button short white popup-toggle icon icon-back" popup-handler-after="popup-session-users-create" popup-target=".session-users">Назад к пользователям</a>
             <div class="clearfix"></div>
         </div>
         <form method="POST">
             <div class="body">
+                <xmp class="d-none js-session-users-add-select-group-option">
+                    <option value="#ID#" data-users-count="#USERS_COUNT#" data-subtext="#USERS_COUNT# чел.">#NAME_FULL#</option>
+                </xmp>
+                <xmp class="d-none js-session-users-add-select-user-option">
+                    <option value="#ID#" data-subtext="#TARGET#">#NAME_SHORT#</option>
+                </xmp>
                 <div class="input-line row">
-                    <div class="col-sm w-50">
+                    <div class="col-sm w-50 js-users-groups-form-control-group">
                         <label for="popup-session-create-user-group">1. Выберите группы пользователей</label>
-                        <select data-live-search="true" name="n" multiple class="form-control" id="popup-session-create-user-group">
+                        <select data-live-search="true" name="n" multiple class="js-users-groups form-control" id="popup-session-create-user-group">
                             <option value="1" data-subtext="20 чел.">ПРИ-117</option>
                             <option value="2" data-subtext="20 чел.">ИСТ-117</option>
                             <option value="3" data-subtext="20 чел.">ИСБ-117</option>
                             <option value="4" data-subtext="20 чел.">ЖБ-117</option>
                         </select>
                     </div>
-                    <div class="col-sm w-50">
-                        <label for="popup-session-create-user-group">2. Выберите пользователей</label>
-                        <select data-live-search="true" name="n" multiple class="form-control" id="popup-session-create-user-group">
+                    <div class="col-sm w-50 js-users-users-form-control-group">
+                        <label for="popup-session-create-user-group"><span class="js-step">2</span>. Выберите пользователей</label>
+                        <select data-live-search="true" name="n" multiple disabled class="js-users-users form-control" id="popup-session-create-user-group">
                             <option value="1" data-subtext="ПРИ-117">Савин М.К</option>
                             <option value="2" data-subtext="ПРИ-117">Куппе Р.О</option>
                             <option value="3" data-subtext="ИДБ-117">Козловский А.Г</option>
@@ -304,8 +310,8 @@
                 </div>
             </div>
             <div class="footer">
-                <label class="mb-0">Пользователей будет добавлено: <span class="blue">20</span></label>
-                <a href="#" class="button short float-right popup-toggle icon icon-plus" popup-target=".session-data">Добавить</a>
+                <label class="mb-0">Пользователей будет добавлено: <span class="js-users-count blue">0</span></label>
+                <a href="#" class="js-session-users-add-add button short float-right icon icon-plus">Добавить</a>
                 <input type="reset" class="button short white mr-3 float-right" value="Очистить">
             </div>
         </form>

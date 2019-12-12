@@ -23,7 +23,6 @@ class CreateSessionsTable extends Migration
 
             $table->timestamp('active_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->integer('activetime')->unsigned();
-            $table->boolean('active')->default(1);
 
             $table->timestamps();
         });

@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Models\Session;
 use App\Models\Attendance;
 use App\Models\Code;
+use App\Models\Session;
 use Illuminate\Support\Facades\Input;
 
 class SessionsController extends Controller
@@ -58,19 +58,20 @@ class SessionsController extends Controller
     {
         $id = intval(Input::get('id'));
 
-        return response()->json(Session::find($id), 200);
+        return response()->json(Session::getSession($id, true), 200);
     }
 
     /**
-     * GET-Контроллер для страницы session
+     * GET-Контроллер для страницы session/suitable
      *
      * @return string
      */
-    public function Attendance()
+    public function Suitable()
     {
         $id = intval(Input::get('id'));
+        $groups = Input::get('groups');
 
-        return response()->json(Attendance::getFullBySession($id), 200);
+        return response()->json(Session::getSuitableUsers($id, $groups), 200);
     }
 
 }
