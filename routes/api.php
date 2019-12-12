@@ -32,7 +32,10 @@ Route::group(['namespace' => 'API'], function () {
         Route::get('/session', 'SessionsController@GetOne');
         Route::get('/session/usecode', 'SessionsController@UseCode');
         Route::get('/session/create', 'SessionsController@Create');
-        Route::get('/session/attendance', 'SessionsController@Attendance');
+        Route::get('/session/suitable', 'SessionsController@Suitable');
+        
+        Route::get('/attendance', 'AttendanceController@Get');
+        Route::get('/attendance/add', 'AttendanceController@Add');
 
     });
 });

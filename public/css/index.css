@@ -643,8 +643,8 @@ main .end-of-page {
     font-size: 14px;
 }
 
-.time > .clock > .minutes::before, .time > .clock > .seconds::before,
-.qr-data .clock > .minutes::before, .qr-data .clock > .seconds::before {
+.time > .clock > .minutes::before, .time > .clock > .seconds::before, .time > .clock > .days::after,
+.qr-data .clock > .minutes::before, .qr-data .clock > .seconds::before, .qr-data .clock > .days::after {
     content: ':';
 }
 

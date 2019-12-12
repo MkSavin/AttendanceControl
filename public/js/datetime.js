@@ -31,7 +31,8 @@ var timeFmt = function(time) {
     return time < 10 ? "0" + time : time;
 };
 
-var fillClock = function(clock, datetime) {
+var fillClock = function(clock, datetime, interval = false) {
+    clock.find('.days').html(timeFmt(datetime.getDate() - (interval ? 1 : 0)));
     clock.find('.hours').html(timeFmt(datetime.getHours()));
     clock.find('.minutes').html(timeFmt(datetime.getMinutes()));
     clock.find('.seconds').html(timeFmt(datetime.getSeconds()));

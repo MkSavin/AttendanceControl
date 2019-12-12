@@ -54,7 +54,11 @@ var api_links = {
         one: '/api/session',
         usecode: '/api/session/usecode',
         create: '/api/session/create',
-        attendance: '/api/session/attendance',
+        suitable: '/api/session/suitable'
+    },
+    attendance: {
+        get: '/api/attendance/',
+        add: '/api/attendance/add'
     },
     users: {
         full: '/api/users',
@@ -211,9 +215,9 @@ var popupHandlers = function(){
                 if (data.types.length > 0) {
                     self.find('.js-user-type select').html("");
                     var typesSelected = types.split(',');
+                    var xmp = self.find('.js-session-create-select-option').html();
+
                     data.types.forEach(function(type){
-                        var xmp = self.find('.js-session-create-select-option').html();
-                        
                         var element = $(xmp)[0].outerHTML;
 
                         element = element
@@ -233,9 +237,9 @@ var popupHandlers = function(){
                 if (data.groups.length > 0) {
                     self.find('.js-user-group select').html("");
                     var groupsSelected = groups.split(',');
+                    var xmp = self.find('.js-session-create-select-option').html();
+
                     data.groups.forEach(function(group){
-                        var xmp = self.find('.js-session-create-select-option').html();
-                        
                         var element = $(xmp)[0].outerHTML;
                         element = element
                             .replaceAll('#ID#', group.id)
@@ -308,9 +312,9 @@ var popupHandlers = function(){
 
     var sessionDataAttendanceUpdateAction = function(self, button, sessionData) {
         $.ajax({
-            url: api_links.session.attendance,
+            url: api_links.attendance.get,
             data: {
-                id: sessionData.id,
+                session_id: sessionData.id,
                 api_token: user.api_token
             },
             success: function(data) {
@@ -323,8 +327,9 @@ var popupHandlers = function(){
                     $('.js-session-data-attendance-full').removeClass('disabled');
                     
                     self.find('.js-attendance-list').html("");
+                    var xmp = $('.js-attendance-list-row-templates').html();
+
                     data.forEach(function(attendance){
-                        var xmp = $('.js-attendance-list-row-templates').html();
                         var element = $(xmp)[0].outerHTML;
 
                         element = element
@@ -368,6 +373,7 @@ var popupHandlers = function(){
             statusBar.html(statusBar.data('await'));
         }
 
+
         var dateClose = new Date(dateStart.getTime() + sessionData.activetime * 1000);
         var deltaDate;
 
@@ -393,7 +399,11 @@ var popupHandlers = function(){
                         self.find('.qr-code').removeClass('hidden');
                     }
 
-                    fillClock(self.find('.js-session-data-clock-start'), deltaDate);
+                    var clock = self.find('.js-session-data-clock-start');
+                    if (deltaDate.getDate() > 1 && !clock.find('.days').length) {
+                        clock.html('<span class="days">00</span>'  + clock.html().trim());
+                    }
+                    fillClock(clock, deltaDate, true);
                 }
 
                 deltaDate = new Date(dateClose.getTime() - date.getTime() + timezoneOffset);
@@ -413,7 +423,11 @@ var popupHandlers = function(){
                     return;
                 }
 
-                fillClock(self.find('.js-session-data-clock-end'), deltaDate);
+                var clock = self.find('.js-session-data-clock-end');
+                if (deltaDate.getDate() > 1 && !clock.find('.days').length) {
+                    clock.html('<span class="days">00</span>'  + clock.html().trim());
+                }
+                fillClock(clock, deltaDate, true);
             });
             popupInterval2 = setMomentalInterval(function(){
                 sessionDataAttendanceUpdateAction(self, button, sessionData);
@@ -434,6 +448,10 @@ var popupHandlers = function(){
         var self = $(this);
         var button = $(button);
 
+        if (button.attr('popup-data') == 'undefined' || !button.attr('popup-data')) {
+            return;
+        }
+
         if (parseInt(button.attr('popup-data'))) {
 
             $.ajax({
@@ -451,6 +469,192 @@ var popupHandlers = function(){
         }
 
         sessionDataAction(self, button, JSON.parse(button.attr('popup-data')));
+
+    });
+
+    $("#popup").on('popup-session-users-update', function(e, id) {
+        var self = $(this);
+
+        self.find('.js-loader').fadeIn(200);
+        self.find('.js-noted-table').fadeOut(200);
+        self.find('.js-no-results').fadeOut(200);
+
+        var groups = self.find('.js-user-group').serializeSelect();
+        var search = self.find('.js-search').val();
+
+        $.ajax({
+            url: api_links.attendance.get,
+            data: {
+                session_id: id,
+                api_token: user.api_token,
+                groups: groups,
+                search: search
+            },
+            success: function(data) {
+                self.find('.js-loader').fadeOut(200);
+
+                self.find('.js-attendance-count').html(data.length);
+
+                if(data.length > 0) {
+                    self.find('.js-noted-table').fadeIn(200);
+
+                    self.find('.js-attendance-list').html("");
+                    var xmp = $('.js-attendance-list-row-templates').html();
+
+                    data.forEach(function(attendance){
+                        var element = $(xmp)[0].outerHTML;
+                        var createdTime = attendance.createdTime.split(':');
+
+                        element = element
+                            .replaceAll('#ID#', attendance.id)
+                            .replaceAll('#DATE#', attendance.createdDate)
+                            .replaceAll('#TIME_HOURS#', createdTime[0])
+                            .replaceAll('#TIME_MINUTES#', createdTime[1])
+                            .replaceAll('#TIME_SECONDS#', createdTime[2])
+                            .replaceAll('#TIME#', attendance.differance)
+                            .replaceAll('#USER_ID#', attendance.user.id)
+                            .replaceAll('#USER_NAME_SHORT#', attendance.user.name_short)
+                            .replaceAll('#GROUP_ID#', attendance.user.group.id)
+                            .replaceAll('#GROUP_NAME_FULL#', attendance.user.group.name_full);
+
+                        var element = $(element).appendTo('#popup .js-attendance-list');
+                    });
+                } else {
+                    self.find('.js-no-results').fadeIn(200);
+                }
+
+                refreshSelects();
+            }
+        });
+
+    });
+
+    $("#popup").on('popup-session-users-create', function(e, button, when) {
+        var self = $(this);
+        var button = $(button);
+        self.find('.js-session-users-back').attr('popup-data', button.attr('popup-data'));
+        self.find('.js-session-users-add').attr('popup-data', button.attr('popup-data'));
+
+        $.ajax({
+            url: api_links.groups.all,
+            success: function(data) {
+                if(data.length > 0) {
+                    self.find('.js-users-groups select').html("");
+                    var xmp = $('.js-session-users-select-option').html();
+
+                    data.forEach(function(group){
+                        var element = $(xmp)[0].outerHTML;
+                        element = element
+                            .replaceAll('#ID#', group.id)
+                            .replaceAll('#NAME_FULL#', group.name_full)
+                            .replaceAll('#USERS_COUNT#', group.count);
+
+                        var element = $(element).appendTo('#popup .js-users-groups select');
+                    });
+                }
+
+                refreshSelects();
+            }
+        });
+
+        $("#popup").trigger('popup-session-users-update', button.attr('popup-data'));
+    });
+
+    $("#popup").on('popup-session-users-add-update', function(e, id) {
+        var self = $(this);
+
+        var groups = self.find('.js-users-groups').serializeSelect();
+
+        if (self.find('.js-users-groups').length && groups == "") {
+            self.find('.js-users-users').attr('disabled', true);
+            return;
+        }
+
+        $.ajax({
+            url: api_links.session.suitable,
+            data: {
+                id: id,
+                api_token: user.api_token,
+                groups: groups
+            }, 
+            success: function(data) {
+                console.log(data);
+
+                if (data.length) {
+                    self.find('.js-users-users').attr('disabled', false);
+
+                    self.find('.js-users-users select').html("");
+                    var xmp = self.find('.js-session-users-add-select-user-option').html();
+                    
+                    data.forEach(function(user){
+                        var element = $(xmp)[0].outerHTML;
+                        var target = user.user_type.name;
+                        if (user.group) {
+                            target = user.group.name_full;
+                        }
+                        element = element
+                            .replaceAll('#ID#', user.id)
+                            .replaceAll('#NAME_SHORT#', user.name_short)
+                            .replaceAll('#TARGET#', target);
+
+                        var element = $(element).appendTo('#popup .js-users-users select');
+                    });
+                } else {
+                    self.find('.js-users-users').attr('disabled', true);
+                    self.find('.js-users-users select').html("");
+                }
+
+                refreshSelects();
+            }
+        });
+    });
+
+    $("#popup").on('popup-session-users-add-create', function(e, button, when) {
+        var self = $(this);
+        var button = $(button);
+
+        var id = button.attr('popup-data');
+
+        self.find('.js-session-data').attr('popup-data', id);
+        self.find('.js-session-users').attr('popup-data', id);
+        self.find('.js-session-users-add-add').attr('popup-data', id);
+
+        $.ajax({
+            url: api_links.session.one,
+            data: {
+                id: id,
+                api_token: user.api_token
+            }, 
+            success: function(data) {
+                if (!data.attendance.length) {
+                    self.find('.js-session-users').addClass('disabled');
+                }
+
+                if (data.session_group.length) {
+                    self.find('.js-users-groups select').html("");
+                    var xmp = self.find('.js-session-users-add-select-group-option').html();
+                    
+                    data.session_group.forEach(function(session_group){
+                        var group = session_group.group;
+                        var element = $(xmp)[0].outerHTML;
+                        element = element
+                            .replaceAll('#ID#', group.id)
+                            .replaceAll('#NAME_FULL#', group.name_full)
+                            .replaceAll('#USERS_COUNT#', group.count_suitable != undefined ? group.count_suitable : 0);
+
+                        var element = $(element).appendTo('#popup .js-users-groups select');
+                    });
+                } else {
+                    self.find('.js-step').html('1');
+                    self.find('.js-users-groups-form-control-group').remove();
+                    self.find('.js-users-users').attr('disabled', false);
+                    
+                    self.trigger('popup-session-users-add-update', id);
+                }
+
+                refreshSelects();
+            }
+        });
 
     });
 
@@ -477,8 +681,9 @@ var popupHandlers = function(){
                     self.find('.js-noted-table').fadeIn(200);
                     
                     self.find('.js-users-list').html("");
+                    var xmp = self.find('.js-user-list-row-templates').html();
+
                     data.users.forEach(function(user){
-                        var xmp = self.find('.js-user-list-row-templates').html();
                         var element = $(xmp)[0].outerHTML;
                         element = element
                             .replaceAll('#ID#', user.id)
@@ -496,9 +701,9 @@ var popupHandlers = function(){
                 if (data.types.length > 0) {
                     self.find('.js-user-type select').html("");
                     var typesSelected = type.split(',');
+                    var xmp = self.find('.js-user-list-select-option').html();
+
                     data.types.forEach(function(type){
-                        var xmp = self.find('.js-user-list-select-option').html();
-                        
                         var element = $(xmp)[0].outerHTML;
 
                         element = element
@@ -517,9 +722,9 @@ var popupHandlers = function(){
                 if (data.groups.length > 0) {
                     self.find('.js-user-group select').html("");
                     var groupsSelected = group.split(',');
-                    data.groups.forEach(function(group){
-                        var xmp = self.find('.js-user-list-select-option').html();
-                        
+                    var xmp = self.find('.js-user-list-select-option').html();
+
+                    data.groups.forEach(function(group){                        
                         var element = $(xmp)[0].outerHTML;
                         element = element
                             .replaceAll('#ID#', group.id)
@@ -556,8 +761,9 @@ var popupHandlers = function(){
                     self.find('.js-noted-table').fadeIn(200);
 
                     self.find('.js-group-list').html("");
+                    var xmp = $('.js-group-list-row-templates').html();
+
                     data.forEach(function(group){
-                        var xmp = $('.js-group-list-row-templates').html();
                         var element = $(xmp)[0].outerHTML;
                         element = element
                             .replaceAll('#ID#', group.id)
@@ -612,8 +818,9 @@ var popupHandlers = function(){
                     self.find('.js-noted-table').fadeIn(200);
 
                     self.find('.js-attendance-list').html("");
+                    var xmp = $('.js-attendance-list-row-templates').html();
+
                     data.attendance.forEach(function(attendance){
-                        var xmp = $('.js-attendance-list-row-templates').html();
                         var createdTime = attendance.createdTime.split(':');
                         var element = $(xmp)[0].outerHTML;
                         element = element
@@ -665,8 +872,9 @@ var popupHandlers = function(){
                     self.find('.js-noted-table').fadeIn(200);
 
                     self.find('.js-user-list').html("");
+                    var xmp = $('.js-user-list-row-templates').html();
+
                     data.user.forEach(function(user){
-                        var xmp = $('.js-user-list-row-templates').html();
                         var element = $(xmp)[0].outerHTML;
                         element = element
                             .replaceAll('#ID#', user.id)
@@ -814,6 +1022,58 @@ var popupAdditionalActions = function(){
                             type: "annotation",
                             title: "Сеанс создан!",
                             text: "Ваш сеанс создан! Ожидайте начала сеанса. Начало сеанса: " + data.session.activeDateTime
+                        });
+                    }
+                } else {
+                    openPopup('text', 'popup-text-create', {
+                        type: "warning",
+                        title: "Ошибка!",
+                        text: data.msg
+                    });
+                }
+            }
+        });
+    });
+    
+    $(document).on('change', '#popup .session-users select', function() {
+        $("#popup").trigger('popup-session-users-update', $("#popup").find('.js-session-users-add').attr('popup-data'));
+    });
+    $(document).on('keyup', '#popup .session-users input', throttle(function() {
+        $("#popup").trigger('popup-session-users-update', $("#popup").find('.js-session-users-add').attr('popup-data'));
+    }));
+
+    $(document).on('change', '#popup .session-users-add .js-users-groups', throttle(function() {
+        $("#popup").trigger('popup-session-users-add-update', $('#popup').find('.js-session-data').attr('popup-data'));
+        refreshSelects();
+    }, 300));
+    $(document).on('change', '#popup .session-users-add .js-users-users', function() {
+        $("#popup").find('.js-users-count').html($('#popup .session-users-add .js-users-users option:selected').length);
+    });
+    
+    $(document).on('click', '#popup .session-users-add .js-session-users-add-add', function() {
+        var self = $(this);
+        var parent = self.parents('.window');
+        var id = parent.find('.js-session-users-add-add').attr('popup-data');
+
+        var users = parent.find('.js-users-users').serializeSelect();
+
+        $.ajax({
+            url: api_links.attendance.add,
+            data: {
+                session_id: id,
+                users: users,
+                api_token: user.api_token
+            },
+            success: function(data) {
+                console.log(api_links.attendance.add, data, id, users);
+                if (!data.error) {
+                    if (data.session.status == 'active') {
+                    //     openPopup('session-data', 'popup-session-data-create', data.session);
+                    // } else {
+                        openPopup('text', 'popup-text-create', {
+                            type: "annotation",
+                            title: "Пользователи успешно отмечены!",
+                            text: "Пользователи успешно отмечены в сеансе <span class=\"blue\">" + data.session.code + "</span>"
                         });
                     }
                 } else {

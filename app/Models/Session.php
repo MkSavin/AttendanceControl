@@ -83,7 +83,7 @@ class Session extends Model
     {
         $seconds = $this->activetime - (now()->timestamp - $this->active_at->timestamp);
 
-        if ($this->active == 1 && $seconds > 0) {
+        if ($this->status == 'active' && $seconds > 0) {
             return CarbonInterval::seconds($seconds)->cascade()->forHumans(['short' => true]);
         } else {
             return CarbonInterval::seconds($this->activetime)->cascade()->forHumans(['short' => true]);
@@ -102,6 +102,32 @@ class Session extends Model
     }
 
     /**
+     * Метод получения получения сеанса с полным описанием
+     *
+     * @param string $type
+     * @param bool $suitable
+     * @return Collection
+     */
+    public static function getSession($id, $suitable = false)
+    {
+        $session = self::fullSessions()->where('id', $id)->first();
+        if (!$suitable) {
+            return $session;
+        }
+
+        $suitable = self::getSuitableUsers($id)->groupBy('group_id');
+
+        $session->session_group->transform(function ($item) use ($suitable) {
+            if (isset($suitable[$item->group_id])) {
+                $item->group->count_suitable = $suitable[$item->group_id]->count();
+            }
+            return $item;
+        });
+
+        return $session;
+    }
+
+    /**
      * Метод получения получения сеансов с полным описанием
      *
      * @param string $type
@@ -114,8 +140,7 @@ class Session extends Model
         if ($type != 'all') {
             $sessions = $sessions->reject(function ($item) use ($type) {
                 return $item->status != $type;
-            })
-            ->values(); // Нормализация id сеансов в списке
+            })->values(); // Нормализация id сеансов в списке
         }
 
         $sessions->transform(function ($item) {
@@ -143,6 +168,39 @@ class Session extends Model
         });
 
         return $sessions;
+    }
+
+    /**
+     * Метод получения подходящих пользователей (потенциальных ведомых)
+     *
+     * @param int $id
+     * @param string $groups
+     * @return Collection
+     */
+    public static function getSuitableUsers($id, $groups = false)
+    {
+        $session = self::getSession($id, false);
+
+        $users = User::with('group', 'user_type')->where('user_type_id', $session->user_type_id);
+
+        if ($session->session_group && $groups) {
+            $groups = explode(',', $groups);
+
+            $sessionGroups = $session->session_group->map(function ($item) {
+                return $item->group_id;
+            })->toArray();
+
+            $users = $users->whereIn('group_id', array_intersect($groups, $sessionGroups));
+        }
+
+        $sessionUsers = [];
+        if ($session->attendance) {
+            $sessionUsers = $session->attendance->map(function ($item) {
+                return $item->user_id;
+            })->toArray();
+        }
+
+        return $users->whereNotIn('id', $sessionUsers)->get();
     }
 
     /**
@@ -203,7 +261,7 @@ class Session extends Model
             $activeAt = Carbon::Now();
         }
 
-        $session = Session::create([
+        $session = self::create([
             'user_id' => $user->id,
             'user_type_id' => $userType,
             'activetime' => $activeTime,
