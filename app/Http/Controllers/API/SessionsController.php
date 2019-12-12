@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Models\Attendance;
 use App\Models\Code;
 use App\Models\Session;
 use Illuminate\Support\Facades\Input;
