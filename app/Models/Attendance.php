@@ -135,7 +135,7 @@ class Attendance extends Model
         $attendance = [];
 
         foreach ($users as $userID) {
-            $attendance = self::create([
+            $attendance[] = self::create([
                 'user_id' => $userID,
                 'session_id' => $id,
                 'created_by' => $user->id,
