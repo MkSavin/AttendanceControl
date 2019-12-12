@@ -578,8 +578,6 @@ var popupHandlers = function(){
                 groups: groups
             }, 
             success: function(data) {
-                console.log(data);
-
                 if (data.length) {
                     self.find('.js-users-users').attr('disabled', false);
 
@@ -1065,11 +1063,10 @@ var popupAdditionalActions = function(){
                 api_token: user.api_token
             },
             success: function(data) {
-                console.log(api_links.attendance.add, data, id, users);
                 if (!data.error) {
-                    if (data.session.status == 'active') {
-                    //     openPopup('session-data', 'popup-session-data-create', data.session);
-                    // } else {
+                    if (data.session.status != 'await') {
+                        openPopup('session-users', 'popup-session-users-create', data.session.id);
+                    } else {
                         openPopup('text', 'popup-text-create', {
                             type: "annotation",
                             title: "Пользователи успешно отмечены!",

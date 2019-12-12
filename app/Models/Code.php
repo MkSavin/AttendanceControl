@@ -51,6 +51,12 @@ class Code extends Model
         return base64_decode($code);
     }
 
+    /**
+     * Метод использования кода - создание посещения
+     *
+     * @param string $code
+     * @return array
+     */
     public static function useCode($code)
     {
         $user = Auth::user();

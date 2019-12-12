@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\View;
 class Login
 {
     /**
-     * Handle an incoming request.
+     * Обрабатывает входящий запрос
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next

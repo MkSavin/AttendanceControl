@@ -72,6 +72,13 @@ class Attendance extends Model
         return $attendance;
     }
 
+    /**
+     * Метод создания посещения
+     *
+     * @param int $id
+     * @param string $users
+     * @return array
+     */
     public static function createAttendance($id, $users)
     {
         $user = Auth::user();
