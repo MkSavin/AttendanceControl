@@ -365,7 +365,7 @@
 </div>
 <div class="window user-data">
     <div class="header">
-        <span class="float-left title">Пользователь <i class="js-user-data-name_short">Савин М.К</i></span>
+        <span class="float-left title">Пользователь <i class="js-user-data-name_short">Иванов И.И</i></span>
         <div class="float-right menu">
             <!-- <a href="#" class="overlay-more dd-toggle" dd-target=".dd-more"></a>
             <div class="dd-hidden dd dd-more">
@@ -379,7 +379,7 @@
     <div class="body">
         <div class="mb-3">
             <label for="popup-user-data-user-name">ФИО</label>
-            <input type="text" class="js-user-data-name form-control" id="popup-user-data-user-name" disabled value="Савин Максим Константинович">
+            <input type="text" class="js-user-data-name form-control" id="popup-user-data-user-name" disabled value="Иванов Иван Иванович">
         </div>
         <div class="row mb-3">
             <div class="js-user-data-group col-md">
@@ -418,7 +418,7 @@
 </div>
 <div class="window user-edit">
     <div class="header">
-        <span class="float-left title">Редактирование пользователя <i>Савин М.К</i></span>
+        <span class="float-left title">Редактирование пользователя <i>Иванов И.И</i></span>
         <div class="float-right menu">
             <a href="#" class="overlay-more dd-toggle" dd-target=".dd-more"></a>
             <div class="dd-hidden dd dd-more">
@@ -432,7 +432,7 @@
         <form method="POST">
             <div class="mb-3">
                 <label for="popup-user-data-user-name">ФИО</label>
-                <input type="text" class="form-control" id="popup-user-data-user-name" value="Савин Максим Константинович">
+                <input type="text" class="form-control" id="popup-user-data-user-name" value="Иванов Иван Иванович">
             </div>
             <div class="row mb-3">
                 <div class="col-md">

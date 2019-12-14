@@ -19,6 +19,7 @@
         </span>
     </div>
 </div>
+@if($currentUser->hasRight('session.view'))
 <div class="d-none js-sessions-templates">
     @include('public.pages.index.parts.session_long', [
         'id' => '#ID#',
@@ -87,4 +88,5 @@
     <!-- <div class="block loadmore no-selection"><img src="public/img/animation/loading_transparent.gif" class="js-loader d-none" alt=""> Загрузить еще...</div> -->
     <!-- <div class="end-of-page">Вы достигли конца страницы</div> -->
 </div>
+@endif
 @endsection

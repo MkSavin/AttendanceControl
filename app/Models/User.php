@@ -4,8 +4,10 @@ namespace App\Models;
 
 use App\Traits\Relations\BelongsTo;
 use App\Traits\Relations\HasMany;
+use Auth;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Lang;
 
 class User extends Authenticatable
 {
@@ -48,6 +50,26 @@ class User extends Authenticatable
     public function getNameShortAttribute()
     {
         return preg_replace('/(\w+) (\w)\w+ (\w)\w+/iu', '$1 $2.$3', $this->name);
+    }
+
+    /**
+     * Метод получения краткого списка пользователя
+     *
+     * @param string|array|Collection $types
+     * @return Collection
+     */
+    public static function getUsersByTypes($types = false)
+    {
+        if ($types) {
+            if (!is_array($types)) {
+                $types = $types->map(function ($item) {
+                    return $item->id;
+                })->toArray();
+            }
+            $user = self::whereIn('user_type_id', $types);
+        }
+
+        return $user->get();
     }
 
     /**
@@ -100,10 +122,46 @@ class User extends Authenticatable
      */
     public static function getOneFull($id)
     {
+        if (!Auth::user()->hasRight('user.view') && Auth::user()->id != $id) {
+            return [
+                "error" => true,
+                "code" => 100,
+                "msg" => Lang::get('right.error.noRight'),
+            ];
+        }
+
         $user = self::with('group', 'user_type', 'attendance', 'attendance.session', 'attendance.session.user')
             ->where('id', $id);
 
         return $user->first();
+    }
+
+    /**
+     * Проверка наличия права
+     *
+     * @param string $code
+     * @return boolean
+     */
+    public function hasRight($code)
+    {
+        return $this->user_type->hasRight($code);
+    }
+
+    /**
+     * Метод проверки данных пользователя (для внешнего API)
+     *
+     * @param string $email
+     * @param string $password
+     * @return bool
+     */
+    public static function check($email, $password)
+    {
+        return [
+            'result' => Auth::validate([
+                'email' => $email,
+                'password' => $password,
+            ]),
+        ];
     }
 
 }

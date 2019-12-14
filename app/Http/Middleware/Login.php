@@ -18,9 +18,10 @@ class Login
     public function handle($request, Closure $next)
     {
         if ($user = Auth::user()) {
-            View::share('currentUser', Auth::user());
+            View::share('currentUser', $user);
             return $next($request);
         } else {
+            View::share('currentUser', null);
             return redirect()->route('login');
         }
     }

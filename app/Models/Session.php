@@ -110,12 +110,23 @@ class Session extends Model
      */
     public static function getSession($id, $suitable = false)
     {
+        $user = Auth::user();
+        if (!$user->hasRight('session.view')) {
+            return [
+                "error" => true,
+                "code" => 100,
+                "msg" => Lang::get('right.error.noRight'),
+            ];
+        }
+
         $session = self::fullSessions()->where('id', $id)->first();
         if (!$suitable) {
             return $session;
         }
 
         $suitable = self::getSuitableUsers($id)->groupBy('group_id');
+
+        $session->editRight = !($session->user_type_id == $user->user_type_id && !$user->hasRight('session.edit.all'));
 
         $session->session_group->transform(function ($item) use ($suitable) {
             if (isset($suitable[$item->group_id])) {
@@ -135,8 +146,23 @@ class Session extends Model
      */
     public static function getFullSessions($type = 'all')
     {
+        $user = Auth::user();
+        if (!$user->hasRight('session.view')) {
+            return [
+                "error" => true,
+                "code" => 100,
+                "msg" => Lang::get('right.error.noRight'),
+            ];
+        }
 
-        $sessions = self::fullSessions()->get();
+        $sessions = self::fullSessions();
+        
+        if (!$user->hasRight('session.view.all')) {
+            $sessions = $sessions->where('user_id', $user->id);
+        }
+
+        $sessions = $sessions->get();
+
         if ($type != 'all') {
             $sessions = $sessions->reject(function ($item) use ($type) {
                 return $item->status != $type;
@@ -216,15 +242,13 @@ class Session extends Model
     {
         $user = Auth::user();
 
-        //TODO: Проверка прав
-        // $user->hasRight('session.create');
-        /*
-        return [
-        "error" => true,
-        "code" => 111,
-        "msg" => Lang::get('rights.error.noRights'),
-        ];
-         */
+        if (!$user->hasRight('session.create')) {
+            return [
+                "error" => true,
+                "code" => 100,
+                "msg" => Lang::get('right.error.noRight'),
+            ];
+        }
 
         if ($groups) {
             $groups = explode(',', $groups);
@@ -232,20 +256,19 @@ class Session extends Model
             $groups = false;
         }
 
-        if (!UserType::find($userType)) {
-            // TODO: Проверка прав
-            // && $userType->hasRight('session.use')
-            /*
-            return [
-            "error" => true,
-            "code" => 2002,
-            "msg" => Lang::get('session.create.error.userTypeHasNoRight'),
-            ];
-             */
+        if (!($userTypeElement = UserType::find($userType))) {
             return [
                 "error" => true,
                 "code" => 2001,
                 "msg" => Lang::get('session.create.error.userTypeNotExists'),
+            ];
+        }
+
+        if (!$userTypeElement->hasRight('session.use')) {
+            return [
+                "error" => true,
+                "code" => 2004,
+                "msg" => Lang::get('session.create.error.userTypeHasNoRight'),
             ];
         }
 

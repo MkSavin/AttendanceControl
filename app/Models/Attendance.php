@@ -38,6 +38,14 @@ class Attendance extends Model
      */
     public static function getFullBySession($id, $groups = false, $search = false)
     {
+        if (!Auth::user()->hasRight('session.view')) {
+            return [
+                "error" => true,
+                "code" => 100,
+                "msg" => Lang::get('right.error.noRight'),
+            ];
+        }
+
         $attendance = self::with('session', 'user', 'user.group')->where('session_id', $id);
 
         if ($search) {
@@ -82,11 +90,11 @@ class Attendance extends Model
     public static function createAttendance($id, $users)
     {
         $user = Auth::user();
-        if (!$user) {
+        if (!$user->hasRight('session.view')) {
             return [
                 "error" => true,
-                "code" => 10,
-                "msg" => Lang::get('auth.not-loggined'),
+                "code" => 100,
+                "msg" => Lang::get('right.error.noRight'),
             ];
         }
 
@@ -110,11 +118,27 @@ class Attendance extends Model
 
         $session = Session::fullSessions()->where('id', $id)->first();
 
+        if ($session->user_type_id == $user->user_type_id && !$user->hasRight('session.edit.all')) {
+            return [
+                "error" => true,
+                "code" => 3005,
+                "msg" => Lang::get('session.create.error.noRightUserTypeEquals'),
+            ];
+        }
+
         if ($session->status != "active") {
             return [
                 "error" => true,
                 "code" => 3002,
                 "msg" => Lang::get('attendance.create.error.sessionIsNotActive'),
+            ];
+        }
+
+        if (!$session->user_type->hasRight('session.use')) {
+            return [
+                "error" => true,
+                "code" => 3004,
+                "msg" => Lang::get('session.create.error.userTypeHasNoRight'),
             ];
         }
 

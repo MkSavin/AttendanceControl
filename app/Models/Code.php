@@ -74,6 +74,13 @@ class Code extends Model
                 "msg" => Lang::get('sessionCode.use.error.codeEmpty'),
             ];
         }
+        if (!Auth::user()->hasRight('session.use')) {
+            return [
+                "error" => true,
+                "code" => 100,
+                "msg" => Lang::get('right.error.noRight'),
+            ];
+        }
 
         $code = explode('code=', $code);
         $code = $code[count($code) - 1];
@@ -89,6 +96,18 @@ class Code extends Model
                     $groupExists = true;
                 }
             });
+
+            if ($session->session_group->count() == 0) {
+                $groupExists = true;
+            }
+
+            if (!Auth::user()->hasRight('session.use.own') && Auth::user()->id == $session->user_id) {
+                return [
+                    "error" => true,
+                    "code" => 100,
+                    "msg" => Lang::get('right.error.noRight'),
+                ];
+            }
 
             if ($session->user_type_id == $user->user_type_id && $groupExists) {
 
