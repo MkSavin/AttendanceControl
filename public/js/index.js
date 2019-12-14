@@ -62,7 +62,8 @@ var api_links = {
     },
     users: {
         full: '/api/users',
-        aside: '/api/users/aside'
+        aside: '/api/users/aside',
+        asideForSession: '/api/users/aside/forsession',
     },
     user: {
         one: '/api/user'
@@ -210,7 +211,10 @@ var popupHandlers = function(){
         var groups = self.find('.js-user-group').serializeSelect();
         
         $.ajax({
-            url: api_links.users.aside,
+            url: api_links.users.asideForSession,
+            data: {
+                api_token: user.api_token
+            },
             success: function(data) {
                 if (data.types.length > 0) {
                     self.find('.js-user-type select').html("");
@@ -335,9 +339,17 @@ var popupHandlers = function(){
                         element = element
                             .replaceAll('#TIME#', attendance.differance)
                             .replaceAll('#USER_ID#', attendance.user.id)
-                            .replaceAll('#USER_NAME_SHORT#', attendance.user.name_short)
-                            .replaceAll('#GROUP_ID#', attendance.user.group.id)
-                            .replaceAll('#GROUP_NAME_FULL#', attendance.user.group.name_full);
+                            .replaceAll('#USER_NAME_SHORT#', attendance.user.name_short);
+
+                        if (attendance.user.group) {
+                            element = element
+                                .replaceAll('#GROUP_ID#', attendance.user.group.id)
+                                .replaceAll('#GROUP_NAME_FULL#', attendance.user.group.name_full);
+                        } else {
+                            element = element
+                                .replaceAll('#GROUP_ID#', 0)
+                                .replaceAll('#GROUP_NAME_FULL#', "");
+                        }
 
                         var element = $(element).appendTo('#popup .js-attendance-list');
                     });
@@ -351,6 +363,18 @@ var popupHandlers = function(){
     };
 
     var sessionDataAction = function(self, button, sessionData) {
+        if (sessionData.error) {
+            openPopup('text', 'popup-text-create', {
+                type: "warning",
+                title: "Ошибка",
+                text: sessionData.msg
+            });
+            return;
+        }
+
+        if (!sessionData.editRight) {
+            self.find('.js-session-data-attendance-add').remove();
+        }
 
         self.find('.js-session-data-qrcode').attr('src', sessionData.qrImage);
 
@@ -361,7 +385,10 @@ var popupHandlers = function(){
 
         var statusBar = self.find('.title .js-session-data-status');
 
-        $('.js-session-data-attendance-full').attr('popup-data', sessionData.id);
+        $('.js-session-data-attendance-full').attr('popup-data', JSON.stringify({
+            id: sessionData.id,
+            editRight: sessionData.editRight
+        }));
         $('.js-session-data-attendance-add').attr('popup-data', sessionData.id);
 
         if (sessionType == 'active') {
@@ -513,9 +540,17 @@ var popupHandlers = function(){
                             .replaceAll('#TIME_SECONDS#', createdTime[2])
                             .replaceAll('#TIME#', attendance.differance)
                             .replaceAll('#USER_ID#', attendance.user.id)
-                            .replaceAll('#USER_NAME_SHORT#', attendance.user.name_short)
-                            .replaceAll('#GROUP_ID#', attendance.user.group.id)
-                            .replaceAll('#GROUP_NAME_FULL#', attendance.user.group.name_full);
+                            .replaceAll('#USER_NAME_SHORT#', attendance.user.name_short);
+                        
+                        if (attendance.user.group) {
+                            element = element
+                                .replaceAll('#GROUP_ID#', attendance.user.group.id)
+                                .replaceAll('#GROUP_NAME_FULL#', attendance.user.group.name_full);
+                        } else {
+                            element = element
+                                .replaceAll('#GROUP_ID#', 0)
+                                .replaceAll('#GROUP_NAME_FULL#', "");
+                        }
 
                         var element = $(element).appendTo('#popup .js-attendance-list');
                     });
@@ -532,8 +567,15 @@ var popupHandlers = function(){
     $("#popup").on('popup-session-users-create', function(e, button, when) {
         var self = $(this);
         var button = $(button);
-        self.find('.js-session-users-back').attr('popup-data', button.attr('popup-data'));
-        self.find('.js-session-users-add').attr('popup-data', button.attr('popup-data'));
+
+        var data = JSON.parse(button.attr('popup-data'));
+
+        self.find('.js-session-users-back').attr('popup-data', data.id);
+        self.find('.js-session-users-add').attr('popup-data', data.id);
+
+        if (!data.editRight) {
+            self.find('.js-session-users-add').remove();
+        }
 
         $.ajax({
             url: api_links.groups.all,
@@ -557,7 +599,7 @@ var popupHandlers = function(){
             }
         });
 
-        $("#popup").trigger('popup-session-users-update', button.attr('popup-data'));
+        $("#popup").trigger('popup-session-users-update', data.id);
     });
 
     $("#popup").on('popup-session-users-add-update', function(e, id) {
@@ -565,7 +607,7 @@ var popupHandlers = function(){
 
         var groups = self.find('.js-users-groups').serializeSelect();
 
-        if (self.find('.js-users-groups').length && groups == "") {
+        if (self.find('.js-users-groups').length != 0 && groups == "") {
             self.find('.js-users-users').attr('disabled', true);
             return;
         }
@@ -790,9 +832,19 @@ var popupHandlers = function(){
         $.ajax({
             url: api_links.user.one,
             data: {
-                id: userId
+                id: userId,
+                api_token: user.api_token
             },
             success: function(data) {
+                if (data.error) {
+                    openPopup('text', 'popup-text-create', {
+                        type: "warning",
+                        title: "Ошибка",
+                        text: data.msg
+                    });
+                    return;
+                }
+
                 self.find('.js-loader').fadeOut(200);
 
                 self.find('.js-user-data-edit').attr('popup-data', data.id);
@@ -854,9 +906,19 @@ var popupHandlers = function(){
         $.ajax({
             url: api_links.group.one,
             data: {
-                id: groupId
+                id: groupId,
+                api_token: user.api_token
             },
             success: function(data) {
+                if (data.error) {
+                    openPopup('text', 'popup-text-create', {
+                        type: "warning",
+                        title: "Ошибка",
+                        text: data.msg
+                    });
+                    return;
+                }
+
                 self.find('.js-loader').fadeOut(200);
 
                 self.find('.js-group-data-edit').attr('popup-data', data.id);
@@ -1034,10 +1096,10 @@ var popupAdditionalActions = function(){
     });
     
     $(document).on('change', '#popup .session-users select', function() {
-        $("#popup").trigger('popup-session-users-update', $("#popup").find('.js-session-users-add').attr('popup-data'));
+        $("#popup").trigger('popup-session-users-update', $("#popup").find('.js-session-users-add').attr('popup-data').id);
     });
     $(document).on('keyup', '#popup .session-users input', throttle(function() {
-        $("#popup").trigger('popup-session-users-update', $("#popup").find('.js-session-users-add').attr('popup-data'));
+        $("#popup").trigger('popup-session-users-update', $("#popup").find('.js-session-users-add').attr('popup-data').id);
     }));
 
     $(document).on('change', '#popup .session-users-add .js-users-groups', throttle(function() {

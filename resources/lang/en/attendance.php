@@ -11,6 +11,7 @@ return [
             'sessionNotFind' => 'Session with this id not find',
             'idEmpty' => 'Session id is empty',
             'usersEmpty' => 'Users list is empty',
+            'noRightUserTypeEquals' => 'You has no rights to edit this session. You in suitable users list',
         ],
     
         'success' => 'Users successfully added to attendence of session',

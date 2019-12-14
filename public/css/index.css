@@ -294,6 +294,10 @@ header > .right > .user > *, header > .right > .menu > * {
     vertical-align: middle;
 }
 
+header > .right > .menu > a:not(:last-of-type) {
+    margin-right: 20px;
+}
+
 header > .left > .title, header > .right > .menu {
     padding-right: 30px;
 }
@@ -1227,7 +1231,7 @@ span.yellow {
 #popup .session-users .body .body .noted-table,
 #popup .noted-table.noted-table-wide {
     width: 100%;
-    max-height: calc(100vh - 300px);
+    max-height: calc(100vh - 300px) !important;
     overflow-y: auto;
     position: relative;
     font-size: 15px;
