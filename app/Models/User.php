@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Traits\Relations\BelongsTo;
 use App\Traits\Relations\HasMany;
 use Auth;
+use CacheHelper;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Lang;
@@ -137,14 +138,17 @@ class User extends Authenticatable
     }
 
     /**
-     * Проверка наличия права
+     * Проверка наличия права. Кэшируется
      *
      * @param string $code
      * @return boolean
      */
     public function hasRight($code)
     {
-        return $this->user_type->hasRight($code);
+        $element = $this;
+        return CacheHelper::get('User-Rights', [$code, $this->id], function () use ($element, $code) {
+            return $element->user_type->hasRight($code);
+        });
     }
 
     /**

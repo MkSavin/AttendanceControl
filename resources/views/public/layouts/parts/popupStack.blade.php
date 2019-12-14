@@ -286,26 +286,16 @@
                     <option value="#ID#" data-users-count="#USERS_COUNT#" data-subtext="#USERS_COUNT# чел.">#NAME_FULL#</option>
                 </xmp>
                 <xmp class="d-none js-session-users-add-select-user-option">
-                    <option value="#ID#" data-subtext="#TARGET#">#NAME_SHORT#</option>
+                    <option value="#ID#" data-subtext="#TARGET#" data-group="#GROUP_ID#">#NAME_SHORT#</option>
                 </xmp>
                 <div class="input-line row">
                     <div class="col-sm w-50 js-users-groups-form-control-group">
                         <label for="popup-session-create-user-group">1. Выберите группы пользователей</label>
-                        <select data-live-search="true" name="n" multiple class="js-users-groups form-control" id="popup-session-create-user-group">
-                            <option value="1" data-subtext="20 чел.">ПРИ-117</option>
-                            <option value="2" data-subtext="20 чел.">ИСТ-117</option>
-                            <option value="3" data-subtext="20 чел.">ИСБ-117</option>
-                            <option value="4" data-subtext="20 чел.">ЖБ-117</option>
-                        </select>
+                        <select data-live-search="true" name="n" multiple class="js-users-groups form-control" id="popup-session-create-user-group"></select>
                     </div>
                     <div class="col-sm w-50 js-users-users-form-control-group">
                         <label for="popup-session-create-user-group"><span class="js-step">2</span>. Выберите пользователей</label>
-                        <select data-live-search="true" name="n" multiple disabled class="js-users-users form-control" id="popup-session-create-user-group">
-                            <option value="1" data-subtext="ПРИ-117">Савин М.К</option>
-                            <option value="2" data-subtext="ПРИ-117">Куппе Р.О</option>
-                            <option value="3" data-subtext="ИДБ-117">Козловский А.Г</option>
-                            <option value="4" data-subtext="ЖБ-117">Информационовский Е.К</option>
-                        </select>
+                        <select data-live-search="true" name="n" multiple disabled class="js-users-users form-control" id="popup-session-create-user-group"></select>
                     </div>
                 </div>
             </div>

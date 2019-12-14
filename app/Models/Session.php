@@ -124,7 +124,10 @@ class Session extends Model
             return $session;
         }
 
-        $suitable = self::getSuitableUsers($id)->groupBy('group_id');
+        $suitable = self::getSuitableUsers($id);
+        $session->suitable = $suitable;
+
+        $suitable = $suitable->groupBy('group_id');
 
         $session->editRight = !($session->user_type_id == $user->user_type_id && !$user->hasRight('session.edit.all'));
 
@@ -134,6 +137,8 @@ class Session extends Model
             }
             return $item;
         });
+
+        
 
         return $session;
     }
@@ -311,6 +316,8 @@ class Session extends Model
                 ]);
             }
         }
+        
+        $session->editRight = !($session->user_type_id == $user->user_type_id && !$user->hasRight('session.edit.all'));
 
         return [
             "error" => false,

@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Auth;
 use App\Traits\Relations\HasMany;
+use Auth;
+use CacheHelper;
 use Illuminate\Database\Eloquent\Model;
 
 class UserType extends Model
@@ -26,61 +27,69 @@ class UserType extends Model
     ];
 
     /**
-     * Аксессор. Количество пользователей типа пользователя
+     * Аксессор. Количество пользователей типа пользователя. Кэшируется
      *
      * @return string
      */
     public function getCountAttribute()
     {
-        return User::where('user_type_id', $this->id)->count();
+        $type = $this;
+        return CacheHelper::get('UserType-UsersCount', [$type->id], function () use ($type) {
+            return User::where('user_type_id', $type->id)->count();
+        });
     }
 
     /**
-     * Аксессор. Количество групп типа пользователя
+     * Аксессор. Количество групп типа пользователя. Кэшируется
      *
      * @return string
      */
     public function getCountGroupsAttribute()
     {
-        return User::where('user_type_id', $this->id)->whereNotNull('group_id')->groupBy('group_id')->count();
+        $type = $this;
+        return CacheHelper::get('UserType-UsersInGroupsCount', [$type->id], function () use ($type) {
+            return User::where('user_type_id', $type->id)->whereNotNull('group_id')->groupBy('group_id')->count();
+        });
     }
 
     /**
-     * Метод получения списка типов пользователей для сеансов
+     * Метод получения списка типов пользователей для сеансов. Кэшируется
      *
      * @return Collection
      */
     public static function getForSession()
     {
-        $types = self::whereHas('type_right', function ($query) {
-            $query->whereHas('right', function ($query) {
-                $query->where('code', 'session.use');
+        return CacheHelper::get('UserType-ForSession', [], function () {
+            $types = self::whereHas('type_right', function ($query) {
+                $query->whereHas('right', function ($query) {
+                    $query->where('code', 'session.use');
+                });
             });
+    
+            if ($user = Auth::user()) {
+                $types = $types->where('id', '<>', $user->user_type_id);
+            }
+    
+            return $types->get();
         });
-        
-        if($user = Auth::user()){
-            $types = $types->where('id', '<>', $user->user_type_id);
-        }
-
-        return $types->get();
     }
 
     /**
-     * Проверка наличия права
+     * Проверка наличия права. Кэшируется
      *
      * @param string $code
      * @return boolean
      */
     public function hasRight($code)
     {
-
         $type = $this;
 
-        return Right::where('code', $code)
-            ->whereHas('type_right', function ($query) use ($type) {
-                $query->where('user_type_id', $type->id);
-            })->exists();
-
+        return CacheHelper::get('UserType-Rights', [$code, $type->id], function () use ($type, $code) {
+            return Right::where('code', $code)
+                ->whereHas('type_right', function ($query) use ($type) {
+                    $query->where('user_type_id', $type->id);
+                })->exists();
+        });
     }
 
 }
