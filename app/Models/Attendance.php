@@ -165,6 +165,8 @@ class Attendance extends Model
                 'created_by' => $user->id,
             ]);
         }
+        
+        $session->editRight = !($session->user_type_id == $user->user_type_id && !$user->hasRight('session.edit.all'));
 
         if (count($attendance)) {
             return [

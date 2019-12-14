@@ -1136,7 +1136,11 @@ var popupAdditionalActions = function(){
             success: function(data) {
                 if (!data.error) {
                     if (data.session.status != 'await') {
-                        openPopup('session-users', 'popup-session-users-create', data.session.id);
+                        openPopup('session-users', 'popup-session-users-create', {
+                            id: data.session.id,
+                            editRight: data.session.editRight,
+                            status: data.session.status
+                        });
                     } else {
                         openPopup('text', 'popup-text-create', {
                             type: "annotation",
