@@ -74,6 +74,18 @@ class User extends Authenticatable
     }
 
     /**
+     * Метод получения списка пользователей (без авто. типов)
+     *
+     * @return Collection
+     */
+    public static function getUsers()
+    {
+        return self::whereHas('user_type', function($query) {
+            $query->where('bot', 0);
+        })->get();
+    }
+
+    /**
      * Получение полной информации о всех пользователях. Поддерживает фильтрацию
      *
      * @param string|boolean $type
@@ -83,7 +95,9 @@ class User extends Authenticatable
      */
     public static function getFull($type = false, $group = false, $sort = false, $search = false)
     {
-        $users = User::with('group', 'user_type');
+        $users = User::with('group', 'user_type')->whereHas('user_type', function($query) {
+            $query->where('bot', 0);
+        });
 
         if ($type) {
             $users = $users->whereIn('user_type_id', explode(',', $type));

@@ -24,7 +24,7 @@ class UsersController extends Controller
         return response()->json(collect([
             'users' => User::getFull($type, $group, false, $search),
             'groups' => Group::orderBy('id', 'asc')->get(),
-            'types' => UserType::orderBy('id', 'asc')->get(),
+            'types' => UserType::where('bot', 0)->orderBy('id', 'asc')->get(),
         ]), 200);
     }
 
@@ -35,7 +35,7 @@ class UsersController extends Controller
      */
     public function GetTypes()
     {
-        return response()->json(UserType::get(), 200);
+        return response()->json(UserType::where('bot', 0)->get(), 200);
     }
 
     /**
@@ -48,9 +48,9 @@ class UsersController extends Controller
         $fulluser = Input::get('fullUser');
 
         return response()->json(collect([
-            'users' => $fulluser ? User::getFull() : User::get(),
+            'users' => $fulluser ? User::getFull() : User::getUsers(),
             'groups' => Group::get(),
-            'types' => UserType::get(),
+            'types' => UserType::where('bot', 0)->get(),
         ]), 200);
     }
 
