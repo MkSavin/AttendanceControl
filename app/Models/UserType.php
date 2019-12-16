@@ -60,7 +60,7 @@ class UserType extends Model
     public static function getForSession()
     {
         return CacheHelper::get('UserType-ForSession', [], function () {
-            $types = self::whereHas('type_right', function ($query) {
+            $types = self::where('bot', 0)->whereHas('type_right', function ($query) {
                 $query->whereHas('right', function ($query) {
                     $query->where('code', 'session.use');
                 });

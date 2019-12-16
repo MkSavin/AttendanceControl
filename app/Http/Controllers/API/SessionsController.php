@@ -40,12 +40,13 @@ class SessionsController extends Controller
      */
     public function Create()
     {
+        $masterId = intval(Input::get('master_id'));
         $userType = intval(Input::get('userType'));
         $groups = Input::get('groups');
         $activeTime = intval(Input::get('activeTime'));
         $activeAt = Input::get('activeAt');
 
-        return response()->json(Session::createSession($userType, $groups, $activeTime, $activeAt), 200);
+        return response()->json(Session::createSession($masterId, $userType, $groups, $activeTime, $activeAt), 200);
     }
 
     /**

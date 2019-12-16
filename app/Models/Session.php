@@ -18,7 +18,7 @@ class Session extends Model
 
     const QRCODER_API = 'https://api.qrserver.com/v1/create-qr-code/?size=300x300&margin=40&data=';
 
-    protected $fillable = ['user_id', 'user_type_id', 'code', 'activetime', 'active_at'];
+    protected $fillable = ['user_id', 'creator_id', 'user_type_id', 'code', 'activetime', 'active_at'];
 
     protected $dates = [
         'active_at',
@@ -97,8 +97,7 @@ class Session extends Model
      */
     public static function fullSessions()
     {
-        //TODO: Подключить where id = user.id
-        return self::with('session_group', 'session_group.group', 'attendance', 'user', 'user_type') /* ->where('user_id', Auth::user()->id) */;
+        return self::with('session_group', 'session_group.group', 'attendance', 'user', 'creator', 'user_type');
     }
 
     /**
@@ -205,7 +204,7 @@ class Session extends Model
                 $item->target = 'Тип: ' . $item->user_type->name;
             }
 
-            $item->creatorAutomated = $item->user->user_type->bot == true;
+            $item->creatorAutomated = $item->creator->user_type->bot == true;
 
             if (!$item->created_at) {
                 $item->created_at = $item->active_at;
@@ -255,13 +254,14 @@ class Session extends Model
     /**
      * Метод создания сеанса
      *
+     * @param int|bool $master
      * @param string|int $userType
      * @param string|int $groups
      * @param int $activeTime
      * @param string $activeAt
      * @return Collection
      */
-    public static function createSession($userType, $groups, $activeTime, $activeAt)
+    public static function createSession($masterId = false, $userType, $groups, $activeTime, $activeAt)
     {
         $user = Auth::user();
 
@@ -272,7 +272,7 @@ class Session extends Model
                 "msg" => Lang::get('auth.not-loggined'),
             ];
         }
-        
+
         if (!$user->hasRight('session.create')) {
             return [
                 "error" => true,
@@ -315,8 +315,23 @@ class Session extends Model
             $activeAt = Carbon::Now();
         }
 
+        if (!$masterId) {
+            $master = $user;
+        } else {
+            $master = User::find($masterId);
+        }
+        
+        if (!$master->hasRight('session.create')) {
+            return [
+                "error" => true,
+                "code" => 2005,
+                "msg" => Lang::get('session.create.error.masterUserHasNoRight'),
+            ];
+        }
+
         $session = self::create([
-            'user_id' => $user->id,
+            'user_id' => $master->id,
+            'creator_id' => $user->id,
             'user_type_id' => $userType,
             'activetime' => $activeTime,
             'active_at' => $activeAt,
