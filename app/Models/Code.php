@@ -60,6 +60,7 @@ class Code extends Model
     public static function useCode($code)
     {
         $user = Auth::user();
+
         if (!$user) {
             return [
                 "error" => true,
@@ -67,6 +68,7 @@ class Code extends Model
                 "msg" => Lang::get('auth.not-loggined'),
             ];
         }
+        
         if (!$code) {
             return [
                 "error" => true,
@@ -74,7 +76,8 @@ class Code extends Model
                 "msg" => Lang::get('sessionCode.use.error.codeEmpty'),
             ];
         }
-        if (!Auth::user()->hasRight('session.use')) {
+
+        if (!$user->hasRight('session.use')) {
             return [
                 "error" => true,
                 "code" => 100,
@@ -101,7 +104,7 @@ class Code extends Model
                 $groupExists = true;
             }
 
-            if (!Auth::user()->hasRight('session.use.own') && Auth::user()->id == $session->user_id) {
+            if (!$user->hasRight('session.use.own') && $user->id == $session->user_id) {
                 return [
                     "error" => true,
                     "code" => 100,

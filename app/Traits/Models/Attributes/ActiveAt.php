@@ -13,7 +13,7 @@ trait ActiveAt {
      */
     public function getActiveDateTimeAttribute()
     {
-        return Helpers\DateTime::CarbonForRelativeHuman($this->active_at);
+        return Helpers\DateTime::carbonForRelativeHuman($this->active_at);
     }
 
     /**
@@ -23,7 +23,7 @@ trait ActiveAt {
      */
     public function getActiveDateAttribute()
     {
-        return Helpers\DateTime::CarbonRelative($this->active_at);
+        return Helpers\DateTime::carbonRelative($this->active_at);
     }
 
     /**

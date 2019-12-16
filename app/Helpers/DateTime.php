@@ -10,14 +10,13 @@ class DateTime
      * @param Carbon $carbon
      * @return string
      */
-    public static function CarbonForRelativeHuman($carbon)
+    public static function carbonForRelativeHuman($carbon)
     {
-        
         if (!$carbon) {
             return "";
         }
-        return self::CarbonRelative($carbon) . ", в " . $carbon->format('H:i');
-
+        
+        return self::carbonRelative($carbon) . ", в " . $carbon->format('H:i');
     }
 
     /**
@@ -26,7 +25,7 @@ class DateTime
      * @param Carbon $carbon
      * @return string
      */
-    public static function CarbonRelative($carbon)
+    public static function carbonRelative($carbon)
     {
         if (!$carbon) {
             return "";
@@ -42,7 +41,6 @@ class DateTime
         }
 
         return $relativeDate;
-
     }
 
 }

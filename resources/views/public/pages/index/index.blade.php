@@ -19,7 +19,7 @@
         </span>
     </div>
 </div>
-@if($currentUser->hasRight('session.view'))
+@if(isset($currentUser) && $currentUser->hasRight('session.view'))
 <div class="d-none js-sessions-templates">
     @include('public.pages.index.parts.session_long', [
         'id' => '#ID#',
