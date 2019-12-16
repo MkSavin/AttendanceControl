@@ -123,7 +123,17 @@ class User extends Authenticatable
      */
     public static function getOneFull($id)
     {
-        if (!Auth::user()->hasRight('user.view') && Auth::user()->id != $id) {
+        $user = Auth::user();
+        
+        if (!$user) {
+            return [
+                "error" => true,
+                "code" => 10,
+                "msg" => Lang::get('auth.not-loggined'),
+            ];
+        }
+
+        if (!$user->hasRight('user.view') && Auth::user()->id != $id) {
             return [
                 "error" => true,
                 "code" => 100,

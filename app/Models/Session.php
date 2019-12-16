@@ -111,6 +111,15 @@ class Session extends Model
     public static function getSession($id, $suitable = false)
     {
         $user = Auth::user();
+        
+        if (!$user) {
+            return [
+                "error" => true,
+                "code" => 10,
+                "msg" => Lang::get('auth.not-loggined'),
+            ];
+        }
+
         if (!$user->hasRight('session.view')) {
             return [
                 "error" => true,
@@ -152,6 +161,15 @@ class Session extends Model
     public static function getFullSessions($type = 'all')
     {
         $user = Auth::user();
+
+        if (!$user) {
+            return [
+                "error" => true,
+                "code" => 10,
+                "msg" => Lang::get('auth.not-loggined'),
+            ];
+        }
+
         if (!$user->hasRight('session.view')) {
             return [
                 "error" => true,
@@ -247,6 +265,14 @@ class Session extends Model
     {
         $user = Auth::user();
 
+        if (!$user) {
+            return [
+                "error" => true,
+                "code" => 10,
+                "msg" => Lang::get('auth.not-loggined'),
+            ];
+        }
+        
         if (!$user->hasRight('session.create')) {
             return [
                 "error" => true,

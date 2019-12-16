@@ -13,7 +13,7 @@ trait CreatedAt {
      */
     public function getCreatedDateTimeAttribute()
     {
-        return Helpers\DateTime::CarbonForRelativeHuman($this->created_at);
+        return Helpers\DateTime::carbonForRelativeHuman($this->created_at);
     }
 
     /**
@@ -23,7 +23,7 @@ trait CreatedAt {
      */
     public function getCreatedDateAttribute()
     {
-        return Helpers\DateTime::CarbonRelative($this->created_at);
+        return Helpers\DateTime::carbonRelative($this->created_at);
     }
 
     /**

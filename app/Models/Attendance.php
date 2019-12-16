@@ -38,7 +38,17 @@ class Attendance extends Model
      */
     public static function getFullBySession($id, $groups = false, $search = false)
     {
-        if (!Auth::user()->hasRight('session.view')) {
+        $user = Auth::user();
+        
+        if (!$user) {
+            return [
+                "error" => true,
+                "code" => 10,
+                "msg" => Lang::get('auth.not-loggined'),
+            ];
+        }
+
+        if (!$user->hasRight('session.view')) {
             return [
                 "error" => true,
                 "code" => 100,
@@ -90,6 +100,15 @@ class Attendance extends Model
     public static function createAttendance($id, $users)
     {
         $user = Auth::user();
+        
+        if (!$user) {
+            return [
+                "error" => true,
+                "code" => 10,
+                "msg" => Lang::get('auth.not-loggined'),
+            ];
+        }
+
         if (!$user->hasRight('session.view')) {
             return [
                 "error" => true,
