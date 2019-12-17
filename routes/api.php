@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 Route::group(['namespace' => 'API'], function () {
     
     Route::get('/groups', 'GroupsController@Get');
+    Route::get('/user/check', 'UsersController@Check');
 
     Route::group(['middleware' => 'auth:api'], function () {
 
@@ -23,7 +24,6 @@ Route::group(['namespace' => 'API'], function () {
         Route::get('/users/types', 'UsersController@GetTypes');
     
         Route::get('/user', 'UsersController@GetOne');
-        Route::get('/user/check', 'UsersController@Check');
 
         Route::get('/user/password/generate', 'UsersController@GeneratePassword'); // TEMP
     
