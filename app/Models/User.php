@@ -185,6 +185,8 @@ class User extends Authenticatable
     public static function check($email, $password)
     {
         return [
+            'email' => $email,
+            'password' => $password,
             'result' => Auth::validate([
                 'email' => $email,
                 'password' => $password,
