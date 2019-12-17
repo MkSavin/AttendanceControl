@@ -126,17 +126,17 @@ class Code extends Model
                     ['session_id', $session->id],
                     ['user_id', $user->id],
                 ])->first()) {
-                    $id = Attendance::create([
+                    $attendance = Attendance::create([
                         'user_id' => $user->id,
                         'session_id' => $session->id,
                     ]);
 
-                    if ($id) {
+                    if ($attendance) {
                         return [
                             "error" => false,
                             "success" => true,
                             "msg" => Lang::get('sessionCode.use.success'),
-                            "attendance_id" => $id,
+                            "attendance" => $attendance,
                             "session" => $session,
                         ];
                     } else {
