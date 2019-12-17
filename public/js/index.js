@@ -723,7 +723,8 @@ var popupHandlers = function(){
             data: {
                 type: type,
                 group: group,
-                search: self.find('.js-user-search').val()
+                search: self.find('.js-user-search').val(),
+                api_token: user.api_token
             },
             success: function(data) {
                 self.find('.js-loader').fadeOut(200);
@@ -803,7 +804,8 @@ var popupHandlers = function(){
         $.ajax({
             url: api_links.groups.all,
             data: {
-                search: self.find('.js-group-search').val()
+                search: self.find('.js-group-search').val(),
+                api_token: user.api_token
             },
             success: function(data) {
                 self.find('.js-loader').fadeOut(200);

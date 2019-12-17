@@ -33,19 +33,4 @@ class LoginRequest extends FormRequest {
         return $rules;
     }
 
-    /**
-     * Метод возвращает сообщение при неверно введенных данных
-     *
-     * @return array
-     */
-    public function messages()
-    {
-        $locale = App::getLocale();
-        App::setLocale("ru");
-        $messages = parent::messages();
-        App::setLocale($locale);
-        
-        return $messages;
-    }
-
 }
