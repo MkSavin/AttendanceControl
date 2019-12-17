@@ -17,16 +17,16 @@ Route::group(['namespace' => 'API'], function () {
     
     Route::get('/groups', 'GroupsController@Get');
 
-    Route::get('/users', 'UsersController@Get');
-    Route::get('/users/aside', 'UsersController@GetAside');
-    Route::get('/users/types', 'UsersController@GetTypes');
-
-    Route::get('/user/check', 'UsersController@Check');
-
-    Route::get('/user/password/generate', 'UsersController@GeneratePassword'); // TEMP
-
     Route::group(['middleware' => 'auth:api'], function () {
 
+        Route::get('/users', 'UsersController@Get');
+        Route::get('/users/aside', 'UsersController@GetAside');
+        Route::get('/users/types', 'UsersController@GetTypes');
+    
+        Route::get('/user/check', 'UsersController@Check');
+    
+        Route::get('/user/password/generate', 'UsersController@GeneratePassword'); // TEMP
+    
         Route::get('/group', 'GroupsController@GetOne');
 
         Route::get('/user', 'UsersController@GetOne');
