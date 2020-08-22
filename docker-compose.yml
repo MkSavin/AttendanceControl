@@ -1,0 +1,36 @@
+version: "3.2"
+
+services:
+    nginx:
+        build: 
+            context: .
+            dockerfile: docker/nginx.dockerfile
+        volumes:
+            - .:/var/www/laravel
+        ports:
+            - 8888:80
+            - 4431:443
+        links:
+            - php
+            - mysql
+
+    php:
+        build:
+            context: .
+            dockerfile: docker/fpm.dockerfile
+        container_name: attendencecontrol
+        ports:
+            - 9000:9000
+        links:
+            - mysql
+        volumes:
+            - .:/var/www/laravel
+
+    mysql:
+        image: mysql:5.7
+        ports:
+            - 33061:3306
+        environment: 
+            - MYSQL_USER_ROOT_NAME=root
+            - MYSQL_ALLOW_EMPTY_PASSWORD=true
+            - MYSQL_DATABASE=attendancecontrol
