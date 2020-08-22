@@ -1,5 +1,6 @@
 # AttendanceControl - Контроль посещаемости
 Attendance control application.
+[![Build Status](https://travis-ci.com/MkSavin/AttendanceControl.svg?branch=master)](https://travis-ci.com/MkSavin/AttendanceControl)
 
 ## EN:
 

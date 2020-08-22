@@ -4,17 +4,17 @@ namespace App\Http\Controllers\Auth;
 
 use \App\Http\Controllers\Controller;
 
-class LoginController extends Controller
+class LogoutController extends Controller
 {
 
     /**
-     * GET-Контроллер для страницы login
+     * GET-Контроллер для страницы logout
      *
      * @return View
      */
     public function get()
     {
-        return view('public.auth.login.index');
+        return view('public.auth.logout.index');
     }
 
 }
