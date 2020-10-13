@@ -20,7 +20,7 @@ services:
             dockerfile: docker/fpm.dockerfile
         container_name: attendencecontrol
         expose:
-            - 9000:9000
+            - 9000
         links:
             - mysql
         volumes:
