@@ -19,7 +19,7 @@ services:
             context: .
             dockerfile: docker/fpm.dockerfile
         container_name: attendencecontrol
-        ports:
+        expose:
             - 9000:9000
         links:
             - mysql
