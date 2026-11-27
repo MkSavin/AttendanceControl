@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests;
 
-use App;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\App;
 
 class LoginRequest extends FormRequest {
     
@@ -27,7 +27,7 @@ class LoginRequest extends FormRequest {
         $rules = [
             'email' => 'required|email',
             'password' => 'required|min:4',
-            // 'g-recaptcha-response' => 'required|captcha',
+            'g-recaptcha-response' => config('services.captcha.enabled') ? 'required|captcha' : 'nullable',
         ];
 
         return $rules;

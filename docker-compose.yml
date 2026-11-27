@@ -1,36 +1,29 @@
-version: "3.2"
-
 services:
-    nginx:
-        build: 
-            context: .
-            dockerfile: docker/nginx.dockerfile
-        volumes:
-            - .:/var/www/laravel
-        ports:
-            - 8888:80
-            - 4431:443
-        links:
-            - php
-            - mysql
-
-    php:
+    app:
         build:
             context: .
-            dockerfile: docker/fpm.dockerfile
-        container_name: attendencecontrol
-        expose:
-            - 9000
-        links:
-            - mysql
-        volumes:
-            - .:/var/www/laravel
+            dockerfile: docker/app.dockerfile
+        ports:
+            - 8888:80
+        depends_on:
+            mysql:
+                condition: service_healthy
 
     mysql:
-        image: mysql:5.7
+        image: mysql:8.4
         ports:
             - 33061:3306
-        environment: 
-            - MYSQL_USER_ROOT_NAME=root
-            - MYSQL_ALLOW_EMPTY_PASSWORD=true
-            - MYSQL_DATABASE=attendancecontrol
+        environment:
+            MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+            MYSQL_DATABASE: attendancecontrol
+        volumes:
+            - mysql-data:/var/lib/mysql
+        healthcheck:
+            test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot"]
+            interval: 5s
+            timeout: 5s
+            retries: 20
+            start_period: 30s
+
+volumes:
+    mysql-data:

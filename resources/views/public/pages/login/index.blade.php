@@ -17,9 +17,11 @@
             <label for="login-form-password">Пароль</label>
             <input type="password" name="password" class="form-control" id="login-form-password">
         </div>
+        @if(config('services.captcha.enabled'))
         <div>
             {!! app('captcha')->display([], ['lang' => 'ru']) !!}
         </div>
+        @endif
         <div>
             <input type="submit" class="mt-2 button w-100" value="Войти">
         </div>

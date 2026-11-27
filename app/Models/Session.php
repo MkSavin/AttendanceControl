@@ -5,9 +5,9 @@ namespace App\Models;
 use App\Traits\Models\Attributes;
 use App\Traits\Relations\BelongsTo;
 use App\Traits\Relations\HasMany;
-use Auth;
 use Illuminate\Database\Eloquent\Model;
-use Lang;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Lang;
 use \Carbon\Carbon;
 use \Carbon\CarbonInterval;
 
@@ -20,8 +20,8 @@ class Session extends Model
 
     protected $fillable = ['user_id', 'creator_id', 'user_type_id', 'code', 'activetime', 'active_at'];
 
-    protected $dates = [
-        'active_at',
+    protected $casts = [
+        'active_at' => 'datetime',
     ];
 
     /**

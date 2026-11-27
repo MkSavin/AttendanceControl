@@ -1,17 +1,14 @@
 <?php
 
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
 | API роутинги
 |--------------------------------------------------------------------------
-|
-| "api" middleware, RouteServiceProvider.
-|
 */
 
-Route::group(['namespace' => 'API'], function () {
+Route::group(['namespace' => 'App\Http\Controllers\API'], function () {
     
     Route::get('/groups', 'GroupsController@Get');
     Route::get('/user/check', 'UsersController@Check');
