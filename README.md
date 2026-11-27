@@ -1,6 +1,6 @@
 # AttendanceControl - Контроль посещаемости
 Attendance control application.
-[![Build Status](https://travis-ci.com/MkSavin/AttendanceControl.svg?branch=master)](https://travis-ci.com/MkSavin/AttendanceControl)
+[![Build Status](https://github.com/MkSavin/AttendanceControl/actions/workflows/tests.yml/badge.svg)](https://github.com/MkSavin/AttendanceControl/actions/workflows/tests.yml)
 
 ## EN:
 
@@ -23,6 +23,15 @@ Fill database using `dump.example.sql` file.
 Just import `dump.example.sql` file to database. 
 
 (With Docker use `localhost:33061`, user: `root` password: `*empty*` for connecting to Database)
+
+#### Step 4. Test credentials
+These accounts are available after importing `dump.example.sql`:
+
+| Role | Email | Password |
+| --- | --- | --- |
+| Administrator | `admin@example.test` | `AttendanceAdmin!` |
+| Manager | `manager3@example.test` | `AttendanceManager!` |
+| Student | `student1@example.test` | `AttendanceStudent!` |
 
 ### Launching:
 Just launch your server and open reserved domain.
@@ -56,6 +65,15 @@ php artisan migrate
 Выполните импорт базы данных из файла `dump.example.sql`.
 
 (При использовании Docker подключение к БД происходит через `localhost:33061`, пользователь: `root` пароль: `*пусто*`)
+
+#### Шаг 4. Данные для входа
+После импорта `dump.example.sql` доступны тестовые учётные записи:
+
+| Роль | Email | Пароль |
+| --- | --- | --- |
+| Администратор | `admin@example.test` | `AttendanceAdmin!` |
+| Менеджер | `manager3@example.test` | `AttendanceManager!` |
+| Студент | `student1@example.test` | `AttendanceStudent!` |
 
 ### Запуск:
 Просто запустите свой сервер и откройте выделенный хост для проекта.

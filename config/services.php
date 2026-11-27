@@ -14,6 +14,10 @@ return [
     |
     */
 
+    'captcha' => [
+        'enabled' => env('CAPTCHA_ENABLED', false),
+    ],
+
     'mailgun' => [
         'domain' => env('MAILGUN_DOMAIN'),
         'secret' => env('MAILGUN_SECRET'),

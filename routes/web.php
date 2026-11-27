@@ -1,39 +1,14 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Web роутинги
-|--------------------------------------------------------------------------
-|
-| "web" middleware, RouteServiceProvider.
-|
-*/
+use App\Http\Controllers\IndexController;
+use App\Http\Controllers\LoginController;
+use Illuminate\Support\Facades\Route;
 
-Route::get('/login', [
-    'uses' => 'LoginController@Get',
-    'title' => 'Вход'
-])->name('login');
-
-Route::post('/login', [
-    'uses' => 'LoginController@Post',
-    'title' => 'Вход'
-]);
-
-Route::get('/logout', [
-    'uses' => 'LoginController@Logout',
-    'title' => 'Выход'
-])->name('login.logout');
+Route::get('/login', [LoginController::class, 'Get'])->name('login');
+Route::post('/login', [LoginController::class, 'Post']);
+Route::get('/logout', [LoginController::class, 'Logout'])->name('login.logout');
 
 Route::group(['middleware' => 'login'], function () {
-
-    Route::get('/', [
-        'uses' => 'IndexController@Get',
-        'title' => 'Главная'
-    ])->name('index');
-
-    Route::get('/redeem', [
-        'uses' => 'IndexController@Redeem',
-        'title' => 'Использование сеанса'
-    ])->name('redeem');
-
+    Route::get('/', [IndexController::class, 'Get'])->name('index');
+    Route::get('/redeem', [IndexController::class, 'Redeem'])->name('redeem');
 });

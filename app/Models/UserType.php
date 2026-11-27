@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
+use App\Helpers\CacheHelper;
 use App\Traits\Relations\HasMany;
-use Auth;
-use CacheHelper;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class UserType extends Model
 {

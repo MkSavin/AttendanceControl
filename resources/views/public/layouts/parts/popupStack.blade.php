@@ -152,7 +152,7 @@
                 <div class="data">
                     <div class="unhide">Нажмите, чтобы показать</div>
                 </div>
-                <img src="public/img/qr/elerance.gif" class="js-session-data-qrcode" width="100%" height="100%" alt="">
+                <img src="/img/qr/elerance.gif" class="js-session-data-qrcode" width="100%" height="100%" alt="">
             </div>
             <div class="col-sm qr-data">
                 <div class="row info-row">
@@ -179,7 +179,7 @@
                 <div class="noted-table-container updatable-table" id="popup-user-data-noted-table">
                     <div class="no-results js-no-results" style="display:none">Отметившихся пользователей нет</div>
                     <div class="center no-selection loader js-loader">
-                        <img src="public/img/animation/loading_transparent.gif" class="pevs-none" width="60" alt="">
+                        <img src="/img/animation/loading_transparent.gif" class="pevs-none" width="60" alt="">
                     </div>
                     <div class="noted-table js-noted-table ps" style="display:none">
                     <table>
@@ -244,7 +244,7 @@
             <div class="noted-table-container updatable-table" id="popup-user-data-noted-table">
                 <div class="no-results js-no-results" style="display:none">Пользователей, с таким набором фильтров, нет</div>
                 <div class="center no-selection loader js-loader">
-                    <img src="public/img/animation/loading_transparent.gif" class="pevs-none" width="60" alt="">
+                    <img src="/img/animation/loading_transparent.gif" class="pevs-none" width="60" alt="">
                 </div>
                 <div class="noted-table js-noted-table ps" style="display:none">
                 <table>
@@ -316,7 +316,7 @@
         <div class="clearfix"></div>
     </div>
     <div class="body">
-        <div class="center no-selection"><img src="public/img/animation/loading_transparent.gif" class="pevs-none" width="60" alt=""></div>
+        <div class="center no-selection"><img src="/img/animation/loading_transparent.gif" class="pevs-none" width="60" alt=""></div>
     </div>
 </div>
 <div class="window text">
@@ -388,7 +388,7 @@
         <div class="updatable-table" id="popup-user-data-noted-table">
             <div class="no-results js-no-results" style="display:none">Сеансов, в которых пользователь отметился, нет</div>
             <div class="center no-selection loader js-loader">
-                <img src="public/img/animation/loading_transparent.gif" class="pevs-none" width="60" alt="">
+                <img src="/img/animation/loading_transparent.gif" class="pevs-none" width="60" alt="">
             </div>
             <div class="noted-table noted-table-wide no-th-top-padding js-noted-table ps" style="display:none">
                 <table>
@@ -500,7 +500,7 @@
         <div class="updatable-table" id="popup-user-list-noted-table">
             <div class="no-results js-no-results" style="display:none">Пользователей, подходящих под Ваш набор фильтров, нет</div>
             <div class="center no-selection loader js-loader">
-                <img src="public/img/animation/loading_transparent.gif" class="pevs-none" width="60" alt="">
+                <img src="/img/animation/loading_transparent.gif" class="pevs-none" width="60" alt="">
             </div>
             <div class="noted-table noted-table-wide no-th-top-padding js-noted-table ps" style="display:none">
                 <table>
@@ -568,7 +568,7 @@
         <div class="updatable-table" id="popup-group-data-noted-table">
             <div class="no-results js-no-results" style="display:none">Пользователей, принадлежащих этой группе, нет</div>
             <div class="center no-selection loader js-loader">
-                <img src="public/img/animation/loading_transparent.gif" class="pevs-none" width="60" alt="">
+                <img src="/img/animation/loading_transparent.gif" class="pevs-none" width="60" alt="">
             </div>
             <div class="noted-table noted-table-wide no-th-top-padding js-noted-table ps" style="display:none">
                 <table>
@@ -641,7 +641,7 @@
         <div class="updatable-table" id="popup-group-list-noted-table">
             <div class="no-results js-no-results" style="display:none">Групп, подходящих под Ваш набор фильтров, нет</div>
             <div class="center no-selection loader js-loader">
-                <img src="public/img/animation/loading_transparent.gif" class="pevs-none" width="60" alt="">
+                <img src="/img/animation/loading_transparent.gif" class="pevs-none" width="60" alt="">
             </div>
             <div class="noted-table noted-table-wide no-th-top-padding js-noted-table ps" style="display:none">
                 <table>

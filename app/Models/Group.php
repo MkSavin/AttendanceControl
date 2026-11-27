@@ -3,9 +3,9 @@
 namespace App\Models;
 
 use App\Traits\Relations\HasMany;
-use Auth;
 use Illuminate\Database\Eloquent\Model;
-use Lang;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Lang;
 
 class Group extends Model
 {

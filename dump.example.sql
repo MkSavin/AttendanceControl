@@ -293,31 +293,32 @@ CREATE TABLE IF NOT EXISTS `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `user_type_id`, `group_id`, `api_token`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'Test Student 1', 'student1@example.test', '$2y$12$q/7.j.sHwVmNF79Yjw2/R.96gTpl9as4/Lkl2rESd4c9LBKq3eo1m', 3, 1, 'example-api-token-user-01', NULL, NULL, NULL),
-(2, 'Test Student 2', 'student2@example.test', '$2y$12$q/7.j.sHwVmNF79Yjw2/R.96gTpl9as4/Lkl2rESd4c9LBKq3eo1m', 3, 1, 'example-api-token-user-02', NULL, NULL, NULL),
-(3, 'Test Manager 3', 'manager3@example.test', '$2y$12$YIxSMKWC2G.UW5Wvqxxs5eFF7koSnAzosUnBOfCteosc7D2tkvngG', 2, NULL, 'example-api-token-user-03', NULL, NULL, NULL),
-(4, 'Test Admin User', 'admin@example.test', '$2y$12$vVIbnCjjPYqAuf3utOutuun9O4ngkUa.7PVoL5Cvlxd1j./2HERbu', 1, NULL, 'example-api-token-user-04', NULL, NULL, NULL),
-(5, 'Test Student 5', 'student5@example.test', '$2y$12$q/7.j.sHwVmNF79Yjw2/R.96gTpl9as4/Lkl2rESd4c9LBKq3eo1m', 3, 2, 'example-api-token-user-05', NULL, NULL, NULL),
-(6, 'Test Student 6', 'student6@example.test', '$2y$12$q/7.j.sHwVmNF79Yjw2/R.96gTpl9as4/Lkl2rESd4c9LBKq3eo1m', 3, 2, 'example-api-token-user-06', NULL, NULL, NULL),
-(7, 'Test Student 7', 'student7@example.test', '$2y$12$q/7.j.sHwVmNF79Yjw2/R.96gTpl9as4/Lkl2rESd4c9LBKq3eo1m', 3, 3, 'example-api-token-user-07', NULL, NULL, NULL),
-(8, 'Test Student 8', 'student8@example.test', '$2y$12$q/7.j.sHwVmNF79Yjw2/R.96gTpl9as4/Lkl2rESd4c9LBKq3eo1m', 3, 4, 'example-api-token-user-08', NULL, NULL, NULL),
-(9, 'Test Student 9', 'student9@example.test', '$2y$12$q/7.j.sHwVmNF79Yjw2/R.96gTpl9as4/Lkl2rESd4c9LBKq3eo1m', 3, 5, 'example-api-token-user-09', NULL, NULL, NULL),
-(10, 'Test Manager 10', 'manager10@example.test', '$2y$12$YIxSMKWC2G.UW5Wvqxxs5eFF7koSnAzosUnBOfCteosc7D2tkvngG', 2, NULL, 'example-api-token-user-10', NULL, NULL, NULL),
-(11, 'Test Manager 11', 'manager11@example.test', '$2y$12$YIxSMKWC2G.UW5Wvqxxs5eFF7koSnAzosUnBOfCteosc7D2tkvngG', 2, NULL, 'example-api-token-user-11', NULL, NULL, NULL),
-(12, 'Test Manager 12', 'manager12@example.test', '$2y$12$YIxSMKWC2G.UW5Wvqxxs5eFF7koSnAzosUnBOfCteosc7D2tkvngG', 2, NULL, 'example-api-token-user-12', NULL, NULL, NULL),
-(13, 'Test Manager 13', 'manager13@example.test', '$2y$12$YIxSMKWC2G.UW5Wvqxxs5eFF7koSnAzosUnBOfCteosc7D2tkvngG', 2, NULL, 'example-api-token-user-13', NULL, NULL, NULL),
-(14, 'Test Manager 14', 'manager14@example.test', '$2y$12$YIxSMKWC2G.UW5Wvqxxs5eFF7koSnAzosUnBOfCteosc7D2tkvngG', 2, NULL, 'example-api-token-user-14', NULL, NULL, NULL),
-(15, 'Test Manager 15', 'manager15@example.test', '$2y$12$YIxSMKWC2G.UW5Wvqxxs5eFF7koSnAzosUnBOfCteosc7D2tkvngG', 2, NULL, 'example-api-token-user-15', NULL, NULL, NULL),
-(16, 'Test Manager 16', 'manager16@example.test', '$2y$12$YIxSMKWC2G.UW5Wvqxxs5eFF7koSnAzosUnBOfCteosc7D2tkvngG', 2, NULL, 'example-api-token-user-16', NULL, NULL, NULL),
-(17, 'Test Manager 17', 'manager17@example.test', '$2y$12$YIxSMKWC2G.UW5Wvqxxs5eFF7koSnAzosUnBOfCteosc7D2tkvngG', 2, NULL, 'example-api-token-user-17', NULL, NULL, NULL),
-(18, 'Test Manager 18', 'manager18@example.test', '$2y$12$YIxSMKWC2G.UW5Wvqxxs5eFF7koSnAzosUnBOfCteosc7D2tkvngG', 2, NULL, 'example-api-token-user-18', NULL, NULL, NULL),
-(19, 'Test Manager 19', 'manager19@example.test', '$2y$12$YIxSMKWC2G.UW5Wvqxxs5eFF7koSnAzosUnBOfCteosc7D2tkvngG', 2, NULL, 'example-api-token-user-19', NULL, NULL, NULL),
-(20, 'Test Manager 20', 'manager20@example.test', '$2y$12$YIxSMKWC2G.UW5Wvqxxs5eFF7koSnAzosUnBOfCteosc7D2tkvngG', 2, NULL, 'example-api-token-user-20', NULL, NULL, NULL),
-(21, 'Test Manager 21', 'manager21@example.test', '$2y$12$YIxSMKWC2G.UW5Wvqxxs5eFF7koSnAzosUnBOfCteosc7D2tkvngG', 2, NULL, 'example-api-token-user-21', NULL, NULL, NULL),
-(22, 'Test Manager 22', 'manager22@example.test', '$2y$12$YIxSMKWC2G.UW5Wvqxxs5eFF7koSnAzosUnBOfCteosc7D2tkvngG', 2, NULL, 'example-api-token-user-22', NULL, NULL, NULL),
-(23, 'Test Manager 23', 'manager23@example.test', '$2y$12$YIxSMKWC2G.UW5Wvqxxs5eFF7koSnAzosUnBOfCteosc7D2tkvngG', 2, NULL, 'example-api-token-user-23', NULL, NULL, NULL),
-(24, 'Test Student 24', 'student24@example.test', '$2y$12$q/7.j.sHwVmNF79Yjw2/R.96gTpl9as4/Lkl2rESd4c9LBKq3eo1m', 3, NULL, 'example-api-token-user-24', NULL, NULL, NULL),
-(25, 'Schedule Bot', 'schedule.bot@example.test', '$2y$12$vVIbnCjjPYqAuf3utOutuun9O4ngkUa.7PVoL5Cvlxd1j./2HERbu', 4, NULL, 'example-api-token-schedule-bot', NULL, NULL, NULL);
+(1, 'Лариса Андреевна Казакова', 'admin@example.test', '$2y$12$vVIbnCjjPYqAuf3utOutuun9O4ngkUa.7PVoL5Cvlxd1j./2HERbu', 1, NULL, 'example-api-token-user-01', NULL, NULL, NULL),
+(2, 'Иванов Никита Сергеевич', 'student1@example.test', '$2y$12$q/7.j.sHwVmNF79Yjw2/R.96gTpl9as4/Lkl2rESd4c9LBKq3eo1m', 3, 1, 'example-api-token-user-02', NULL, NULL, NULL),
+(3, 'Ростислав Евгеньевич Дроздов', 'student2@example.test', '$2y$12$q/7.j.sHwVmNF79Yjw2/R.96gTpl9as4/Lkl2rESd4c9LBKq3eo1m', 3, 2, 'example-api-token-user-03', NULL, NULL, NULL),
+(4, 'Иванова Лидия Борисовна', 'student3@example.test', '$2y$12$q/7.j.sHwVmNF79Yjw2/R.96gTpl9as4/Lkl2rESd4c9LBKq3eo1m', 3, 3, 'example-api-token-user-04', NULL, NULL, NULL),
+(5, 'Молчанов Викентий Дмитриевич', 'student4@example.test', '$2y$12$q/7.j.sHwVmNF79Yjw2/R.96gTpl9as4/Lkl2rESd4c9LBKq3eo1m', 3, 4, 'example-api-token-user-05', NULL, NULL, NULL),
+(6, 'Ярослава Львовна Логинова', 'student5@example.test', '$2y$12$q/7.j.sHwVmNF79Yjw2/R.96gTpl9as4/Lkl2rESd4c9LBKq3eo1m', 3, 5, 'example-api-token-user-06', NULL, NULL, NULL),
+(7, 'Гуляева Инна Ивановна', 'student6@example.test', '$2y$12$q/7.j.sHwVmNF79Yjw2/R.96gTpl9as4/Lkl2rESd4c9LBKq3eo1m', 3, 6, 'example-api-token-user-07', NULL, NULL, NULL),
+(8, 'Красильникова Надежда Максимовна', 'student7@example.test', '$2y$12$q/7.j.sHwVmNF79Yjw2/R.96gTpl9as4/Lkl2rESd4c9LBKq3eo1m', 3, 7, 'example-api-token-user-08', NULL, NULL, NULL),
+(9, 'Федосья Владимировна Орехова', 'student8@example.test', '$2y$12$q/7.j.sHwVmNF79Yjw2/R.96gTpl9as4/Lkl2rESd4c9LBKq3eo1m', 3, 8, 'example-api-token-user-09', NULL, NULL, NULL),
+(10, 'Вениамин Евгеньевич Алексеев', 'student9@example.test', '$2y$12$q/7.j.sHwVmNF79Yjw2/R.96gTpl9as4/Lkl2rESd4c9LBKq3eo1m', 3, 9, 'example-api-token-user-10', NULL, NULL, NULL),
+(11, 'Яна Алексеевна Коновалова', 'student10@example.test', '$2y$12$q/7.j.sHwVmNF79Yjw2/R.96gTpl9as4/Lkl2rESd4c9LBKq3eo1m', 3, 10, 'example-api-token-user-11', NULL, NULL, NULL),
+(12, 'Василиса Романовна Анисимова', 'student11@example.test', '$2y$12$q/7.j.sHwVmNF79Yjw2/R.96gTpl9as4/Lkl2rESd4c9LBKq3eo1m', 3, 11, 'example-api-token-user-12', NULL, NULL, NULL),
+(13, 'Зоя Алексеевна Лукина', 'student12@example.test', '$2y$12$q/7.j.sHwVmNF79Yjw2/R.96gTpl9as4/Lkl2rESd4c9LBKq3eo1m', 3, 12, 'example-api-token-user-13', NULL, NULL, NULL),
+(14, 'Антонин Дмитриевич Бобров', 'student13@example.test', '$2y$12$q/7.j.sHwVmNF79Yjw2/R.96gTpl9as4/Lkl2rESd4c9LBKq3eo1m', 3, 13, 'example-api-token-user-14', NULL, NULL, NULL),
+(15, 'Нестерова Алёна Сергеевна', 'student14@example.test', '$2y$12$q/7.j.sHwVmNF79Yjw2/R.96gTpl9as4/Lkl2rESd4c9LBKq3eo1m', 3, 14, 'example-api-token-user-15', NULL, NULL, NULL),
+(16, 'Ираклий Максимович Куликов', 'student15@example.test', '$2y$12$q/7.j.sHwVmNF79Yjw2/R.96gTpl9as4/Lkl2rESd4c9LBKq3eo1m', 3, 15, 'example-api-token-user-16', NULL, NULL, NULL),
+(17, 'Муравьёва Вера Дмитриевна', 'student16@example.test', '$2y$12$q/7.j.sHwVmNF79Yjw2/R.96gTpl9as4/Lkl2rESd4c9LBKq3eo1m', 3, 1, 'example-api-token-user-17', NULL, NULL, NULL),
+(18, 'Гущина Тамара Максимовна', 'student17@example.test', '$2y$12$q/7.j.sHwVmNF79Yjw2/R.96gTpl9as4/Lkl2rESd4c9LBKq3eo1m', 3, 2, 'example-api-token-user-18', NULL, NULL, NULL),
+(19, 'Даниил Дмитриевич Бобылёв', 'manager3@example.test', '$2y$12$YIxSMKWC2G.UW5Wvqxxs5eFF7koSnAzosUnBOfCteosc7D2tkvngG', 2, NULL, 'example-api-token-user-19', NULL, NULL, NULL),
+(20, 'Нелли Владимировна Исакова', 'teacher2@example.test', '$2y$12$YIxSMKWC2G.UW5Wvqxxs5eFF7koSnAzosUnBOfCteosc7D2tkvngG', 2, NULL, 'example-api-token-user-20', NULL, NULL, NULL),
+(21, 'Брагина Лилия Евгеньевна', 'teacher3@example.test', '$2y$12$YIxSMKWC2G.UW5Wvqxxs5eFF7koSnAzosUnBOfCteosc7D2tkvngG', 2, NULL, 'example-api-token-user-21', NULL, NULL, NULL),
+(22, 'Роберт Сергеевич Зайцев', 'teacher4@example.test', '$2y$12$YIxSMKWC2G.UW5Wvqxxs5eFF7koSnAzosUnBOfCteosc7D2tkvngG', 2, NULL, 'example-api-token-user-22', NULL, NULL, NULL),
+(23, 'Некрасов Влад Сергеевич', 'teacher5@example.test', '$2y$12$YIxSMKWC2G.UW5Wvqxxs5eFF7koSnAzosUnBOfCteosc7D2tkvngG', 2, NULL, 'example-api-token-user-23', NULL, NULL, NULL),
+(24, 'Сергеева Розалина Борисовна', 'manager1@example.test', '$2y$12$YIxSMKWC2G.UW5Wvqxxs5eFF7koSnAzosUnBOfCteosc7D2tkvngG', 1, NULL, 'example-api-token-user-24', NULL, NULL, NULL),
+(25, 'Новиков Назар Александрович', 'manager2@example.test', '$2y$12$YIxSMKWC2G.UW5Wvqxxs5eFF7koSnAzosUnBOfCteosc7D2tkvngG', 1, NULL, 'example-api-token-user-25', NULL, NULL, NULL),
+(26, 'Бот автоматизации', 'schedule.bot@example.test', '$2y$12$vVIbnCjjPYqAuf3utOutuun9O4ngkUa.7PVoL5Cvlxd1j./2HERbu', 4, NULL, 'example-api-token-schedule-bot', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -339,7 +340,7 @@ INSERT INTO `users_types` (`id`, `name`, `bot`) VALUES
 (1, 'Спец. по кадрам', 0),
 (2, 'Преподаватель', 0),
 (3, 'Студент', 0),
-(4, 'Расписание', 1);
+(4, 'Автоматизация', 1);
 
 --
 -- Индексы сохранённых таблиц

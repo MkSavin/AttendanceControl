@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
+use App\Helpers\CacheHelper;
 use App\Traits\Relations\BelongsTo;
 use App\Traits\Relations\HasMany;
-use Auth;
-use CacheHelper;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Lang;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Lang;
 
 class User extends Authenticatable
 {

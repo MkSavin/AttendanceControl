@@ -4,9 +4,9 @@ namespace App\Models;
 
 use App\Traits\Models\Attributes;
 use App\Traits\Relations\BelongsTo;
-use Auth;
 use Illuminate\Database\Eloquent\Model;
-use Lang;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Lang;
 
 class Attendance extends Model
 {
