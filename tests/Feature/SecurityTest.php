@@ -6,6 +6,7 @@ use App\Models\Attendance;
 use App\Models\Session as SessionModel;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
@@ -124,8 +125,11 @@ class SecurityTest extends TestCase
             'password' => 'SecretPassword!',
         ]);
 
-        $response->assertRedirect(route('index'))->assertSessionHas('api_token');
+        $response->assertRedirect(route('index'))
+            ->assertSessionHas('api_token')
+            ->assertCookie(Auth::guard()->getRecallerName());
         $plainToken = session('api_token');
+        $this->assertNotNull($teacher->fresh()->remember_token);
         $this->assertNotSame($plainToken, $teacher->fresh()->api_token);
         $this->assertSame(hash('sha256', $plainToken), $teacher->fresh()->api_token);
 
@@ -133,6 +137,19 @@ class SecurityTest extends TestCase
             ->getJson('/api/user?id=' . $teacher->id)
             ->assertOk()
             ->assertJsonPath('id', $teacher->id);
+    }
+
+    public function test_restored_authentication_issues_a_new_api_token(): void
+    {
+        $teacher = $this->createUser(2);
+        $previousHash = $teacher->api_token;
+
+        $this->actingAs($teacher)->get('/')
+            ->assertOk()
+            ->assertSessionHas('api_token');
+
+        $this->assertSame(hash('sha256', session('api_token')), $teacher->fresh()->api_token);
+        $this->assertNotSame($previousHash, $teacher->fresh()->api_token);
     }
 
     public function test_query_string_api_tokens_are_rejected(): void

@@ -18,6 +18,10 @@ class Login
     public function handle($request, Closure $next)
     {
         if ($user = Auth::user()) {
+            if (!$request->session()->has('api_token')) {
+                $request->session()->put('api_token', $user->issueApiToken());
+            }
+
             View::share('currentUser', $user);
             return $next($request);
         } else {

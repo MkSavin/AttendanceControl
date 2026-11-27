@@ -9,6 +9,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Str;
 
 class User extends Authenticatable
 {
@@ -173,6 +174,14 @@ class User extends Authenticatable
         return CacheHelper::get('User-Rights', [$code, $this->id], function () use ($element, $code) {
             return $element->user_type->hasRight($code);
         });
+    }
+
+    public function issueApiToken(): string
+    {
+        $token = Str::random(80);
+        $this->forceFill(['api_token' => hash('sha256', $token)])->save();
+
+        return $token;
     }
 
     /**

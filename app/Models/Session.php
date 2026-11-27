@@ -82,12 +82,58 @@ class Session extends Model
     public function getTimeLeftAttribute()
     {
         $seconds = $this->activetime - (now()->timestamp - $this->active_at->timestamp);
+        $duration = $this->status == 'active' && $seconds > 0 ? $seconds : $this->activetime;
 
-        if ($this->status == 'active' && $seconds > 0) {
-            return CarbonInterval::seconds($seconds)->cascade()->forHumans(['short' => true]);
-        } else {
-            return CarbonInterval::seconds($this->activetime)->cascade()->forHumans(['short' => true]);
+        return self::formatDuration($duration);
+    }
+
+    private static function formatDuration($seconds)
+    {
+        $interval = CarbonInterval::seconds($seconds)->cascade();
+        $values = array_filter(
+            $interval->toArray(),
+            fn ($value, $unit) => $value > 0 && $unit !== 'microseconds',
+            ARRAY_FILTER_USE_BOTH
+        );
+
+        if (count($values) <= 2) {
+            return $interval->forHumans(['short' => true, 'parts' => 2]);
         }
+
+        $unitSeconds = [
+            'years' => 12 * 4 * 7 * 86400,
+            'months' => 4 * 7 * 86400,
+            'weeks' => 7 * 86400,
+            'days' => 86400,
+            'hours' => 3600,
+            'minutes' => 60,
+            'seconds' => 1,
+        ];
+        $unitNames = [
+            'years' => 'year',
+            'months' => 'month',
+            'weeks' => 'week',
+            'days' => 'day',
+            'hours' => 'hour',
+            'minutes' => 'minute',
+            'seconds' => 'second',
+        ];
+        $units = array_keys($values);
+        $secondUnit = $units[1];
+        $remainder = 0;
+
+        foreach (array_slice($units, 2) as $unit) {
+            $remainder += $values[$unit] * $unitSeconds[$unit];
+        }
+
+        if ($remainder * 2 >= $unitSeconds[$secondUnit]) {
+            $values[$secondUnit]++;
+        }
+
+        return implode(' ', array_map(function ($unit) use ($values, $unitNames) {
+            return CarbonInterval::make($values[$unit] . ' ' . $unitNames[$unit])
+                ->forHumans(['short' => true]);
+        }, array_slice($units, 0, 2)));
     }
 
     /**

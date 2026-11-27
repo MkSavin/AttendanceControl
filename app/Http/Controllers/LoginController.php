@@ -6,7 +6,6 @@ use App\Http\Requests\LoginRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Lang;
-use Illuminate\Support\Str;
 
 class LoginController extends Controller
 {
@@ -32,11 +31,10 @@ class LoginController extends Controller
         if (Auth::attempt([
             'email' => $request->email,
             'password' => $request->password,
-        ])) {
+        ], true)) {
             $request->session()->regenerate();
 
-            $apiToken = Str::random(80);
-            Auth::user()->forceFill(['api_token' => hash('sha256', $apiToken)])->save();
+            $apiToken = Auth::user()->issueApiToken();
             $request->session()->put('api_token', $apiToken);
 
             return redirect()->route('index');

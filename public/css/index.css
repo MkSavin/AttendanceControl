@@ -215,12 +215,6 @@ body > header, body > main {
     padding-right: 60px;
 }
 
-@media (min-width: 1620px) {
-    body > header {
-        zoom: 1.4;
-    }
-}
-
 @media (max-width: 480px) {
     body > header, body > main {
         padding-left: 12px;
@@ -246,7 +240,7 @@ body.no-header-controls > header .header-control {
 }
 
 header {
-    padding: 20px 0;
+    padding: 12px 0;
     color: #fff;
 }
 
@@ -256,7 +250,7 @@ body:not(.full-bg) > header {
 
 main {
     padding: 30px 0;
-    min-height: calc(100vh - 78px);
+    min-height: calc(100vh - 60px);
 }
 
 body.no-header main {
@@ -266,7 +260,7 @@ body.no-header main {
 @media (max-width: 380px) {
     main {
         padding: 30px 0;
-        min-height: calc(100vh / .85 - 78px / .85) !important;
+        min-height: calc(100vh / .85 - 60px / .85) !important;
     }
 
     body.no-header main {
@@ -279,7 +273,7 @@ body:not(.full-bg) > main {
 }
 
 header > .left, header > .right {
-    height: 38px;
+    height: 36px;
     display: flex;
     align-items: center;
 }
@@ -295,15 +289,15 @@ header > .right > .user > *, header > .right > .menu > * {
 }
 
 header > .right > .menu > a:not(:last-of-type) {
-    margin-right: 20px;
+    margin-right: 12px;
 }
 
 header > .left > .title, header > .right > .menu {
-    padding-right: 30px;
+    padding-right: 20px;
 }
 
 header > .left > .title > a {
-    font-size: 22px;
+    font-size: 18px;
     font-weight: 600;
     color: #fff;
 }
@@ -316,16 +310,16 @@ header > .left > .title::after, header > .right > .menu::after {
     content: '';
     background: #FFF;
     opacity: .15;
-    width: 2px;
-    height: 28px;
+    width: 1px;
+    height: 32px;
     display: inline-block;
     position: absolute;
     right: 0;
-    top: 1px;
+    top: 0;
 }
 
 header .menu > a:not(.button) {
-    font-size: 17px;
+    font-size: 14px;
     color: #fff;
     text-transform: uppercase;
     font-weight: 400;
@@ -343,26 +337,34 @@ header .menu > a:not(.button):active {
 
 header > .left > .menu > a:not(.button),
 header > .right > .menu > a:not(.button) {
-    padding: 6px 10px;
+    padding: 6px 8px;
 }
 
 header > .left > .menu > a:not(.button) {
-    margin-left: 16px;
+    margin-left: 8px;
 }
 
 header > .right > .menu > a:not(.button) {
-    margin-right: 16px;
+    margin-right: 8px;
+}
+
+header > .right > .menu > .button.short {
+    height: 32px;
+    padding: 5px 10px;
+    font-size: 14px;
+    line-height: 22px;
 }
 
 header > .right > .user {
-    margin-left: 25px;
-    padding-left: 5px;
-    margin-right: 25px;
-    padding-right: 5px;
-    padding-top: 3px;
-    padding-bottom: 3px;
+    margin-left: 16px;
+    padding-left: 6px;
+    margin-right: 20px;
+    padding-right: 6px;
+    padding-top: 2px;
+    padding-bottom: 2px;
     vertical-align: middle;
-    height: 38px;
+    height: 36px;
+    line-height: 12px;
     position: relative;
     cursor: pointer;
 }
@@ -376,10 +378,10 @@ header > .right > .user:hover {
 header > .right > .user::after {
     content: '';
     background: url('../img/icons/dropdown_white.svg') no-repeat center/contain;
-    width: 14px;
-    height: 9px;
+    width: 12px;
+    height: 8px;
     position: absolute;
-    right: -30px;
+    right: -22px;
     top: 50%;
     transform: translateY(-50%);
     opacity: .3;
@@ -395,15 +397,16 @@ header > .right > .user > span, header > .right > .user > div {
 }
 
 header > .right > .user > div {
-    font-size: 17px;
-    line-height: 14px;
+    font-size: 14px;
+    line-height: 16px;
     font-weight: 500;
 }
 
 header > .right > .user > span.additional {
     opacity: .3;
     text-transform: uppercase;
-    font-size: 12px;
+    font-size: 10px;
+    line-height: 12px;
     font-weight: 500;
 }
 
@@ -434,33 +437,33 @@ header > .right > .user > span.additional {
 
 @media (min-width: 351px) {
     .menu-popup .header-control > a, .menu-popup .user {
-        font-size: 24px !important;
+        font-size: 16px !important;
     }
     
     .menu-popup .header-control > a,
     .menu-popup .title,
     .menu-popup .user {
-        padding: 18px 22px !important;
+        padding: 12px 16px !important;
     }
 }
 
 .menu-popup .title {
-    padding: 12px 12px;
-    border-bottom-width: 4px !important;
+    padding: 12px;
+    border-bottom-width: 1px !important;
 }
 
 .menu-popup .header-control > a,
 .menu-popup .user {
-    padding: 14px 18px;
+    padding: 10px 14px;
 }
 
 .menu-popup .title,
 .menu-popup .header-control > a:not(.button) {
-    border-bottom: 2px solid rgba(255,255,255,.15);
+    border-bottom: 1px solid rgba(255,255,255,.15);
 }
 
 .menu-popup .title a {
-    font-size: 22px;
+    font-size: 18px;
     font-weight: 600;
     color: #fff;
 }
@@ -468,7 +471,7 @@ header > .right > .user > span.additional {
 .menu-popup .header-control > a, .menu-popup .user {
     width: 100%;
     display: inline-block;
-    font-size: 22px;
+    font-size: 16px;
     border-radius: 0;
     color: #fff;
 }
@@ -488,10 +491,10 @@ header > .right > .user > span.additional {
 .dd {
     position: absolute;
     background: #fff;
-    border-radius: 5px;
+    border-radius: 6px;
     display: flex;
     flex-direction: column;
-    padding: 10px 0;
+    padding: 4px 0;
     z-index: 10000;
 }
 
@@ -500,7 +503,7 @@ header > .right > .user > span.additional {
 }
 
 .dd.dd-user {
-    top: 78px;
+    top: 60px;
     right: 56px;
 }
 
@@ -519,7 +522,10 @@ body:not(.full-bg) .dd.dd-user {
     display: inline-block;
     color: #515a66;
     text-decoration: none;
-    padding: 10px 14px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 20px;
+    min-width: 140px;
 }
 .dropdown-item:focus, .dropdown-item:hover, .dd > a:hover, .datepicker--cell.-focus- {
     background-color: #e4e9ee;
@@ -657,7 +663,7 @@ main .end-of-page {
 }
 
 .time > .date {
-    margin: 0 18px;
+    margin: 0 12px;
     font-weight: 500;
     font-size: 17px;
 }
@@ -697,7 +703,7 @@ main .end-of-page {
     padding: 10px;
     border-radius: 5px;
     background: #2188cc;
-    height: 150px;
+    height: 180px;
     float: left;
     position: relative;
     cursor: pointer;
@@ -760,17 +766,50 @@ main .end-of-page {
 
 .sessions .session.short .body > .users-count-description {
     font-size: 15px;
+    line-height: 18px;
     opacity: .3;
-    margin-bottom: 10px;
+    margin-bottom: 4px;
 }
 
 .sessions .session.short .body > .groups {
     font-size: 16px;
 }
 
+.sessions .session .time-timer {
+    position: absolute;
+    left: 10px;
+    bottom: 8px;
+    max-width: calc(100% - 20px);
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 12px;
+    line-height: 16px;
+}
+
+.sessions .session.long .time-timer {
+    width: 110px;
+}
+
+.sessions .session .time-timer .info,
+.sessions .session .time-timer .info-name {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.sessions .session .time-timer .info-name {
+    font-size: 10px;
+    line-height: 12px;
+    text-transform: uppercase;
+    opacity: .3;
+}
+
 .sessions .session .time-timer .timer {
-    margin-top: -3px;
-    margin-right: 3px;
+    width: 12px;
+    height: 12px;
+    margin-right: 4px;
+    vertical-align: -2px;
 }
 
 .sessions .session .session-hide {
@@ -797,14 +836,14 @@ main .end-of-page {
     opacity: .4;
 }
 
-.sessions .session.long > div:not(.information) {
+.sessions .session.long > div.float-left {
     position: relative;
     height: 100%;
     width: 120px;
     padding: 10px 0;
 }
 
-.sessions .session.long > div:not(.information)::after {
+.sessions .session.long > div.float-left::after {
     position: absolute;
     content: '';
     width: 2px;
@@ -814,7 +853,7 @@ main .end-of-page {
     background: rgba(255, 255, 255, .15);
 }
 
-.sessions .session.long > div:not(.information) > .body {
+.sessions .session.long > div.float-left > .body {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
@@ -822,9 +861,9 @@ main .end-of-page {
     text-align: center;
 }
 
-.sessions .session.long > div:not(.information) > .footer {
+.sessions .session.long > div.float-left > .footer {
     position: absolute;
-    bottom: 10px;
+    top: 10px;
     width: 100%;
     text-align: center;
     text-transform: uppercase;
@@ -832,12 +871,12 @@ main .end-of-page {
     font-size: 12px;
 }
 
-.sessions .session.long > div:not(.information) > .body > .users-count {
+.sessions .session.long > div.float-left > .body > .users-count {
     font-size: 30px;
     line-height: 27px;
 }
 
-.sessions .session.long > div:not(.information) > .body > .users-count-description {
+.sessions .session.long > div.float-left > .body > .users-count-description {
     font-size: 15px;
     opacity: .3;
     margin-bottom: 10px;
@@ -884,20 +923,24 @@ main .end-of-page {
 }
 
 @media (max-width: 350px) {
-    .sessions .session.long > div:not(.information) {
+    .sessions .session.long > div.float-left {
         width: 100px;
+    }
+
+    .sessions .session.long .time-timer {
+        width: 90px;
     }
 
     .sessions .session.long > .information {
         width: calc(100% - 110px);
     }
 
-    .sessions .session.long > div:not(.information) > .body > .users-count {
+    .sessions .session.long > div.float-left > .body > .users-count {
         font-size: 23px;
         line-height: 20px;
     }
 
-    .sessions .session.long > div:not(.information) > .body > .users-count-description {
+    .sessions .session.long > div.float-left > .body > .users-count-description {
         font-size: 12px;
         opacity: .3;
         margin-bottom: 10px;
@@ -1046,6 +1089,7 @@ main .end-of-page {
     height: 160px;
     border-radius: 5px;
     background-size: 50px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
 }
 
 #popup .popup-session-type > a > .title {
@@ -1412,39 +1456,27 @@ main.login > .login-form {
     left: 50%;
     transform: translate(-50%, -50%);
     background: #fff;
-    border-radius: 5px;
+    border-radius: 6px;
     width: 400px;
-}
-
-@media (min-width: 1620px) {
-    main.login > .login-form {
-        zoom: 1.4;
-    }
-}
-
-@media (min-width: 992px) {
-    main.login > .login-form {
-        width: 560px;
-    }
+    max-width: calc(100% - 24px);
 }
 
 @media (max-width: 767px) {
     main.login > .login-form {
         width: 100%;
-        border-radius: 0;
     }
     body > main.login > .login-form > .login-wellcome {
-        font-size: 20px;
+        font-size: 18px;
     }
 }
 
 main.login > .login-form > .login-wellcome,
 main.login > .login-form > .login-body {
-    padding: 20px 26px;
+    padding: 16px 20px;
 }
 
 main.login > .login-form > .login-wellcome {
-    font-size: 22px;
+    font-size: 18px;
     padding-bottom: 0;
 }
 
@@ -1453,7 +1485,29 @@ main.login > .login-form > .login-wellcome b {
 }
 
 main.login > .login-form > .login-body > div:not(:last-of-type) {
-    margin-bottom: 16px;
+    margin-bottom: 12px;
+}
+
+main.login .form-control {
+    height: 36px;
+    padding: 6px 10px;
+    border-width: 1px;
+    font-size: 14px;
+}
+
+main.login label {
+    margin-bottom: 4px;
+}
+
+main.login .button {
+    height: 36px;
+    padding: 8px 12px;
+    font-size: 14px;
+}
+
+main.login .alert {
+    padding: 8px 12px;
+    font-size: 14px;
 }
 
 /* Page: Redeem / 404 */
