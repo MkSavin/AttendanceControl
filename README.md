@@ -8,7 +8,7 @@ Attendance control application.
 #### Step 1. Composer
 Open your cloned project directory and run:
 ```
-composer update
+composer install
 ```
 It will create `/vendors` directory and update dependancies.
 #### Step 2. Env
@@ -22,7 +22,7 @@ Fill database using `dump.example.sql` file.
 ##### ИЛИ
 Just import `dump.example.sql` file to database. 
 
-(With Docker use `localhost:33061`, user: `root` password: `*empty*` for connecting to Database)
+(With Docker use `localhost:33061`, user: `attendance` password: `attendance-local` for connecting to Database)
 
 #### Step 4. Test credentials
 These accounts are available after importing `dump.example.sql`:
@@ -32,6 +32,8 @@ These accounts are available after importing `dump.example.sql`:
 | Administrator | `admin@example.test` | `AttendanceAdmin!` |
 | Manager | `manager3@example.test` | `AttendanceManager!` |
 | Student | `student1@example.test` | `AttendanceStudent!` |
+
+Signing in rotates the account's API token, so previously issued bearer tokens stop working. To issue a token for an external integration, run `php artisan api-token user@example.test`; the token is shown once and stored hashed.
 
 ### Launching:
 Just launch your server and open reserved domain.
@@ -50,7 +52,7 @@ After that you can open `localhost:8888` for getting access to application.
 #### Шаг 1. Composer
 Откройте ваш склонированный проект и выполните:
 ```
-composer update
+composer install
 ```
 Комманда создаст папку `/vendors` и обновит зависимости.
 #### Шаг 2. Env
@@ -64,7 +66,7 @@ php artisan migrate
 ##### ИЛИ
 Выполните импорт базы данных из файла `dump.example.sql`.
 
-(При использовании Docker подключение к БД происходит через `localhost:33061`, пользователь: `root` пароль: `*пусто*`)
+(При использовании Docker подключение к БД происходит через `localhost:33061`, пользователь: `attendance` пароль: `attendance-local`)
 
 #### Шаг 4. Данные для входа
 После импорта `dump.example.sql` доступны тестовые учётные записи:
@@ -74,6 +76,8 @@ php artisan migrate
 | Администратор | `admin@example.test` | `AttendanceAdmin!` |
 | Менеджер | `manager3@example.test` | `AttendanceManager!` |
 | Студент | `student1@example.test` | `AttendanceStudent!` |
+
+При входе API-токен аккаунта перевыпускается, поэтому ранее выданные bearer-токены перестают работать. Для внешней интеграции выполните `php artisan api-token user@example.test`: токен будет показан один раз, а в БД сохранится его хеш.
 
 ### Запуск:
 Просто запустите свой сервер и откройте выделенный хост для проекта.

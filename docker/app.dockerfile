@@ -3,8 +3,8 @@ FROM composer:2 AS composer
 FROM php:8.5.12-apache
 
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends unzip \
-    && docker-php-ext-install -j"$(nproc)" pdo_mysql sockets \
+    && apt-get install -y --no-install-recommends unzip libsqlite3-dev \
+    && docker-php-ext-install -j"$(nproc)" pdo_mysql pdo_sqlite sockets \
     && a2enmod rewrite \
     && sed -ri 's!/var/www/html!/var/www/laravel/public!g' /etc/apache2/sites-available/000-default.conf \
     && sed -ri 's/AllowOverride None/AllowOverride All/g' /etc/apache2/apache2.conf \
@@ -14,7 +14,7 @@ COPY --from=composer /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/laravel
 
-COPY composer.json ./
+COPY composer.json composer.lock ./
 
 RUN composer install --no-interaction --prefer-dist --no-progress --no-scripts --no-autoloader
 

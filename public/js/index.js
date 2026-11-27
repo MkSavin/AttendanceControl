@@ -1,5 +1,12 @@
 var is_mobile = ((/Mobile|iPhone|iPod|BlackBerry|Windows Phone/i).test(navigator.userAgent || navigator.vendor || window.opera) ? true : false);
 
+$.ajaxSetup({
+    headers: {
+        Authorization: 'Bearer ' + user.api_token,
+        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+    }
+});
+
 String.prototype.replaceAll = function(search, replacement) {
     var target = this;
     return target.replace(new RegExp(search, 'g'), replacement);
@@ -185,7 +192,6 @@ if ($('.js-sessions-list').length) {
         $.ajax({
             url: api_links.sessions.all,
             data: {
-                api_token: user.api_token
             },
             success: function(data) {
                 sessionsAjax('active', data);
@@ -213,7 +219,6 @@ var popupHandlers = function(){
         $.ajax({
             url: api_links.users.asideForSession,
             data: {
-                api_token: user.api_token
             },
             success: function(data) {
                 if (data.types.length > 0) {
@@ -319,7 +324,6 @@ var popupHandlers = function(){
             url: api_links.attendance.get,
             data: {
                 session_id: sessionData.id,
-                api_token: user.api_token
             },
             success: function(data) {
                 self.find('.js-loader').fadeOut(200);
@@ -484,8 +488,7 @@ var popupHandlers = function(){
                 url: api_links.session.one,
                 data: {
                     id: button.attr('popup-data'),
-                    api_token: user.api_token
-                }, 
+                    },
                 success: function(data) {
                     sessionDataAction(self, button, data);
                 }
@@ -512,7 +515,6 @@ var popupHandlers = function(){
             url: api_links.attendance.get,
             data: {
                 session_id: id,
-                api_token: user.api_token,
                 groups: groups,
                 search: search
             },
@@ -645,7 +647,6 @@ var popupHandlers = function(){
             url: api_links.session.one,
             data: {
                 id: id,
-                api_token: user.api_token
             }, 
             success: function(data) {
                 if (!data.attendance.length) {
@@ -724,7 +725,6 @@ var popupHandlers = function(){
                 type: type,
                 group: group,
                 search: self.find('.js-user-search').val(),
-                api_token: user.api_token
             },
             success: function(data) {
                 self.find('.js-loader').fadeOut(200);
@@ -805,7 +805,6 @@ var popupHandlers = function(){
             url: api_links.groups.all,
             data: {
                 search: self.find('.js-group-search').val(),
-                api_token: user.api_token
             },
             success: function(data) {
                 self.find('.js-loader').fadeOut(200);
@@ -845,7 +844,6 @@ var popupHandlers = function(){
             url: api_links.user.one,
             data: {
                 id: userId,
-                api_token: user.api_token
             },
             success: function(data) {
                 if (data.error) {
@@ -919,7 +917,6 @@ var popupHandlers = function(){
             url: api_links.group.one,
             data: {
                 id: groupId,
-                api_token: user.api_token
             },
             success: function(data) {
                 if (data.error) {
@@ -1036,6 +1033,7 @@ var popupAdditionalActions = function(){
                 Accept: 'application/json'
             },
             url: links.redeem,
+            type: 'POST',
             data: {
                 code: qrCode
             },
@@ -1078,12 +1076,12 @@ var popupAdditionalActions = function(){
 
         $.ajax({
             url: api_links.session.create,
+            type: 'POST',
             data: {
                 userType: userType,
                 groups: groups,
                 activeTime: activeTime,
                 activeAt: activeAt,
-                api_token: user.api_token
             },
             success: function(data) {
                 if (!data.error) {
@@ -1130,10 +1128,10 @@ var popupAdditionalActions = function(){
 
         $.ajax({
             url: api_links.attendance.add,
+            type: 'POST',
             data: {
                 session_id: id,
                 users: users,
-                api_token: user.api_token
             },
             success: function(data) {
                 if (!data.error) {

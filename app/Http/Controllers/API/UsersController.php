@@ -5,8 +5,8 @@ namespace App\Http\Controllers\API;
 use App\Models\Group;
 use App\Models\User;
 use App\Models\UserType;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
-use Illuminate\Support\Facades\Hash;
 
 class UsersController extends Controller
 {
@@ -18,6 +18,8 @@ class UsersController extends Controller
      */
     public function Get()
     {
+        abort_unless(Auth::user()->hasRight('user.view'), 403);
+
         $type = Request::get('type') ?? false;
         $group = Request::get('group') ?? false;
         $search = Request::get('search') ?? false;
@@ -35,6 +37,8 @@ class UsersController extends Controller
      */
     public function GetTypes()
     {
+        abort_unless(Auth::user()->hasRight('user.view'), 403);
+
         return response()->json(UserType::where('bot', 0)->get(), 200);
     }
 
@@ -45,6 +49,8 @@ class UsersController extends Controller
      */
     public function GetAside()
     {
+        abort_unless(Auth::user()->hasRight('user.view'), 403);
+
         $fulluser = Request::get('fullUser');
 
         return response()->json(collect([
@@ -61,6 +67,8 @@ class UsersController extends Controller
      */
     public function GetAsideForSession()
     {
+        abort_unless(Auth::user()->hasRight('session.create'), 403);
+
         $types = UserType::getForSession();
 
         return response()->json(collect([
@@ -88,25 +96,12 @@ class UsersController extends Controller
      */
     public function Check()
     {
-        $email = Request::get('email');
-        $password = Request::get('password');
+        $credentials = request()->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required', 'string'],
+        ]);
 
-        return response()->json(User::check($email, $password), 200);
-    }
-
-    /**
-     * GET-Контроллер для страницы user/password/generate
-     *
-     * @return string
-     */
-    public function GeneratePassword()
-    {
-        $password = Request::get('password');
-
-        return response()->json([
-            "password" => $password,
-            "hash" => Hash::make($password),
-        ], 200);
+        return response()->json(User::check($credentials['email'], $credentials['password']), 200);
     }
 
 }

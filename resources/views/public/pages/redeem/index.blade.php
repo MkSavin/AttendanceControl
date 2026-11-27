@@ -4,7 +4,14 @@
 @section('mainclass', 'notify')
 @section('content')
 <div class="center">
-    @if(isset($success) && $success && isset($currentUser) && isset($session))
+    @if(isset($code))
+        <h1>Подтвердите посещение</h1>
+        <form method="POST" action="{{ route('redeem.store') }}">
+            @csrf
+            <input type="hidden" name="code" value="{{ $code }}">
+            <button type="submit" class="button">Отметить посещение</button>
+        </form>
+    @elseif(isset($success) && $success && isset($currentUser) && isset($session))
         <h1>Сеанс <b>успешно</b> использован!</h1>
         <div class="notify-description"><span class="blue">{{ $currentUser->name_short }}</span>,   <span class="blue">{{ $session['user']['name_short'] }}</span> благодарит Вас за посещение!</div>
         <!-- <a href="#" class="button js-window-close">Закрыть</a> -->

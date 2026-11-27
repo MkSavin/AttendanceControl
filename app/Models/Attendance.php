@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Traits\Models\Attributes;
 use App\Traits\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Lang;
 
@@ -15,7 +16,7 @@ class Attendance extends Model
 
     public $table = "attendance";
 
-    protected $fillable = ['user_id', 'session_id'];
+    protected $fillable = ['user_id', 'session_id', 'created_by'];
 
     /**
      * Псевдо-аттрибуты создаваемые на основе соответствующих аксессоров, которые должны попасть сразу в коллекцию при выборке данных из БД. Жадная подгрузка аксессор-аттрибутов
@@ -56,6 +57,8 @@ class Attendance extends Model
             ];
         }
 
+        Session::getSession($id, false);
+
         $attendance = self::with('session', 'user', 'user.group')->where('session_id', $id);
 
         if ($search) {
@@ -68,7 +71,7 @@ class Attendance extends Model
                             $query
                                 ->where('name', 'LIKE', '%' . $search . '%')
                                 ->orWhere('year', 'LIKE', '%' . $search . '%')
-                                ->orWhereRaw('CONCAT(name, year) LIKE \'%' . $search . '%\'');
+                                ->orWhereRaw('CONCAT(name, year) LIKE ?', ['%' . $search . '%']);
                         });
                 });
         }
@@ -109,7 +112,7 @@ class Attendance extends Model
             ];
         }
 
-        if (!$user->hasRight('session.view')) {
+        if (!$user->hasRight('session.edit')) {
             return [
                 "error" => true,
                 "code" => 100,
@@ -125,7 +128,8 @@ class Attendance extends Model
             ];
         }
 
-        $users = explode(',', $users);
+        $users = array_unique(array_map('intval', explode(',', (string) $users)));
+        $users = array_filter($users, fn ($userID) => $userID > 0);
 
         if (!$users) {
             return [
@@ -135,15 +139,7 @@ class Attendance extends Model
             ];
         }
 
-        $session = Session::fullSessions()->where('id', $id)->first();
-
-        if ($session->user_type_id == $user->user_type_id && !$user->hasRight('session.edit.all')) {
-            return [
-                "error" => true,
-                "code" => 3005,
-                "msg" => Lang::get('session.create.error.noRightUserTypeEquals'),
-            ];
-        }
+        $session = Session::getSession($id, false);
 
         if ($session->status != "active") {
             return [
@@ -165,7 +161,15 @@ class Attendance extends Model
             return $item->user_id;
         })->toArray();
 
-        $users = array_diff($users, $sessionUsers);
+        $allowedUsers = User::where('user_type_id', $session->user_type_id)
+            ->when($session->session_group->count(), function ($query) use ($session) {
+                $query->whereIn('group_id', $session->session_group->pluck('group_id'));
+            })
+            ->whereIn('id', $users)
+            ->pluck('id')
+            ->all();
+
+        $users = array_diff($allowedUsers, $sessionUsers);
 
         if (!$users) {
             return [
@@ -178,14 +182,20 @@ class Attendance extends Model
         $attendance = [];
 
         foreach ($users as $userID) {
-            $attendance[] = self::create([
-                'user_id' => $userID,
-                'session_id' => $id,
-                'created_by' => $user->id,
-            ]);
+            try {
+                $attendance[] = self::create([
+                    'user_id' => $userID,
+                    'session_id' => $id,
+                    'created_by' => $user->id,
+                ]);
+            } catch (QueryException $exception) {
+                if ($exception->getCode() !== '23000') {
+                    throw $exception;
+                }
+            }
         }
         
-        $session->editRight = !($session->user_type_id == $user->user_type_id && !$user->hasRight('session.edit.all'));
+        $session->editRight = true;
 
         if (count($attendance)) {
             return [

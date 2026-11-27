@@ -4,7 +4,10 @@ services:
             context: .
             dockerfile: docker/app.dockerfile
         ports:
-            - 8888:80
+            - 127.0.0.1:8888:80
+        environment:
+            DB_USERNAME: attendance
+            DB_PASSWORD: ${MYSQL_PASSWORD:-attendance-local}
         depends_on:
             mysql:
                 condition: service_healthy
@@ -12,14 +15,16 @@ services:
     mysql:
         image: mysql:8.4
         ports:
-            - 33061:3306
+            - 127.0.0.1:33061:3306
         environment:
-            MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-attendance-root-local}
             MYSQL_DATABASE: attendancecontrol
+            MYSQL_USER: attendance
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD:-attendance-local}
         volumes:
             - mysql-data:/var/lib/mysql
         healthcheck:
-            test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot"]
+            test: ["CMD-SHELL", "mysqladmin ping -h localhost -uroot -p\"$${MYSQL_ROOT_PASSWORD}\" --silent"]
             interval: 5s
             timeout: 5s
             retries: 20

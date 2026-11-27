@@ -31,15 +31,23 @@ class IndexController extends Controller
     public function Redeem()
     {
         $code = Request::get('code');
-        if ($code) {
-            if (request()->expectsJson()) {
-                return response()->json(Code::useCode($code), 200);
-            } else {
-                return view('public.pages.redeem.index', Code::useCode($code));
-            }
-        } else {
+        if (!$code) {
             return redirect()->route('index');
         }
+
+        return view('public.pages.redeem.index', ['code' => $code]);
+    }
+
+    public function RedeemPost()
+    {
+        $data = request()->validate(['code' => ['required', 'string']]);
+        $result = Code::useCode($data['code']);
+
+        if (request()->expectsJson()) {
+            return response()->json($result, 200);
+        }
+
+        return view('public.pages.redeem.index', $result);
     }
 
 }

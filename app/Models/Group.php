@@ -75,10 +75,11 @@ class Group extends Model
         $groups = Group::orderBy('id');
 
         if ($search) {
-            $groups = $groups
-                ->where('name', 'LIKE', '%' . $search . '%')
-                ->orWhere('year', 'LIKE', '%' . $search . '%')
-                ->orWhereRaw('CONCAT(name, year) LIKE \'%' . $search . '%\'');
+            $groups = $groups->where(function ($query) use ($search) {
+                $query->where('name', 'LIKE', '%' . $search . '%')
+                    ->orWhere('year', 'LIKE', '%' . $search . '%')
+                    ->orWhereRaw('CONCAT(name, year) LIKE ?', ['%' . $search . '%']);
+            });
         }
 
         return $groups->get();

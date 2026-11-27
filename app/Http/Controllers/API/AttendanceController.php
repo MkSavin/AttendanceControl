@@ -30,7 +30,6 @@ class AttendanceController extends Controller
     public function Add()
     {
         $id = intval(Request::get('session_id'));
-        $groups = Request::get('groups');
         $users = Request::get('users');
 
         return response()->json(Attendance::createAttendance($id, $users), 200);

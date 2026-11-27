@@ -28,6 +28,6 @@ class CreateSessionsGroupsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sessions');
+        Schema::dropIfExists('sessions_groups');
     }
 }

@@ -128,6 +128,12 @@ class Session extends Model
         }
 
         $session = self::fullSessions()->where('id', $id)->first();
+        abort_if(!$session, 404);
+        abort_unless(
+            $user->hasRight('session.view.all') || $session->user_id === $user->id,
+            403
+        );
+
         if (!$suitable) {
             return $session;
         }
@@ -137,7 +143,8 @@ class Session extends Model
 
         $suitable = $suitable->groupBy('group_id');
 
-        $session->editRight = !($session->user_type_id == $user->user_type_id && !$user->hasRight('session.edit.all'));
+        $session->editRight = $user->hasRight('session.edit')
+            && ($user->hasRight('session.edit.all') || $session->user_id === $user->id);
 
         $session->session_group->transform(function ($item) use ($suitable) {
             if (isset($suitable[$item->group_id])) {
@@ -261,7 +268,7 @@ class Session extends Model
      * @param string $activeAt
      * @return Collection
      */
-    public static function createSession($masterId = false, $userType, $groups, $activeTime, $activeAt)
+    public static function createSession($masterId, $userType, $groups, $activeTime, $activeAt)
     {
         $user = Auth::user();
 
@@ -318,7 +325,8 @@ class Session extends Model
         if (!$masterId) {
             $master = $user;
         } else {
-            $master = User::find($masterId);
+            abort_unless($user->hasRight('session.edit.all'), 403);
+            $master = User::findOrFail($masterId);
         }
         
         if (!$master->hasRight('session.create')) {
@@ -358,7 +366,8 @@ class Session extends Model
             }
         }
         
-        $session->editRight = !($session->user_type_id == $user->user_type_id && !$user->hasRight('session.edit.all'));
+        $session->editRight = $user->hasRight('session.edit')
+            && ($user->hasRight('session.edit.all') || $session->user_id === $user->id);
 
         return [
             "error" => false,

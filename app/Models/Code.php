@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Str;
@@ -126,10 +127,22 @@ class Code extends Model
                     ['session_id', $session->id],
                     ['user_id', $user->id],
                 ])->first()) {
-                    $attendance = Attendance::create([
-                        'user_id' => $user->id,
-                        'session_id' => $session->id,
-                    ]);
+                    try {
+                        $attendance = Attendance::create([
+                            'user_id' => $user->id,
+                            'session_id' => $session->id,
+                        ]);
+                    } catch (QueryException $exception) {
+                        if ($exception->getCode() === '23000') {
+                            return [
+                                "error" => true,
+                                "code" => 1004,
+                                "msg" => Lang::get('sessionCode.use.error.alreadyExists'),
+                            ];
+                        }
+
+                        throw $exception;
+                    }
 
                     if ($attendance) {
                         return [

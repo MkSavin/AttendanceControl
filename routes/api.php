@@ -10,10 +10,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['namespace' => 'App\Http\Controllers\API'], function () {
     
-    Route::get('/groups', 'GroupsController@Get');
-    Route::get('/user/check', 'UsersController@Check');
+    Route::post('/user/check', 'UsersController@Check')->middleware('throttle:5,1');
 
-    Route::group(['middleware' => 'auth:api'], function () {
+    Route::group(['middleware' => ['bearer', 'auth:api']], function () {
+
+        Route::get('/groups', 'GroupsController@Get');
 
         Route::get('/users', 'UsersController@Get');
         Route::get('/users/aside', 'UsersController@GetAside');
@@ -22,19 +23,17 @@ Route::group(['namespace' => 'App\Http\Controllers\API'], function () {
     
         Route::get('/user', 'UsersController@GetOne');
 
-        Route::get('/user/password/generate', 'UsersController@GeneratePassword'); // TEMP
-    
         Route::get('/group', 'GroupsController@GetOne');
 
         Route::get('/sessions/all', 'SessionsController@GetAll');
 
         Route::get('/session', 'SessionsController@GetOne');
-        Route::get('/session/usecode', 'SessionsController@UseCode');
-        Route::get('/session/create', 'SessionsController@Create');
+        Route::post('/session/usecode', 'SessionsController@UseCode');
+        Route::post('/session/create', 'SessionsController@Create');
         Route::get('/session/suitable', 'SessionsController@Suitable');
         
         Route::get('/attendance', 'AttendanceController@Get');
-        Route::get('/attendance/add', 'AttendanceController@Add');
+        Route::post('/attendance/add', 'AttendanceController@Add');
 
     });
 });
